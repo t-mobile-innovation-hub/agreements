@@ -970,19 +970,21 @@ opacity: 1;
             TELEMETRY_URL: ''
         };
 
-        // Clear verification errors when user re-engages with OTP input
-        const otpInput = document.getElementById('otp');
-
-            if (otpInput) {
-              otpInput.addEventListener('focus', () => {
-                clearCodeMessage(); 
-              });
-            
-              otpInput.addEventListener('input', () => {
-                clearCodeMessage();
-              });
-            }
         
+        // Clear verification errors when user re-engages with OTP input
+        (function bindOtpClear() {
+            const otpInput = document.getElementById('otp');
+            if (!otpInput) return;
+
+            const clearAll = () => {
+                try { clearCodeMessage(); } catch (e) {}
+                try { clearPageMessage(1); } catch (e) {}
+            };
+
+            otpInput.addEventListener('focus', clearAll);
+            otpInput.addEventListener('input', clearAll);
+        })();
+
         // OTP state
         window.__codeSent = false;
         window.__lastSendTs = 0;
@@ -1901,14 +1903,13 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
         function setupPage2AutoAdvance() { return; }
 
         function syncPage4Availability() {
-            const reviewed = document.getElementById('agreement-reviewed')?.checked;
             const page4 = document.getElementById('page-4');
             if (!page4) return;
 
-            const canEdit = !!reviewed || completedPages.has(3) || currentPage >= 4;
-
+            // Keep page 4 fields interactive; gate only final submit button.
             page4.querySelectorAll('button, input, textarea, select').forEach(el => {
-                el.disabled = !canEdit;
+                if (el && el.id === 'final-submit-btn') return;
+                el.disabled = false;
             });
         }
 
