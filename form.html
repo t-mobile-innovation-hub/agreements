@@ -970,6 +970,18 @@ opacity: 1;
             TELEMETRY_URL: ''
         };
 
+        const otpInput = document.getElementById('otp');
+
+            if (otpInput) {
+              otpInput.addEventListener('focus', () => {
+                clearPageMessage(1); // page 1 = verification step
+              });
+            
+              otpInput.addEventListener('input', () => {
+                clearPageMessage(1);
+              });
+            }
+        
         // OTP state
         window.__codeSent = false;
         window.__lastSendTs = 0;
