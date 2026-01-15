@@ -1441,20 +1441,23 @@ document.querySelectorAll('.page').forEach((page, index) => {
         }
 
         // ===== SEND VERIFICATION CODE =====
+        async 
+        // ===== SEND VERIFICATION CODE =====
         async function sendCode() {
             clearPageMessage(1);
-            
+
             const email = document.getElementById('email').value.trim();
             const sendButton = document.getElementById('send-code-btn');
-            
-            
+
             const now = Date.now();
-            if (now - (window.__lastSendTs || 0) < window.__sendCooldownMs) {
-                const remaining = Math.ceil((window.__sendCooldownMs - (now - window.__lastSendTs)) / 1000);
+            const cooldownMs = window.__sendCooldownMs || 45000;
+            if (now - (window.__lastSendTs || 0) < cooldownMs) {
+                const remaining = Math.ceil((cooldownMs - (now - window.__lastSendTs)) / 1000);
                 showMessage(1, `Please wait ${remaining}s before resending a code.`, 'info');
                 return;
             }
-if (!email) {
+
+            if (!email) {
                 showMessage(1, 'Please enter your email address.', 'error');
                 return;
             }
@@ -1464,67 +1467,49 @@ if (!email) {
                 return;
             }
 
-            const domain = email.split('@')[1].toLowerCase();
-            if (CONFIG.GENERIC_DOMAINS.includes(domain)) {
-                showMessage(1, 'Please use your work email address. Generic email providers are not accepted.', 'error');
-                return;
-            }
-
             track('otp_send_start');
-            sendButton.disabled = true;
-            const isResend = document.getElementById('code-section').style.display === 'block';
-            
-            track('otp_verify_start');
-            track('submit_start');
+            if (sendButton) sendButton.disabled = true;
             document.getElementById('loading').classList.add('show');
-            
+
             try {
                 const response = await fetchWithTimeout(CONFIG.API_SEND_CODE, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
-                    body: JSON.stringify({ email: email })
-                });
+                    body: JSON.stringify({ email })
+                }, 15000);
 
                 let data = {};
                 try { data = await response.json(); } catch (e) { data = {}; }
 
-                if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Failed to send code');
+                if (!response.ok) {
+                    const msg = data?.message || data?.error || 'Failed to send verification code. Please try again.';
+                    throw new Error(msg);
                 }
 
-                const message = isResend 
-                    ? 'New verification code sent! Check your email.' 
-                    : 'Verification code sent! Check your email.';
-                showMessage(1, message, 'success');
-                track('otp_send_success');
-                
-                // Mark that a code was sent and lock the send button (resend link still works)
                 window.__codeSent = true;
-                window.__lastSendTs = Date.now();
-                sendButton.disabled = true;
-                sendButton.textContent = 'Code Sent';
+                window.__lastSendTs = now;
 
-                document.getElementById('code-section').style.display = 'block';
-                const otpEl = document.getElementById('otp');
-                if (otpEl) {
-                    otpEl.value = '';
-                    otpEl.focus();
+                const codeSection = document.getElementById('code-section');
+                if (codeSection) codeSection.style.display = 'block';
+
+                if (sendButton) {
+                    sendButton.textContent = 'Code Sent';
+                    sendButton.disabled = true;
                 }
-                const nextBtn = document.getElementById('next-btn');
-                if (nextBtn) nextBtn.disabled = true;
 
+                showMessage(1, 'Verification code sent. Check your email.', 'success');
+                track('otp_send_success');
             } catch (error) {
                 console.error('Send code error:', error);
                 track('otp_send_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
-                showMessage(1, (error && error.name === 'AbortError') ? 'Request timed out. Please try again.' : (error.message || 'Failed to send verification code. Please try again.'), 'error');
-                sendButton.disabled = false;
+                showMessage(1, error.message || 'Failed to send verification code. Please try again.', 'error');
+                if (sendButton) sendButton.disabled = false;
             } finally {
                 document.getElementById('loading').classList.remove('show');
             }
         }
 
-        // ===== VERIFY CODE =====
-        async function verifyCode() {
+async function verifyCode() {
             clearPageMessage(1);
 
             const email = document.getElementById('email').value.trim();
