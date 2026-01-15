@@ -755,6 +755,23 @@ opacity: 1;
             pointer-events: auto !important;
         }
 
+        /* Center the form flow and success panel */
+        #pages-wrapper,
+        #success-page {
+          max-width: 720px;     /* matches current visual density */
+          margin: 0 auto;
+          width: 100%;
+        }
+        
+        /* Mobile safety */
+        @media (max-width: 768px) {
+          #pages-wrapper,
+          #success-page {
+            padding-left: 12px;
+            padding-right: 12px;
+          }
+        }
+
 </style>
 </head>
 <body>
