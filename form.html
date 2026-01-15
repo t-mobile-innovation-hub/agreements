@@ -755,23 +755,6 @@ opacity: 1;
             pointer-events: auto !important;
         }
 
-        /* Center the form flow and success panel */
-        #pages-wrapper,
-        #success-page {
-          max-width: 720px;     /* matches current visual density */
-          margin: 0 auto;
-          width: 100%;
-        }
-        
-        /* Mobile safety */
-        @media (max-width: 768px) {
-          #pages-wrapper,
-          #success-page {
-            padding-left: 12px;
-            padding-right: 12px;
-          }
-        }
-
 </style>
 </head>
 <body>
@@ -896,7 +879,7 @@ opacity: 1;
             </div>
 
             <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
-                <input type="checkbox" id="agreement-reviewed" required>
+                <input type="checkbox" id="agreement-reviewed" required onchange="syncPage4Availability();syncSubmitAvailability()">
                 <label for="agreement-reviewed">
                     I have reviewed and understood the complete agreement terms above. <span class="required">*</span>
                 </label>
@@ -947,7 +930,7 @@ opacity: 1;
                 </label>
             </div>
 
-            <button type="button" class="btn-primary" onclick="submitAgreement()">Complete & Sign Agreement</button>
+            <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Complete & Sign Agreement</button>
         </div>
 
         <!-- Success Page -->
@@ -1060,6 +1043,10 @@ opacity: 1;
             window.addEventListener('resize', () => {
                 positionProgressDots();
                 updateProgressFillToActive();
+            // Initial gating
+            syncPage4Availability();
+            syncSubmitAvailability();
+
             });
             
             let scrollTimeout;
@@ -1362,6 +1349,8 @@ opacity: 1;
             
             
             if (pageNumber === 4) syncPage4Availability();
+
+            syncSubmitAvailability();
 document.querySelectorAll('.page').forEach((page, index) => {
                 const pageNum = index + 1;
                 page.classList.remove('active', 'completed');
@@ -1898,6 +1887,21 @@ if (!email) {
                 el.disabled = !canEdit;
             });
         }
+
+
+        // ===== SUBMIT BUTTON AVAILABILITY =====
+        function syncSubmitAvailability() {
+            const btn = document.getElementById('final-submit-btn');
+            if (!btn) return;
+
+            const hasVerifiedEmail = !!(window.verifiedEmail && String(window.verifiedEmail).trim());
+            const reviewed = !!document.getElementById('agreement-reviewed')?.checked;
+            const onStep4 = (currentPage === 4);
+            const step3Done = completedPages.has(3);
+
+            btn.disabled = !(hasVerifiedEmail && onStep4 && step3Done && reviewed) || submissionComplete;
+        }
+
     </script>
 </body>
 </html>
