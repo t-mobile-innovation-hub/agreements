@@ -970,15 +970,16 @@ opacity: 1;
             TELEMETRY_URL: ''
         };
 
+        // Clear verification errors when user re-engages with OTP input
         const otpInput = document.getElementById('otp');
 
             if (otpInput) {
               otpInput.addEventListener('focus', () => {
-                clearPageMessage(1); // page 1 = verification step
+                clearCodeMessage(); 
               });
             
               otpInput.addEventListener('input', () => {
-                clearPageMessage(1);
+                clearCodeMessage();
               });
             }
         
