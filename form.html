@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Mobile Innovation Agreement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Add margin on desktop for progress sidebar */
+        @media (min-width: 769px) {
+            .container {
+                margin-left: 140px;
+                margin-right: 40px;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #e20074;
+        }
+
+        .header h1 {
+            color: #000000;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .agreement-id {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #e20074;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            left: 30px;
+            top: 100px;
+            bottom: 100px;
+            width: 60px;
+            z-index: 100;
+        }
+
+        .progress-track {
+            position: absolute;
+            left: 16px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+            border-radius: 1px;
+        }
+
+        .progress-fill {
+            position: absolute;
+            left: 16px;
+            top: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #e20074 0%, #c2185b 100%);
+            border-radius: 1px;
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 0%;
+        }
+
+        .progress-step {
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            transform: translateY(-50%);
+        }
+
+        .progress-dot {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #999;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-step.active .progress-dot {
+            border-color: #e20074;
+            background: #e20074;
+            border-width: 4px;
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px rgba(226, 0, 116, 0.15);
+        }
+
+        .progress-step.active .progress-dot::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.85); }
+        }
+
+        .progress-step.completed .progress-dot {
+            border-color: #4caf50;
+            background: #4caf50;
+            border-width: 3px;
+        }
+
+        .progress-step.completed .progress-dot::before {
+            content: '✓';
+            font-size: 18px;
+            color: white;
+        }
+
+        .progress-label {
+            display: none;
+        }
+
+        .progress-step:hover .progress-label {
+            display: block;
+            position: absolute;
+            left: 50px;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .progress-step:hover .progress-label::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-right: 6px solid rgba(0, 0, 0, 0.85);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+
+        @media (max-width: 768px) {
+            .progress-indicator {
+                position: relative;
+                left: auto;
+                top: auto;
+                bottom: auto;
+                width: 100%;
+                height: 8px;
+                margin-bottom: 30px;
+            }
+            
+            .progress-track {
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: auto;
+                width: 100%;
+                height: 8px;
+            }
+            
+            .progress-fill {
+                left: 0;
+                top: 0;
+                width: 0%;
+                height: 8px;
+                transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .progress-step {
+                display: none;
+            }
+        }
+
+        .page {
+            display: block !important;
+            margin-bottom: 40px;
+            padding: 30px;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.3s ease;
+            scroll-margin-top: 120px;  
+        }
+
+        .page.completed {
+            opacity: 0.5;
+            background: #f8f8f8;
+            pointer-events: none;
+        }
+
+        #page-4.page.completed {
+            pointer-events: auto;
+        }
+
+
+        .page.completed .page-title {
+            color: #4caf50;
+        }
+
+        .page.completed::before {
+            content: '✓ Completed';
+            display: block;
+            color: #4caf50;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .page.active {
+            box-shadow: 0 4px 20px rgba(226, 0, 116, 0.15);
+            border: 2px solid #e20074;
+            opacity: 1;
+            background: white;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #000000;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #000000;
+            font-size: 16px;
+        }
+
+        .required {
+            color: #e20074;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 17px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #e20074;
+            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
+        }
+
+        .error {
+            border-color: #d32f2f !important;
+            background-color: #ffebee;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 16px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #66bb6a;
+        }
+
+        .message.info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #42a5f5;
+        }
+
+        .btn-primary {
+            background: #e20074;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #b8005c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(226, 0, 116, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            box-shadow: none !important;
+            opacity: 0.5 !important;
+            pointer-events: none;
+        }
+
+        /* Exception: Page 4 is allowed when gated by checkbox */
+        #page-4 .btn-primary:not(:disabled) {
+            background: #e20074;
+            cursor: pointer;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+
+        .btn-secondary {
+            background: white;
+            color: #e20074;
+            padding: 12px 30px;
+            border: 2px solid #e20074;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #e20074;
+            color: white;
+        }
+
+        .btn-secondary:disabled {
+            background: #f5f5f5 !important;
+            color: #999 !important;
+            border-color: #ddd !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            opacity: 0.5 !important;
+            pointer-events: none;
+        }
+
+        .resend-link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .resend-link a {
+            color: #e20074;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .resend-link a:hover {
+            color: #b8005c;
+            text-decoration: none;
+        }
+
+        .code-boxes {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 25px 0;
+            max-width: 360px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* iOS OTP autofill overlay target */
+
+        .code-box {
+            width: 48px;
+            height: 58px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.2s;
+            outline: none;
+        
+            appearance: none;
+            -webkit-appearance: none;
+opacity: 1;
+            caret-color: #e20074;
+
+            background-color: #fff;
+            color: #000 !important;
+            -webkit-text-fill-color: #000 !important;
+            text-shadow: 0 0 0 #000; /* forces iOS to paint text (incl. inside iframes) */
+            padding: 0;
+            line-height: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            transform: translateZ(0);
+        }
+
+        .code-box:focus {
+            border-color: #e20074;
+            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
+        }
+
+        .code-box.filled {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        /* Single OTP field styled like 6 boxes (more reliable than 6 separate inputs on iOS/iframes) */
+        .otp-input{
+            width: 100%;
+            max-width: 420px;
+            height: 58px;
+            box-sizing: border-box;
+
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 18px;
+            padding: 0 10px;
+            white-space: nowrap;
+
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f1f8f4;
+
+            color: #000;
+            -webkit-text-fill-color: #000;
+            caret-color: #e20074;
+
+            font-variant-numeric: tabular-nums;
+        }
+
+        .otp-input:focus{
+            border-color: #e20074;
+            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
+        }
+
+        @media (max-width: 768px){
+            .otp-input{
+                max-width: 340px;
+                height: 54px;
+                font-size: 22px;
+                letter-spacing: 14px;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .code-boxes {
+                gap: 4px;
+                max-width: 300px;
+            }
+            
+            .code-box {
+                width: 42px;
+                height: 52px;
+                font-size: 16px;
+            }
+        }
+
+        .edit-section-btn {
+            background: none;
+            border: none;
+            color: #e20074;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            margin-left: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .edit-section-btn:hover {
+            color: #b8005c;
+            text-decoration: none;
+        }
+
+        .page .page-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .page.completed .page-title {
+            color: #4caf50;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #e20074;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        small {
+            display: block;
+            color: #666;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        .agreement-viewer {
+            background: #f8f9fa;
+            border: 2px solid #e20074;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .agreement-content {
+            background: white;
+            padding: 25px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .agreement-content.collapsed {
+            max-height: 0;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .agreement-content h4 {
+            color: #000000;
+            margin: 25px 0 15px 0;
+            font-size: 20px;
+        }
+
+        .agreement-content p {
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .agreement-content ol,
+        .agreement-content ul {
+            margin: 15px 0;
+            padding-left: 35px;
+        }
+
+        .agreement-content li {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .toggle-agreement {
+            margin-top: 15px;
+        }
+
+        .checkbox-group {
+            margin: 25px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.3);
+        }
+
+        .checkbox-group label {
+            display: inline;
+            font-weight: normal;
+            font-size: 16px;
+        }
+
+        .success-container {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .success-container.show {
+            display: block;
+        }
+
+        /* Submission lock: dim/disable only the form pages wrapper, not the success panel */
+        body.submission-complete #pages-wrapper {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        body.submission-complete #success-page,
+        body.submission-complete #success-page * {
+            pointer-events: auto !important;
+        }
+        body.submission-complete #success-page {
+            opacity: 1 !important;
+        }
+.success-container h2 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+
+        .success-icon {
+            font-size: 80px;
+            color: #4caf50;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .progress-label {
+                font-size: 12px;
+            }
+        }
+
+        /* Also update the toggle-agreement button when in inactive pages */
+        .page:not(.active) .toggle-agreement {
+            background: #f5f5f5 !important;
+            color: #999 !important;
+            border-color: #ddd !important;
+            cursor: not-allowed !important;
+            pointer-events: none;
+            opacity: 0.5 !important;
+        }
+
+        /* Make sure edit buttons in completed sections are still clickable */
+        .page.completed .edit-section-btn {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+    
+        /* Hide/dim pages wrapper on success so only success panel is emphasized */
+        #pages-wrapper.hidden {
+            display: none !important;
+        }
+        .success-container.show {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>T-Mobile Innovation Agreement</h1>
+            <div class="agreement-id" id="agreement-id-display" style="display: none;">
+                Agreement ID: <span id="agreement-id-value"></span>
+            </div>
+        </div>
+
+        <div class="progress-indicator" id="progress-indicator">
+            <div class="progress-track"></div>
+            <div class="progress-fill" id="progress-fill"></div>
+            <div class="progress-step" data-section="page-1" id="progress-1">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Verify Email</div>
+            </div>
+            <div class="progress-step" data-section="page-2" id="progress-2">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Company Info</div>
+            </div>
+            <div class="progress-step" data-section="page-3" id="progress-3">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Review Agreement</div>
+            </div>
+            <div class="progress-step" data-section="page-4" id="progress-4">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Sign Agreement</div>
+            </div>
+            <div class="progress-step" data-section="success-page" id="progress-5">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Continue to Intake</div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Page 1: Email Verification -->
+        <div class="page active" id="page-1">
+            <h2 class="page-title">Step 1: Verify Your Email</h2>
+            
+            <div class="message" id="page1-message"></div>
+
+            <div class="form-group">
+                <label for="email">Work Email Address <span class="required">*</span></label>
+                <input type="email" id="email" placeholder="your.email@company.com" required>
+                <small>We'll send a verification code to this address</small>
+            </div>
+
+            <button type="button" id="send-code-btn" class="btn-primary" onclick="sendCode()">Send Verification Code</button>
+
+            <div id="code-section" style="display: none; margin-top: 30px;">
+                <div class="form-group">
+                    <label for="otp">Verification Code <span class="required">*</span></label>
+                    
+                    
+                    <input
+                        id="otp"
+                        name="otp"
+                        class="otp-input"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        aria-label="6-digit verification code"
+                    />
+                    <div class="message error" id="code-message"></div>
+                    <small style="display: block; text-align: center; margin-top: 15px;">Check your email for the verification code</small>
+                    <p class="resend-link" style="text-align: center; margin-top: 10px; margin-bottom: 0;">
+                        Didn't receive code? <a href="#" onclick="event.preventDefault(); sendCode();">Click here to resend code</a>
+                    </p>
+                </div>
+
+                <button type="button" class="btn-primary" id="next-btn" onclick="verifyCode()" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Page 2: Company Information -->
+        <div class="page" id="page-2">
+            <h2 class="page-title">
+                <span>Step 2: Company Information</span>
+                <button type="button" class="edit-section-btn" onclick="editSection(2)" style="display: none;">Edit</button>
+            </h2>
+            
+            <div class="message" id="page2-message"></div>
+
+            <div class="form-group">
+                <label for="company-name">Legal Company Name <span class="required">*</span></label>
+                <input type="text" id="company-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="business-address">Business Address <span class="required">*</span></label>
+                <textarea id="business-address" rows="3" required></textarea>
+            </div>
+
+
+            <button type="button" class="btn-primary" id="page2-next-btn" onclick="completePage2()" disabled>Next</button>
+        </div>
+
+        <!-- Page 3: Review Agreement -->
+        <div class="page" id="page-3">
+            <h2 class="page-title">
+                <span>Step 3: Review Agreement Terms</span>
+            </h2>
+            
+            <div class="message" id="page3-message"></div>
+
+            <div class="agreement-viewer">
+                <h3 style="margin-bottom: 15px; color: #000000;">Agreement Document</h3>
+                <div class="agreement-content" id="agreement-content">
+                    <!-- Dynamic agreement content loaded here -->
+                </div>
+                <button type="button" class="btn-secondary toggle-agreement" onclick="toggleAgreement()">
+                    Hide Agreement
+                </button>
+            </div>
+
+            <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
+                <input type="checkbox" id="agreement-reviewed" required>
+                <label for="agreement-reviewed">
+                    I have reviewed and understood the complete agreement terms above. <span class="required">*</span>
+                </label>
+                        <button type="button" class="btn-primary" id="page3-next-btn" onclick="completePage3()" disabled>Next</button>
+
+        </div>
+
+        <!-- Page 4: Sign Agreement -->
+        <div class="page" id="page-4">
+            <h2 class="page-title">
+                <span>Step 4: Sign Agreement</span>
+                <button type="button" class="edit-section-btn" onclick="editSection(4)" style="display: none;">Edit</button>
+            </h2>
+            
+            <div class="message" id="page4-message"></div>
+
+            <p style="text-align: center; margin-bottom: 30px;">
+                <a href="#page-3" class="btn-secondary" style="text-decoration: none; display: inline-block; padding: 10px 20px;" onclick="scrollToAgreement(event)">
+                    ← Review Agreement
+                </a>
+            </p>
+
+            <div class="form-group">
+                <label for="signatory-name">Authorized Signatory Name <span class="required">*</span></label>
+                <input type="text" id="signatory-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signatory-title">Title/Position <span class="required">*</span></label>
+                <input type="text" id="signatory-title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone-number">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone-number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="digital-signature">Digital Signature (Type Your Full Name) <span class="required">*</span></label>
+                <input type="text" id="digital-signature" required>
+                <small>By typing your name, you agree to sign this agreement electronically</small>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms-agreement" required>
+                <label for="terms-agreement">
+                    I confirm that I am authorized to sign on behalf of my organization and agree to all terms and conditions outlined in the agreement above. <span class="required">*</span>
+                </label>
+            </div>
+
+            <button type="button" class="btn-primary" onclick="submitAgreement()">Complete & Sign Agreement</button>
+        </div>
+
+        <!-- Success Page -->
+        <div class="success-container" id="success-page">
+            <div class="success-icon">✓</div>
+            <h2>Agreement successfully submitted.</h2>
+            <p style="font-size: 18px; margin: 20px 0;">Thank you for signing the agreement.<br />You may now continue your intake request.</p>
+            
+            <div style="background: white; padding: 25px; border-radius: 5px; margin: 30px 0; text-align: left;">
+                <p><strong>Agreement ID:</strong> <span id="success-agreement-id"></span></p>
+                <p><strong>Your Email:</strong> <span id="success-email"></span></p>
+                <p style="margin-top: 20px; color: #666;">You will receive a confirmation email with the executed agreement within 24 hours.</p>
+            </div>
+
+            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+               class="btn-primary" 
+               style="text-decoration: none; display: inline-block;" 
+               target="_blank">
+                Continue to Intake Process
+            </a>
+        </div>
+    </div>
+
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+
+        // Configuration
+        const CONFIG = {
+            API_SEND_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4341c3c423ad4186bbbcbf6ec0f54b93/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HyJy3iw_YHiHM5-ViqOwH9SICVd5nw33ICIwkEgyTTU',
+            API_VERIFY_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/199a3ec089864a5ea6d8006c1a270a2e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8iICSmnrlVsdPITEvcyK0I95YD-nKjM4U2GMGnBREQc',
+            API_VALIDATE_TOKEN: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a60671f8d38444a09e3ac09442b80964/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KFQkiUfu8uPtDrSspU5o7cbKfDS2kdgKp3147UBVgjk',
+            API_SUBMIT: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/f22ee6457eb84ca3a32e3f970a3150be/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sCEtdfiLOS_Ull_JD6DG12B23XJinjCk77mXDy8qUIA',
+            GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'],
+            TELEMETRY_URL: ''
+        };
+
+        // OTP state
+        window.__codeSent = false;
+        window.__lastSendTs = 0;
+        window.__sendCooldownMs = 60000; // 60s cooldown
+
+
+        // Fetch with timeout (prevents "hung" UI when network/CORS stalls, especially in iframes on iOS)
+        async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeoutMs);
+
+            try {
+                const response = await fetch(url, { ...options, signal: controller.signal });
+                return response;
+            } finally {
+                clearTimeout(id);
+            }
+        }
+
+
+        // Global state
+        let verifiedEmail = '';
+        let sessionToken = '';
+        let agreementId = null;
+        let securityToken = null;
+        let agreementType = 'NDA';
+        let completedPages = new Set();
+        let currentPage = 1;
+        let submissionComplete = false;
+
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wrap all .page sections so we can disable/dim them without affecting the success panel
+            (function wrapPages() {
+                const pages = Array.from(document.querySelectorAll('.page'));
+                if (!pages.length) return;
+                let wrapper = document.getElementById('pages-wrapper');
+                if (!wrapper) {
+                    wrapper = document.createElement('div');
+                    wrapper.id = 'pages-wrapper';
+                    pages[0].parentNode.insertBefore(wrapper, pages[0]);
+                }
+                pages.forEach(p => wrapper.appendChild(p));
+
+                // Ensure success panel sits OUTSIDE the wrapper so it never gets dimmed/disabled
+                const success = document.getElementById('success-page');
+                if (success && success.parentNode === wrapper) {
+                    wrapper.parentNode.insertBefore(success, wrapper.nextSibling);
+                } else if (success && success.previousElementSibling !== wrapper) {
+                    // Move it to immediately after wrapper for stable layout
+                    wrapper.parentNode.insertBefore(success, wrapper.nextSibling);
+                }
+            })();
+
+            window.scrollTo(0, 0);
+            parseURL();
+            track('flow_start');
+            track('step_view', { step: 1 });
+            loadAgreementContent();
+            setupOtpInput();
+            setupAgreementReview();
+            setupPage2Validation();
+            setupPage3Validation();
+            
+            setTimeout(() => {
+                positionProgressDots();
+                updateProgressFillToActive();
+            }, 100);
+            
+            window.addEventListener('resize', () => {
+                positionProgressDots();
+                updateProgressFillToActive();
+            });
+            
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    positionProgressDots();
+                    updateProgressFillToActive();
+                }, 50);
+            });
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+
+            const activePage = document.querySelector('.page.active');
+            if (!activePage) return;
+
+            const primaryButton = activePage.querySelector('.btn-primary:not(:disabled)');
+            if (primaryButton) {
+                e.preventDefault();
+                primaryButton.click();
+            }
+        });
+
+
+        // ===== PROGRESS INDICATOR POSITIONING =====
+        function positionProgressDots() {
+            if (window.innerWidth <= 768) return;
+
+            const progressIndicator = document.getElementById('progress-indicator');
+            if (!progressIndicator) return;
+            
+            const indicatorRect = progressIndicator.getBoundingClientRect();
+            const indicatorTop = indicatorRect.top;
+            const indicatorHeight = indicatorRect.height;
+            
+            document.querySelectorAll('.progress-step').forEach(step => {
+                const sectionId = step.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                
+                if (section) {
+                    const sectionRect = section.getBoundingClientRect();
+                    const sectionCenter = sectionRect.top + (sectionRect.height / 2);
+                    const relativePosition = sectionCenter - indicatorTop;
+                    const percentage = Math.max(0, Math.min(100, (relativePosition / indicatorHeight) * 100));
+                    
+                    step.style.top = `${percentage}%`;
+                }
+            });
+            
+            updateProgressFillToActive();
+        }
+
+        function updateProgressFillToActive() {
+            const activeStep = document.querySelector('.progress-step.active');
+            if (activeStep && window.innerWidth > 768) {
+                const topValue = activeStep.style.top;
+                if (topValue) {
+                    document.getElementById('progress-fill').style.height = topValue;
+                }
+            }
+        }
+
+        function updateProgressFill(stepNumber) {
+            const totalSteps = 5;
+            const percentage = ((stepNumber - 1) / (totalSteps - 1)) * 100;
+            const progressFill = document.getElementById('progress-fill');
+            if (progressFill) {
+                if (window.innerWidth <= 768) {
+                    progressFill.style.width = `${percentage}%`;
+                    progressFill.style.height = '100%';
+                } else {
+                    setTimeout(updateProgressFillToActive, 100);
+                }
+            }
+        }
+
+        // ===== MESSAGE MANAGEMENT =====
+        function clearAllMessages() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(msg => {
+                msg.classList.remove('show');
+                msg.textContent = '';
+            });
+        }
+
+        function clearPageMessage(pageNumber) {
+            const message = document.getElementById(`page${pageNumber}-message`);
+            if (message) {
+                message.classList.remove('show', 'error', 'success', 'info');
+                message.textContent = '';
+            }
+        }
+
+        function showMessage(pageNumber, text, type = 'info') {
+            clearPageMessage(pageNumber);
+            const message = document.getElementById(`page${pageNumber}-message`);
+            if (message) {
+                message.textContent = text;
+                message.className = `message ${type} show`;
+            }
+        }
+
+        function showCodeMessage(text) {
+            const msg = document.getElementById('code-message');
+            if (!msg) return;
+
+            msg.textContent = text;
+            msg.classList.add('show');
+        }
+
+        function clearCodeMessage() {
+            const msg = document.getElementById('code-message');
+            if (!msg) return;
+
+            msg.textContent = '';
+            msg.classList.remove('show');
+        }
+
+        // ===== URL PARSING =====
+        function parseURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            agreementId = urlParams.get('id');
+            securityToken = urlParams.get('token');
+            agreementType = urlParams.get('type') || 'NDA';
+            const emailParam = urlParams.get('email');
+
+            if (agreementId) {
+                document.getElementById('agreement-id-display').style.display = 'block';
+                document.getElementById('agreement-id-value').textContent = agreementId;
+                
+                if (!securityToken) {
+                    showMessage(1, 'Error: Missing security token. Please use the link from your email.', 'error');
+                    return;
+                }
+                
+                validateSecurityToken();
+            }
+
+            if (emailParam) {
+                document.getElementById('email').value = emailParam;
+                verifiedEmail = emailParam;
+            }
+        }
+
+        // ===== SECURITY TOKEN VALIDATION =====
+        async function validateSecurityToken() {
+            if (!agreementId || !securityToken) return;
+
+            try {
+                const response = await fetchWithTimeout(CONFIG.API_VALIDATE_TOKEN, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    body: JSON.stringify({
+                        agreementId: agreementId,
+                        securityToken: securityToken
+                    })
+                });
+
+                let data = {};
+                try { data = await response.json(); } catch (e) { data = {}; }
+
+                if (!response.ok || !data.valid) {
+                    throw new Error(data.error || 'Invalid or expired link');
+                }
+
+            } catch (error) {
+                console.error('Token validation error:', error);
+                showMessage(1, 'This link is invalid or has expired. Please request a new link.', 'error');
+                document.querySelectorAll('button, input, textarea').forEach(el => el.disabled = true);
+            }
+        }
+
+        // ===== CODE INPUT SETUP =====
+        function setupOtpInput() {
+            const otp = document.getElementById('otp');
+            const nextBtn = document.getElementById('next-btn');
+            if (!otp) return;
+
+            const sync = () => {
+                const digits = otp.value.replace(/\D/g, '').slice(0, 6);
+                otp.value = digits;
+
+                if (nextBtn) {
+                    nextBtn.disabled = !(window.__codeSent && digits.length === 6);
+                }
+            };
+
+            otp.addEventListener('input', sync);
+            otp.addEventListener('blur', sync);
+            sync();
+        }
+
+
+        // ===== TOMORROW-SAFE FEATURES =====
+        const FEATURES = {
+            autoScroll: false,
+            autoAdvance: false,
+            telemetry: true
+        };
+
+        // ===== MINIMAL TELEMETRY (NO PII) =====
+        function getSessionId() {
+            const k = 'session_id';
+            let v = sessionStorage.getItem(k);
+            if (!v) {
+                v = (crypto.randomUUID && crypto.randomUUID()) || (Date.now().toString(36) + Math.random().toString(36).slice(2));
+                sessionStorage.setItem(k, v);
+            }
+            return v;
+        }
+
+
+        const session_id = getSessionId();
+
+        function track(eventName, props = {}) {
+            if (!FEATURES.telemetry) return;
+            const payload = {
+                event: eventName,
+                ts: new Date().toISOString(),
+                session_id: getSessionId(),
+                page: currentPage,
+                viewport_w: window.innerWidth,
+                viewport_h: window.innerHeight,
+                ...props
+            };
+            try {
+                if (CONFIG.TELEMETRY_URL) {
+                    const body = JSON.stringify(payload);
+                    if (navigator.sendBeacon) {
+                        navigator.sendBeacon(CONFIG.TELEMETRY_URL, new Blob([body], { type: 'application/json' }));
+                    } else {
+                        fetch(CONFIG.TELEMETRY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() }, body });
+                    }
+                } else {
+                    window.__telemetry = window.__telemetry || [];
+                    window.__telemetry.push(payload);
+                }
+            } catch {}
+        }
+
+        // ===== PAGE 2 VALIDATION (NO AUTO-ADVANCE) =====
+        function setupPage2Validation() {
+            const name = document.getElementById('company-name');
+            const address = document.getElementById('business-address');
+            const nextBtn = document.getElementById('page2-next-btn');
+            if (!name || !address || !nextBtn) return;
+
+            function validate() {
+                const ok = name.value.trim().length > 1 && address.value.trim().length > 5;
+                nextBtn.disabled = !ok;
+            }
+
+            name.addEventListener('input', validate);
+            address.addEventListener('input', validate);
+            validate();
+        }
+
+        // ===== PAGE 3 VALIDATION (NO AUTO-ADVANCE) =====
+        function setupPage3Validation() {
+            const reviewed = document.getElementById('agreement-reviewed');
+            const nextBtn = document.getElementById('page3-next-btn');
+            if (!reviewed || !nextBtn) return;
+
+            nextBtn.disabled = !reviewed.checked;
+            reviewed.addEventListener('change', () => {
+                nextBtn.disabled = !reviewed.checked;
+            });
+        }
+
+        function completePage3() {
+            const reviewed = document.getElementById('agreement-reviewed');
+            if (!reviewed?.checked) {
+                showMessage(3, 'Please confirm you have reviewed the agreement.', 'error');
+                return;
+            }
+            completedPages.add(3);
+            syncPage4Availability();
+            goToPage(4);
+        }
+
+// ===== PAGE NAVIGATION =====
+        function scrollPageIntoView(pageEl) {
+            // Disabled: programmatic scrolling causes unreliable behavior on mobile.
+            return;
+        }
+
+        function goToPage(pageNumber) {
+            const maxCompleted = completedPages.size ? Math.max(...completedPages) : 0;
+            const maxAllowedPage = maxCompleted + 1;
+            if (pageNumber > maxAllowedPage && pageNumber > currentPage + 1) {
+                return;
+            }
+            
+            clearAllMessages();
+            currentPage = pageNumber;
+            track('step_view', { step: pageNumber });
+            
+            
+            if (pageNumber === 4) syncPage4Availability();
+document.querySelectorAll('.page').forEach((page, index) => {
+                const pageNum = index + 1;
+                page.classList.remove('active', 'completed');
+                
+                const editBtn = page.querySelector('.edit-section-btn');
+                if (editBtn) editBtn.style.display = 'none';
+                
+                const buttons = page.querySelectorAll('button');
+                buttons.forEach(btn => {
+                    if (pageNum === pageNumber) {
+                        btn.disabled = false;
+                    } else if (pageNum > pageNumber) {
+                        // Allow Page 4 if agreement is reviewed
+                        if (pageNum === 4 && document.getElementById('agreement-reviewed')?.checked) {
+                            btn.disabled = false;
+                        } else {
+                            btn.disabled = true;
+                        }
+                    
+
+                    } else {
+                        btn.disabled = false;
+                    }
+                });
+                
+                if (pageNum === pageNumber) {
+                    page.classList.add('active');
+                } else if (completedPages.has(pageNum)) {
+                    page.classList.add('completed');
+                    if (editBtn && pageNum > 1) {
+                        editBtn.style.display = 'inline-block';
+                    }
+                }
+            });
+
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 === pageNumber) {
+                    step.classList.add('active');
+                } else if (completedPages.has(index + 1)) {
+                    step.classList.add('completed');
+                }
+            });
+            // No programmatic scrolling
+            setTimeout(() => {
+                positionProgressDots();
+                updateProgressFillToActive();
+            }, 200);
+        }
+
+        // ===== EDIT SECTION =====
+        function editSection(pageNumber) {
+            if (submissionComplete) return;
+            if (pageNumber === 3) return;
+            
+            for (let i = pageNumber; i <= 4; i++) {
+                completedPages.delete(i);
+            }
+            
+            currentPage = pageNumber;
+            goToPage(pageNumber);
+        }
+
+        // ===== COMPLETE PAGE 2 =====
+        function completePage2() {
+            const companyName = document.getElementById('company-name').value.trim();
+            const businessAddress = document.getElementById('business-address').value.trim();
+            
+            if (!companyName || !businessAddress) {
+                showMessage(2, 'Please fill in all required fields.', 'error');
+                return;
+            }
+            
+            completedPages.add(2);
+            track('step_complete', { step: 2 });
+            goToPage(3);
+        }
+
+        // ===== SEND VERIFICATION CODE =====
+        async function sendCode() {
+            clearPageMessage(1);
+            
+            const email = document.getElementById('email').value.trim();
+            const sendButton = document.getElementById('send-code-btn');
+            
+            
+            const now = Date.now();
+            if (now - (window.__lastSendTs || 0) < window.__sendCooldownMs) {
+                const remaining = Math.ceil((window.__sendCooldownMs - (now - window.__lastSendTs)) / 1000);
+                showMessage(1, `Please wait ${remaining}s before resending a code.`, 'info');
+                return;
+            }
+if (!email) {
+                showMessage(1, 'Please enter your email address.', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage(1, 'Please enter a valid email address.', 'error');
+                return;
+            }
+
+            const domain = email.split('@')[1].toLowerCase();
+            if (CONFIG.GENERIC_DOMAINS.includes(domain)) {
+                showMessage(1, 'Please use your work email address. Generic email providers are not accepted.', 'error');
+                return;
+            }
+
+            track('otp_send_start');
+            sendButton.disabled = true;
+            const isResend = document.getElementById('code-section').style.display === 'block';
+            
+            track('otp_verify_start');
+            track('submit_start');
+            document.getElementById('loading').classList.add('show');
+            
+            try {
+                const response = await fetchWithTimeout(CONFIG.API_SEND_CODE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    body: JSON.stringify({ email: email })
+                });
+
+                let data = {};
+                try { data = await response.json(); } catch (e) { data = {}; }
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Failed to send code');
+                }
+
+                const message = isResend 
+                    ? 'New verification code sent! Check your email.' 
+                    : 'Verification code sent! Check your email.';
+                showMessage(1, message, 'success');
+                track('otp_send_success');
+                
+                // Mark that a code was sent and lock the send button (resend link still works)
+                window.__codeSent = true;
+                window.__lastSendTs = Date.now();
+                sendButton.disabled = true;
+                sendButton.textContent = 'Code Sent';
+
+                document.getElementById('code-section').style.display = 'block';
+                const otpEl = document.getElementById('otp');
+                if (otpEl) {
+                    otpEl.value = '';
+                    otpEl.focus();
+                }
+                const nextBtn = document.getElementById('next-btn');
+                if (nextBtn) nextBtn.disabled = true;
+
+            } catch (error) {
+                console.error('Send code error:', error);
+                track('otp_send_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
+                showMessage(1, (error && error.name === 'AbortError') ? 'Request timed out. Please try again.' : (error.message || 'Failed to send verification code. Please try again.'), 'error');
+                sendButton.disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        // ===== VERIFY CODE =====
+        async function verifyCode() {
+            clearPageMessage(1);
+
+            const email = document.getElementById('email').value.trim();
+            const sendButton = document.getElementById('send-code-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const otpEl = document.getElementById('otp');
+            const code = (otpEl?.value || '').replace(/\D/g, '').slice(0, 6);
+
+            // Require that a code was sent first
+            if (!window.__codeSent) {
+                showCodeMessage('Please send a verification code first.');
+                return;
+            }
+
+            if (code.length !== 6) {
+                showCodeMessage('Please enter the complete 6-digit verification code.');
+                return;
+            }
+
+            if (nextBtn) nextBtn.disabled = true;
+            document.getElementById('loading').classList.add('show');
+
+            try {
+                const response = await fetchWithTimeout(CONFIG.API_VERIFY_CODE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    body: JSON.stringify({ email, code })
+                }, 15000);
+
+                if (!response.ok) {
+                    let msg = 'Invalid or expired code. Please try again.';
+                    try {
+                        let data = {};
+                try { data = await response.json(); } catch (e) { data = {}; }
+                        msg = data?.message || data?.error || msg;
+                    } catch {}
+                    throw new Error(msg);
+                }
+
+                verifiedEmail = email;
+                completedPages.add(1);
+
+                // Keep send disabled after successful verify
+                if (sendButton) sendButton.disabled = true;
+
+                track('otp_verify_success');
+                track('step_complete', { step: 1 });
+                goToPage(2);
+
+            } catch (error) {
+                console.error('Verify code error:', error);
+                track('otp_verify_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
+                showCodeMessage(error?.message || 'Invalid or expired code. Please try again.');
+                if (nextBtn) nextBtn.disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        // ===== TOGGLE AGREEMENT =====
+        function toggleAgreement() {
+            const content = document.getElementById('agreement-content');
+            const button = content.nextElementSibling;
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                button.textContent = 'Hide Agreement';
+            } else {
+                content.classList.add('collapsed');
+                button.textContent = 'Show Agreement';
+            }
+        }
+
+        // ===== AGREEMENT REVIEW CHECKBOX =====
+        function setupAgreementReview() {
+            const reviewCheckbox = document.getElementById('agreement-reviewed');
+            if (!reviewCheckbox) return;
+
+            reviewCheckbox.addEventListener('change', function () {
+                syncPage4Availability();
+                const next3 = document.getElementById('page3-next-btn');
+                if (next3) next3.disabled = !this.checked;
+            });
+        }
+
+
+
+
+
+        // ===== SCROLL TO AGREEMENT =====
+        function scrollToAgreement(event) {
+            event.preventDefault();
+
+            currentPage = 3;
+            goToPage(3);
+
+            // Restore Page 4 availability based on checkbox state
+            syncPage4Availability();
+
+            const agreementContent = document.getElementById('agreement-content');
+            if (agreementContent?.classList.contains('collapsed')) {
+                agreementContent.classList.remove('collapsed');
+                document.querySelector('#page-3 .toggle-agreement').textContent = 'Hide Agreement';
+            }
+        }
+
+
+
+
+        // ===== SUBMIT AGREEMENT =====
+        async function submitAgreement() {
+            clearPageMessage(4);
+            
+            if (!validateFinalForm()) {
+                return;
+            }
+
+            document.getElementById('loading').classList.add('show');
+
+            const formData = {
+                agreementId: agreementId,
+                securityToken: securityToken,
+                sessionToken: sessionToken,
+                agreementType: agreementType,
+                email: verifiedEmail,
+                companyName: document.getElementById('company-name').value,
+                businessAddress: document.getElementById('business-address').value,
+                signatoryName: document.getElementById('signatory-name').value,
+                signatoryTitle: document.getElementById('signatory-title').value,
+                phoneNumber: document.getElementById('phone-number').value,
+                digitalSignature: document.getElementById('digital-signature').value,
+                termsAgreement: document.getElementById('terms-agreement').checked,
+                submissionTimestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetchWithTimeout(CONFIG.API_SUBMIT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    body: JSON.stringify(formData)
+                });
+
+                let data = {};
+                try { data = await response.json(); } catch (e) { data = {}; }
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Submission failed');
+                }
+
+                // Extract the generated agreement ID from the flow response
+                if (data.agreementId) {
+                    agreementId = data.agreementId;
+                }
+
+                completedPages.add(4);
+                track('submit_success');
+                track('step_complete', { step: 4 });
+                showSuccessPage();
+
+            } catch (error) {
+                console.error('Submit error:', error);
+                track('submit_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
+                showMessage(4, error.message || 'Failed to submit agreement. Please try again or contact support.', 'error');
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        // ===== VALIDATE FINAL FORM =====
+        function validateFinalForm() {
+            const signatoryName = document.getElementById('signatory-name').value.trim();
+            const digitalSignature = document.getElementById('digital-signature').value.trim();
+            const termsChecked = document.getElementById('terms-agreement').checked;
+
+            if (!signatoryName || !document.getElementById('signatory-title').value.trim() || 
+                !document.getElementById('phone-number').value.trim() || !digitalSignature) {
+                showMessage(4, 'Please fill in all required fields.', 'error');
+                return false;
+            }
+
+            if (signatoryName.toLowerCase() !== digitalSignature.toLowerCase()) {
+                showMessage(4, 'Digital signature must match the signatory name exactly.', 'error');
+                return false;
+            }
+
+            if (!termsChecked) {
+                showMessage(4, 'You must agree to the terms and conditions.', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        // ===== SHOW SUCCESS PAGE =====
+        function showSuccessPage() {
+            submissionComplete = true;
+            document.body.classList.add('submission-complete');
+            clearAllMessages();
+            
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+                page.classList.add('completed');
+            });
+            
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 4) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.add('completed');
+                }
+            });
+            
+            document.querySelectorAll('.edit-section-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.4';
+            });
+
+
+            document.getElementById('success-agreement-id').textContent = agreementId || 'Pending';
+            document.getElementById('success-email').textContent = verifiedEmail || document.getElementById('email').value.trim();
+            
+            const successPage = document.getElementById('success-page');
+            successPage.classList.add('show');
+            const pw = document.getElementById('pages-wrapper');
+            if (pw) pw.classList.add('hidden');
+            
+            setTimeout(() => {
+                positionProgressDots();
+                updateProgressFillToActive();
+            }, 100);
+        }
+
+        // ===== LOAD AGREEMENT CONTENT =====
+        function loadAgreementContent() {
+            let content = '';
+            
+            switch(agreementType.toLowerCase()) {
+                case 'nda':
+                    content = getNDAContent();
+                    break;
+                case 'companyhub':
+                    content = getCompanyHubContent();
+                    break;
+                case 'employeehub':
+                    content = getEmployeeHubContent();
+                    break;
+                default:
+                    content = getNDAContent();
+            }
+
+            document.getElementById('agreement-content').innerHTML = content;
+        }
+
+        // ===== AGREEMENT CONTENT =====
+        function getNDAContent() {
+            return `
+                <h4>MUTUAL NON-DISCLOSURE AGREEMENT</h4>
+                <p><strong>Agreement ID:</strong> ${agreementId}</p>
+                
+                <p>This Non-Disclosure Agreement (the "Agreement") is by and between T-Mobile USA, Inc. ("T-Mobile") and the person or entity identified in the digital Submission to which these Non-Disclosure Terms and Conditions are linked (such person or entity, "NDA Party").</p>
+
+                <h4>1. Purpose</h4>
+                <p>The parties desire to exchange information on a confidential basis related to an actual or potential business relationship or activities (the "Purpose"). "Confidential Information" means all non-public information or materials, including information and materials disclosed prior to or after the date of this Agreement, that are marked as confidential, orally described as confidential, or should reasonably be understood to be confidential. However, Confidential Information does not include anything that (i) was previously known to the receiving party without any confidentiality obligation, (ii) is or becomes publicly known through no wrongful act of the receiving party, (iii) was rightfully received from a third party without any confidentiality obligation to that third party, or (iv) was independently developed by the receiving party without using any Confidential Information.</p>
+
+                <h4>2. Nondisclosure and Limited Use Obligations</h4>
+                <p>Each party will protect Confidential Information disclosed by the other party by (i) not disclosing it to third parties, (ii) preserving its confidentiality with the same level of care it applies to its own similar types of Confidential Information, and always by taking reasonable steps to preserve confidentiality, and (iii) using it only for the Purpose. A party will disclose the other party's Confidential Information only to its employees, affiliates and consultants who need to know such information. A party is responsible for any disclosure or misuse of Confidential Information by its employees, affiliates or consultants.</p>
+
+                <h4>3. Legally-Required Disclosures</h4>
+                <p>A receiving party may, without breaching this Agreement, disclose Confidential Information disclosed by the other party to the extent required to comply with a court order or applicable law or regulation. If a receiving party becomes subject to such a requirement, it must notify the disclosing party as soon as possible and, in any case, before it makes the required disclosure (if such notice is allowed) and it must cooperate with the disclosing party (if requested, and at the disclosing party's expense) to seek a protective order or similar protection for its Confidential Information. The receiving party will disclose only such information as is legally required and will use commercially reasonable efforts to obtain confidential treatment for any Confidential Information that is so disclosed.</p>
+
+                <h4>4. Injunctive Relief</h4>
+                <p>Each party acknowledges that money damages may not adequately protect the disclosing party against actual or threatened breach of this Agreement and that such breach would result in irreparable harm to the disclosing party. Because of this, a disclosing party may pursue injunctive relief to protect its Confidential Information in any court of competent jurisdiction, without having to post bond or guarantee. The party who has breached or threatened to breach this Agreement will not raise the defense of an adequate remedy at law. This provision does not alter any other remedies available to either party.</p>
+
+                <h4>5. Length of Obligations</h4>
+                <p>This Agreement takes effect when both T-Mobile and NDA Party have signed and will continue until either party elects to terminate with thirty (30) days prior written notice to the other party. In the event that a definitive agreement is entered into by the parties, and such definitive agreement includes provisions that conflict with provisions contained herein, then the provisions of the definitive agreement control with regard to the subject matter contained therein. This Agreement applies to any Confidential Information disclosed while it is in effect, and it will apply to all such Confidential Information for a period of five (5) years from its disclosure, regardless of any termination of this Agreement, except this Agreement will apply indefinitely to trade secret information and personal or customer information.</p>
+
+                <h4>6. Other Terms</h4>
+                <p>Each party will comply with all applicable laws and regulations, including but not limited to, data privacy, sanctioned persons and export, in the disclosure and use of Confidential Information. The disclosing party does not grant, under this Agreement, any rights under its patents, copyrights, trademarks or other proprietary rights. The disclosing party does not make any representation or warranty (whether express, implied or statutory) under this Agreement regarding any Confidential Information it discloses. The NDA Party shall not access T-Mobile's wireless or wireline network, systems that support U.S. Lawful Process or systems that store customer information. This Agreement does not create any formal business association between the parties, nor any obligation to buy, sell or otherwise transact in any products or services. If a party transfers this Agreement, including as part of a change of control, it will not disclose Confidential Information disclosed by the other party to its transferee unless it has received the disclosing party's express written approval. The laws of the State of Washington, USA (without their conflict of laws principles) govern this Agreement. The parties agree to submit to the jurisdiction of any state court sitting in King County, Washington or any federal court seated in Seattle, Washington. No failure or delay in enforcing any right will be deemed a waiver. This Agreement may be changed only in a writing signed by both parties. If any term of this Agreement is deemed illegal or otherwise unenforceable, that term will be severed and the rest of this Agreement will remain in full force and effect. With the exception of any separate agreement that references this Agreement, this Agreement is the entire agreement between the parties on disclosure and use of Confidential Information, and it supersedes any other negotiations, communications or agreements on those topics.</p>
+
+                <h4>SIGNATURES</h4>
+                <p>IN WITNESS HEREOF, the Parties have entered into this Agreement as of the date that opt-in to the terms and conditions via the T-Mobile Innovation intake process.</p>
+                
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 09.10.24</p>
+                
+                <p style="margin-top: 30px;"><strong>By completing and submitting this form, the authorized representative of NDA Party agrees to be bound by all terms and conditions set forth in this Agreement.</strong></p>
+            `;
+        }
+
+        function getCompanyHubContent() {
+            return `
+                <h4>INNOVATION HUB ACCESS AND PARTICIPATION AGREEMENT</h4>
+                
+                <p>This Innovation Hub Access and Participation Agreement (this "Agreement") is entered into between <strong>T-Mobile USA, Inc.</strong>, a Delaware corporation ("T-Mobile"), having its principal place of business at 12920 SE 38th Street, Bellevue, WA, 98006, U.S.A., and the Participant company identified below.</p>
+                
+                <p><strong>Agreement ID:</strong> ${agreementId}</p>
+                <p><strong>Effective Date:</strong> Upon execution by all parties</p>
+
+                <h4>1. OVERVIEW</h4>
+                <p>T-Mobile operates a technology innovation center consisting of a lab facility ("Innovation Hub"). Participant acknowledges that its use of the Innovation Hub is subject to the terms and conditions of this Agreement, and that use of the Innovation Hub is limited to the date(s) and time(s) determined by T-Mobile in its sole discretion. Before entry into the Innovation Hub, each Participant's employee and representative who will enter the Innovation Hub must sign and return to T-Mobile an Innovation Hub Access and Participation Acknowledgement and adhere to its terms and conditions while in the Innovation Hub.</p>
+
+                <h4>2. APPLICABILITY OF EXISTING T-MOBILE AGREEMENT TERMS</h4>
+                <p>If T-Mobile and Participant have an existing agreement for the provision of services or products, and there is a conflict between the terms of that existing agreement, or any order or statement of work under that existing agreement, and the terms of this Agreement, this Agreement will control for the subject matter contained herein, unless otherwise expressly stated. Where there is no conflict between the terms of an existing agreement with T-Mobile and this Agreement, this Agreement has no force or bearing on the terms of the existing agreement, and vice versa.</p>
+
+                <h4>3. TERM OF THE AGREEMENT; TERMINATION</h4>
+                <p>This Agreement will commence on the Effective Date and will continue for a term of two years ("Term"), unless terminated earlier by T-Mobile in accordance with this Section. T-Mobile may terminate this Agreement at any time, with or without cause, effective immediately upon written notice to Participant.</p>
+
+                <h4>4. GRANT OF RIGHT TO USE</h4>
+                <p>Participant's right to use any portion of the Innovation Hub at any time is granted in writing by T-Mobile pursuant to this Agreement. The specific Right to Use granted to Participant by T-Mobile will detail (a) which specific portions of the Innovation Hub are to be accessible by Participant; and (b) the specific length of time for which the Right to Use is granted. Participant may request an extension of the Term. T-Mobile reserves the right to decline any Participant's request to extend the period of time of the Right to Use.</p>
+
+                <h4>5. RESTRICTIONS ON USE; NON-EXCLUSIVE; LIMITED SPACE</h4>
+                <p>Participant understands, acknowledges, and agrees that:</p>
+                <ol type="a">
+                    <li>T-Mobile reserves the right to issue credentials, including but not limited to access cards, in order to control access to or control activities in the Innovation Hub. Under no circumstances will Participant permit its personnel to share or loan the credentials provided by T-Mobile. T-Mobile has the right at any time and for any reason to cancel or revoke credentials previously issued to Participant personnel.</li>
+                    <li>T-Mobile has the sole right to, at any time and for any length of time: (i) reserve exclusive or other use of the Innovation Hub or any part thereof; (ii) limit Participants use of the Innovation Hub to specific areas and assets; (iii) deny access and use of the Innovation Hub to any person or organization at any time; or (iv) close the Innovation Hub or any part thereof.</li>
+                    <li>T-Mobile reserves the right to operate a "reservation system" in order to schedule and organize access to and control activities in the Innovation Hub.</li>
+                    <li>Participant will not have exclusive or private use of the Innovation Hub and there may be third parties in the Innovation Hub during Participant's scheduled time.</li>
+                    <li>Participant is limited to, and shall only use, the spaces and assets in the Innovation Hub that are allocated to Participant by T-Mobile, and only at the times allocated to Participant by T-Mobile.</li>
+                    <li>If Participant is collaborating with a third party and wishes to have the third party enter into the Innovation Hub, Participant must communicate to the third party that such third party must contact T-Mobile to obtain access. Participant is responsible for any unauthorized access to the Innovation Hub.</li>
+                </ol>
+
+                <h4>6. NO T-MOBILE WARRANTIES</h4>
+                <ol type="a">
+                    <li>Participant's access to the Innovation Hub, use of all equipment and tools, and all feedback provided by T-Mobile employees is provided <strong>"AS IS"</strong>, and T-Mobile makes no warranties, express or implied, and hereby disclaims all implied warranties, including any warranties of merchantability, non-infringement, and fitness for a particular purpose.</li>
+                    <li>T-Mobile makes no representations or warranties of any kind regarding Participant's privacy while in the Innovation Hub or the confidentiality of the project Participant brings into the Innovation Hub. Participant acknowledges and agrees that Participant has no expectation of privacy or confidentiality regarding Participant's project or activities during use of the Innovation Hub.</li>
+                </ol>
+
+                <p style="margin-top: 30px;"><strong>By completing and submitting this form, the authorized representative of Participant agrees to be bound by all terms and conditions set forth in this Agreement.</strong></p>
+                
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 01.06.26 | Agreement ID: ${agreementId}</p>
+            `;
+        }
+
+        function getEmployeeHubContent() {
+            return `
+                <h4>INNOVATION HUB ACCESS AND PARTICIPATION ACKNOWLEDGEMENT</h4>
+                
+                <p><strong>Agreement ID:</strong> ${agreementId}</p>
+                <p><strong>Effective Date:</strong> Upon acceptance</p>
+
+                <p>By signing this acknowledgement and by requesting access to this Innovation Hub, I acknowledge and agree that:</p>
+
+                <ol>
+                    <li><strong>Access Times:</strong> I will only enter the Innovation Hub on the date and at the time specified by T-Mobile.</li>
+                    <li><strong>No Unauthorized Guests:</strong> I will not bring anyone with me to the Innovation Hub who does not have express written approval to enter the Innovation Hub, and I will not use my badge to allow anyone who does not have T-Mobile's express written approval to enter the Innovation Hub.</li>
+                    <li><strong>Badge Required:</strong> I will not enter the Innovation Hub without using my badge.</li>
+                </ol>
+
+                <p style="margin-top: 30px;"><strong>By completing and submitting this form, I acknowledge understanding and acceptance of all terms and conditions set forth in this Acknowledgement.</strong></p>
+                
+                <p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 01.06.26 | Agreement ID: ${agreementId}</p>
+            `;
+        }
+
+        // ===== UTILITIES =====
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function setupPage2AutoAdvance() { return; }
+
+        function syncPage4Availability() {
+            const reviewed = document.getElementById('agreement-reviewed')?.checked;
+            const page4 = document.getElementById('page-4');
+            if (!page4) return;
+
+            const canEdit = !!reviewed || completedPages.has(3) || currentPage >= 4;
+
+            page4.querySelectorAll('button, input, textarea, select').forEach(el => {
+                el.disabled = !canEdit;
+            });
+        }
+    </script>
+</body>
+</html>
