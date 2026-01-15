@@ -992,7 +992,10 @@ opacity: 1;
 
         // Global state
         let verifiedEmail = '';
-        let sessionToken = '';
+        
+        let otpVerified = false;
+        window.otpVerified = false;
+let sessionToken = '';
         let agreementId = null;
         let securityToken = null;
         let agreementType = 'NDA';
@@ -1001,9 +1004,17 @@ opacity: 1;
         let submissionComplete = false;
 
 
-        // Initialize on load
+        
+        let otpVerified = false;
+// Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
-            // Wrap all .page sections so we can disable/dim them without affecting the success panel
+            
+            // Reset verification state
+            verifiedEmail = '';
+            window.verifiedEmail = '';
+            otpVerified = false;
+            window.otpVerified = false;
+// Wrap all .page sections so we can disable/dim them without affecting the success panel
             (function wrapPages() {
                 const pages = Array.from(document.querySelectorAll('.page'));
                 if (!pages.length) return;
@@ -1044,10 +1055,11 @@ opacity: 1;
                 positionProgressDots();
                 updateProgressFillToActive();
             // Initial gating
+            otpVerified = false;
+            window.otpVerified = false;
             syncPage4Availability();
             syncSubmitAvailability();
-
-            });
+});
             
             let scrollTimeout;
             window.addEventListener('scroll', () => {
@@ -1190,8 +1202,7 @@ opacity: 1;
 
             if (emailParam) {
                 document.getElementById('email').value = emailParam;
-                verifiedEmail = emailParam;
-            }
+}
         }
 
         // ===== SECURITY TOKEN VALIDATION =====
@@ -1554,7 +1565,12 @@ if (!email) {
                 }
 
                 verifiedEmail = email;
-                completedPages.add(1);
+                
+                window.verifiedEmail = verifiedEmail;
+                otpVerified = true;
+                window.otpVerified = true;
+                syncSubmitAvailability();
+completedPages.add(1);
 
                 // Keep send disabled after successful verify
                 if (sendButton) sendButton.disabled = true;
@@ -1627,7 +1643,12 @@ if (!email) {
         async function submitAgreement() {
             clearPageMessage(4);
             
-            if (!validateFinalForm()) {
+            
+            if (!(otpVerified && verifiedEmail && String(verifiedEmail).trim())) {
+                showMessage(4, 'Please verify your email before submitting.', 'error');
+                return;
+            }
+if (!validateFinalForm()) {
                 return;
             }
 
@@ -1684,7 +1705,12 @@ if (!email) {
 
         // ===== VALIDATE FINAL FORM =====
         function validateFinalForm() {
-            const signatoryName = document.getElementById('signatory-name').value.trim();
+            
+            if (!(otpVerified && verifiedEmail && String(verifiedEmail).trim())) {
+                showMessage(4, 'Please verify your email before submitting.', 'error');
+                return false;
+            }
+const signatoryName = document.getElementById('signatory-name').value.trim();
             const digitalSignature = document.getElementById('digital-signature').value.trim();
             const termsChecked = document.getElementById('terms-agreement').checked;
 
@@ -1895,11 +1921,12 @@ if (!email) {
             if (!btn) return;
 
             const hasVerifiedEmail = !!(window.verifiedEmail && String(window.verifiedEmail).trim());
-            const reviewed = !!document.getElementById('agreement-reviewed')?.checked;
+            const isOtpVerified = !!(window.otpVerified || otpVerified);
+const reviewed = !!document.getElementById('agreement-reviewed')?.checked;
             const onStep4 = (currentPage === 4);
             const step3Done = completedPages.has(3);
 
-            btn.disabled = !(hasVerifiedEmail && onStep4 && step3Done && reviewed) || submissionComplete;
+            btn.disabled = !(hasVerifiedEmail && isOtpVerified && onStep4 && step3Done && reviewed) || submissionComplete;
         }
 
     </script>
