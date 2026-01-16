@@ -1943,11 +1943,21 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
 
             const hasVerifiedEmail = !!(window.verifiedEmail && String(window.verifiedEmail).trim());
             const isOtpVerified = !!(window.otpVerified || otpVerified);
-const reviewed = !!document.getElementById('agreement-reviewed')?.checked;
-                        const step3Done = completedPages.has(3);
 
-            btn.disabled = !(hasVerifiedEmail && isOtpVerified && step3Done && reviewed) || submissionComplete;
+            // Enablement is based on: verified email + OTP verified + required Step 4 fields + terms checkbox
+            const signatoryName = document.getElementById('signatory-name')?.value.trim() || '';
+            const signatoryTitle = document.getElementById('signatory-title')?.value.trim() || '';
+            const phoneNumber = document.getElementById('phone-number')?.value.trim() || '';
+            const digitalSignature = document.getElementById('digital-signature')?.value.trim() || '';
+            const termsChecked = !!document.getElementById('terms-agreement')?.checked;
+            const reviewedChecked = !!document.getElementById('agreement-reviewed')?.checked;
+
+            const fieldsFilled = !!(signatoryName && signatoryTitle && phoneNumber && digitalSignature);
+            const sigMatches = fieldsFilled ? (signatoryName.toLowerCase() === digitalSignature.toLowerCase()) : false;
+
+            btn.disabled = !(hasVerifiedEmail && isOtpVerified && fieldsFilled && sigMatches && termsChecked && reviewedChecked) || submissionComplete;
         }
+
 
     </script>
 </body>
