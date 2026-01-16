@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Mobile Innovation Agreement</title>
+    <title>Innovate with Us</title>
     <style>
         * {
             margin: 0;
@@ -798,12 +798,12 @@ opacity: 1;
 
         <!-- Page 1: Email Verification -->
         <div class="page active" id="page-1">
-            <h2 class="page-title">Step 1: Verify Your Email</h2>
+            <h2 class="page-title">Step 1: Verify Email Address</h2>
             
             <div class="message" id="page1-message"></div>
 
             <div class="form-group">
-                <label for="email">Work Email Address <span class="required">*</span></label>
+                <label for="email">Enter Work Email<span class="required">*</span></label>
                 <input type="email" id="email" placeholder="your.email@company.com" required>
                 <small>We'll send a verification code to this address</small>
             </div>
@@ -881,7 +881,7 @@ opacity: 1;
             <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
                 <input type="checkbox" id="agreement-reviewed" required onchange="syncPage4Availability();syncSubmitAvailability()">
                 <label for="agreement-reviewed">
-                    I have reviewed and understood the complete agreement terms above. <span class="required">*</span>
+                    I have reviewed and hereby accept the agreement terms. <span class="required">*</span>
                 </label>
 </div>
 
@@ -911,7 +911,7 @@ opacity: 1;
             <div class="form-group">
                 <label for="digital-signature">Digital Signature (Type Your Full Name) <span class="required">*</span></label>
                 <input type="text" id="digital-signature" required>
-                <small>By typing your name, you agree to sign this agreement electronically</small>
+                <small>Entering your name serves as your digital signature for agreement ID# </small>
             </div>
 
             <div class="checkbox-group">
@@ -921,7 +921,7 @@ opacity: 1;
                 </label>
             </div>
 
-            <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Complete & Sign Agreement</button>
+            <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Next</button>
         </div>
 
         <!-- Success Page -->
@@ -1798,35 +1798,8 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
         // ===== AGREEMENT CONTENT =====
         function getNDAContent() {
             return `
-                <h4>MUTUAL NON-DISCLOSURE AGREEMENT</h4>
-                <p><strong>Agreement ID:</strong> ${agreementId}</p>
-                
-                <p>This Non-Disclosure Agreement (the "Agreement") is by and between T-Mobile USA, Inc. ("T-Mobile") and the person or entity identified in the digital Submission to which these Non-Disclosure Terms and Conditions are linked (such person or entity, "NDA Party").</p>
+  <p style="text-align:center;white-space:pre-wrap;" class="sqsrte-large"><strong>Mutual Non-Disclosure Agreement</strong></p><p class="" style="white-space:pre-wrap;">This Non-Disclosure Agreement (the “<strong>Agreement</strong>”) is by and between T-Mobile USA, Inc. (“<strong>T-Mobile</strong>”) and the person or entity identified in the digital Submission to which these Non-Disclosure Terms and Conditions are linked (such person or entity, “<strong>NDA Party</strong>”).</p><p class="" style="white-space:pre-wrap;">1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Purpose.</strong> The parties desire to exchange information on a confidential basis related to an actual or potential business relationship or activities (the “<strong>Purpose</strong>”).&nbsp; “Confidential Information” means all non-public information or materials, including information and materials disclosed prior to or after the date of this Agreement, that are marked as confidential, orally described as confidential, or should reasonably be understood to be confidential.&nbsp; However, Confidential Information does not include anything that (i) was previously known to the receiving party without any confidentiality obligation, (ii) is or becomes publicly known through no wrongful act of the receiving party, (iii) was rightfully received from a third party without any confidentiality obligation to that third party, or (iv) was independently developed by the receiving party without using any Confidential Information.&nbsp; </p><p class="" style="white-space:pre-wrap;">2.&nbsp;&nbsp;&nbsp; <strong>Nondisclosure and Limited Use Obligations.</strong>&nbsp; Each party will protect Confidential Information disclosed by the other party by (i) not disclosing it to third parties, (ii) preserving its confidentiality with the same level of care it applies to its own similar types of Confidential Information, and always by taking reasonable steps to preserve confidentiality, and (iii) using it only for the Purpose.&nbsp; A party will disclose the other party’s Confidential Information only to its employees, affiliates and consultants who need to know such information.&nbsp; A party is responsible for any disclosure or misuse of Confidential Information by its employees, affiliates or consultants. </p><p class="" style="white-space:pre-wrap;">3.&nbsp;&nbsp;&nbsp; <strong>Legally-Required Disclosures</strong>.&nbsp; A receiving party may, without breaching this Agreement, disclose Confidential Information disclosed by the other party to the extent required to comply with a court order or applicable law or regulation.&nbsp; If a receiving party becomes subject to such a requirement, it must notify the disclosing party as soon as possible and, in any case, before it makes the required disclosure (if such notice is allowed) and it must cooperate with the disclosing party (if requested, and at the disclosing party’s expense) to seek a protective order or similar protection for its Confidential Information. The receiving party will disclose only such information as is legally required and will use commercially reasonable efforts to obtain confidential treatment for any Confidential Information that is so disclosed.</p><p class="" style="white-space:pre-wrap;">4.&nbsp;&nbsp;&nbsp; <strong>Injunctive Relief.</strong>&nbsp; Each party acknowledges that money damages may not adequately protect the disclosing party against actual or threatened breach of this Agreement and that such breach would result in irreparable harm to the disclosing party.&nbsp; Because of this, a disclosing party may pursue injunctive relief to protect its Confidential Information in any court of competent jurisdiction, without having to post bond or guarantee.&nbsp; The party who has breached or threatened to breach this Agreement will not raise the defense of an adequate remedy at law.&nbsp; This provision does not alter any other remedies available to either party.</p><p class="" style="white-space:pre-wrap;">5.&nbsp;&nbsp;&nbsp; <strong>Length of Obligations.</strong>&nbsp; This Agreement takes effect when both T-Mobile and NDA Party have signed and will continue until either party elects to terminate with thirty (30) days prior written notice to the other party.&nbsp; In the event that a definitive agreement is entered into by the parties, and such definitive agreement includes provisions that conflict with provisions contained herein, then the provisions of the definitive agreement control with regard to the subject matter contained therein. This Agreement applies to any Confidential Information disclosed while it is in effect, and it will apply to all such Confidential Information for a period of five (5) years from its disclosure, regardless of any termination of this Agreement, except this Agreement will apply indefinitely to trade secret information and personal or customer information.&nbsp; </p><p class="" style="white-space:pre-wrap;">6.&nbsp;&nbsp;&nbsp; <strong>Other Terms.</strong>&nbsp; Each party will comply with all applicable laws and regulations, including but not limited to, data privacy, sanctioned persons and export, in the disclosure and use of Confidential Information.&nbsp; The disclosing party does not grant, under this Agreement, any rights under its patents, copyrights, trademarks or other proprietary rights.&nbsp; The disclosing party does not make any representation or warranty (whether express, implied or statutory) under this Agreement regarding any Confidential Information it discloses.&nbsp; The NDA Party shall not access T-Mobile’s wireless or wireline network, systems that support U.S. Lawful Process or systems that store customer information This Agreement does not create any formal business association between the parties, nor any obligation to buy, sell or otherwise transact in any products or services.&nbsp; If a party transfers this Agreement, including as part of a change of control, it will not disclose Confidential Information disclosed by the other party to its transferee unless it has received the disclosing party’s express written approval.&nbsp; The laws of the State of Washington, USA (without their conflict of laws principles) govern this Agreement. &nbsp;The parties agree to submit to the jurisdiction of any state court sitting in King County, Washington or any federal court seated in Seattle, Washington.&nbsp; No failure or delay in enforcing any right will be deemed a waiver.&nbsp; This Agreement may be changed only in a writing signed by both parties.&nbsp; If any term of this Agreement is deemed illegal or otherwise unenforceable, that term will be severed and the rest of this Agreement will remain in full force and effect.&nbsp; With the exception of any separate agreement that references this Agreement, this Agreement is the entire agreement between the parties on disclosure and use of Confidential Information, and it supersedes any other negotiations, communications or agreements on those topics.&nbsp; </p><p class="" style="white-space:pre-wrap;"><strong>IN WITNESS HEREOF,</strong> the Parties have entered into this Agreement as of the date that opt-in to the terms and conditions via the T-Mobile Innovation intake process.</p>
 
-                <h4>1. Purpose</h4>
-                <p>The parties desire to exchange information on a confidential basis related to an actual or potential business relationship or activities (the "Purpose"). "Confidential Information" means all non-public information or materials, including information and materials disclosed prior to or after the date of this Agreement, that are marked as confidential, orally described as confidential, or should reasonably be understood to be confidential. However, Confidential Information does not include anything that (i) was previously known to the receiving party without any confidentiality obligation, (ii) is or becomes publicly known through no wrongful act of the receiving party, (iii) was rightfully received from a third party without any confidentiality obligation to that third party, or (iv) was independently developed by the receiving party without using any Confidential Information.</p>
-
-                <h4>2. Nondisclosure and Limited Use Obligations</h4>
-                <p>Each party will protect Confidential Information disclosed by the other party by (i) not disclosing it to third parties, (ii) preserving its confidentiality with the same level of care it applies to its own similar types of Confidential Information, and always by taking reasonable steps to preserve confidentiality, and (iii) using it only for the Purpose. A party will disclose the other party's Confidential Information only to its employees, affiliates and consultants who need to know such information. A party is responsible for any disclosure or misuse of Confidential Information by its employees, affiliates or consultants.</p>
-
-                <h4>3. Legally-Required Disclosures</h4>
-                <p>A receiving party may, without breaching this Agreement, disclose Confidential Information disclosed by the other party to the extent required to comply with a court order or applicable law or regulation. If a receiving party becomes subject to such a requirement, it must notify the disclosing party as soon as possible and, in any case, before it makes the required disclosure (if such notice is allowed) and it must cooperate with the disclosing party (if requested, and at the disclosing party's expense) to seek a protective order or similar protection for its Confidential Information. The receiving party will disclose only such information as is legally required and will use commercially reasonable efforts to obtain confidential treatment for any Confidential Information that is so disclosed.</p>
-
-                <h4>4. Injunctive Relief</h4>
-                <p>Each party acknowledges that money damages may not adequately protect the disclosing party against actual or threatened breach of this Agreement and that such breach would result in irreparable harm to the disclosing party. Because of this, a disclosing party may pursue injunctive relief to protect its Confidential Information in any court of competent jurisdiction, without having to post bond or guarantee. The party who has breached or threatened to breach this Agreement will not raise the defense of an adequate remedy at law. This provision does not alter any other remedies available to either party.</p>
-
-                <h4>5. Length of Obligations</h4>
-                <p>This Agreement takes effect when both T-Mobile and NDA Party have signed and will continue until either party elects to terminate with thirty (30) days prior written notice to the other party. In the event that a definitive agreement is entered into by the parties, and such definitive agreement includes provisions that conflict with provisions contained herein, then the provisions of the definitive agreement control with regard to the subject matter contained therein. This Agreement applies to any Confidential Information disclosed while it is in effect, and it will apply to all such Confidential Information for a period of five (5) years from its disclosure, regardless of any termination of this Agreement, except this Agreement will apply indefinitely to trade secret information and personal or customer information.</p>
-
-                <h4>6. Other Terms</h4>
-                <p>Each party will comply with all applicable laws and regulations, including but not limited to, data privacy, sanctioned persons and export, in the disclosure and use of Confidential Information. The disclosing party does not grant, under this Agreement, any rights under its patents, copyrights, trademarks or other proprietary rights. The disclosing party does not make any representation or warranty (whether express, implied or statutory) under this Agreement regarding any Confidential Information it discloses. The NDA Party shall not access T-Mobile's wireless or wireline network, systems that support U.S. Lawful Process or systems that store customer information. This Agreement does not create any formal business association between the parties, nor any obligation to buy, sell or otherwise transact in any products or services. If a party transfers this Agreement, including as part of a change of control, it will not disclose Confidential Information disclosed by the other party to its transferee unless it has received the disclosing party's express written approval. The laws of the State of Washington, USA (without their conflict of laws principles) govern this Agreement. The parties agree to submit to the jurisdiction of any state court sitting in King County, Washington or any federal court seated in Seattle, Washington. No failure or delay in enforcing any right will be deemed a waiver. This Agreement may be changed only in a writing signed by both parties. If any term of this Agreement is deemed illegal or otherwise unenforceable, that term will be severed and the rest of this Agreement will remain in full force and effect. With the exception of any separate agreement that references this Agreement, this Agreement is the entire agreement between the parties on disclosure and use of Confidential Information, and it supersedes any other negotiations, communications or agreements on those topics.</p>
-
-                <h4>SIGNATURES</h4>
-                <p>IN WITNESS HEREOF, the Parties have entered into this Agreement as of the date that opt-in to the terms and conditions via the T-Mobile Innovation intake process.</p>
-                
-                <p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 09.10.24</p>
-                
-                <p style="margin-top: 30px;"><strong>By completing and submitting this form, the authorized representative of NDA Party agrees to be bound by all terms and conditions set forth in this Agreement.</strong></p>
             `;
         }
 
