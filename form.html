@@ -1002,6 +1002,21 @@ opacity: 1;
             } finally {
                 clearTimeout(id);
             }
+
+
+        function normalizeErrorMessage(x, fallback) {
+            if (x == null) return fallback || 'Something went wrong.';
+            if (typeof x === 'string') return x;
+            if (x instanceof Error) return x.message || fallback || 'Something went wrong.';
+            if (typeof x === 'object') {
+                // Common shapes: {message: '...'}, {error: '...'}, {Message: '...'}
+                const m = x.message || x.error || x.Message || x.Error;
+                if (typeof m === 'string') return m;
+                try { return JSON.stringify(x); } catch (e) { return fallback || 'Something went wrong.'; }
+            }
+            return String(x);
+        }
+
         }
 
 
@@ -1454,9 +1469,6 @@ document.querySelectorAll('.page').forEach((page, index) => {
             track('step_complete', { step: 2 });
             goToPage(3);
         }
-
-        // ===== SEND VERIFICATION CODE =====
-        async 
         // ===== SEND VERIFICATION CODE =====
         async function sendCode() {
             clearPageMessage(1);
@@ -1490,14 +1502,14 @@ document.querySelectorAll('.page').forEach((page, index) => {
                 const response = await fetchWithTimeout(CONFIG.API_SEND_CODE, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
-                    body: JSON.stringify({ email })
+                    body: JSON.stringify({ email, Email: email, emailAddress: email, EmailAddress: email })
                 }, 15000);
 
                 let data = {};
                 try { data = await response.json(); } catch (e) { data = {}; }
 
                 if (!response.ok) {
-                    const msg = data?.message || data?.error || 'Failed to send verification code. Please try again.';
+                    const msg = normalizeErrorMessage(data?.message || data?.error, 'Failed to send verification code. Please try again.');
                     throw new Error(msg);
                 }
 
@@ -1526,6 +1538,7 @@ document.querySelectorAll('.page').forEach((page, index) => {
 
 async function verifyCode() {
             clearPageMessage(1);
+            clearCodeMessage();
 
             const email = document.getElementById('email').value.trim();
             const sendButton = document.getElementById('send-code-btn');
@@ -1551,7 +1564,7 @@ async function verifyCode() {
                 const response = await fetchWithTimeout(CONFIG.API_VERIFY_CODE, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
-                    body: JSON.stringify({ email, code })
+                    body: JSON.stringify({ email, code, Email: email, Code: code, verificationCode: code, VerificationCode: code })
                 }, 15000);
 
                 if (!response.ok) {
@@ -1559,7 +1572,7 @@ async function verifyCode() {
                     try {
                         let data = {};
                 try { data = await response.json(); } catch (e) { data = {}; }
-                        msg = data?.message || data?.error || msg;
+                        msg = normalizeErrorMessage(data?.message || data?.error, msg);
                     } catch {}
                     throw new Error(msg);
                 }
