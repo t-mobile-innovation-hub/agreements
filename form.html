@@ -1592,19 +1592,7 @@ completedPages.add(1);
             }
         }
 
-        // ===== TOGGLE AGREEMENT =====
-        function toggleAgreement() {
-            const content = document.getElementById('agreement-content');
-            const button = content.nextElementSibling;
-            
-            if (content.classList.contains('collapsed')) {
-                content.classList.remove('collapsed');
-                button.textContent = 'Hide Agreement';
-            } else {
-                content.classList.add('collapsed');
-                button.textContent = 'Show Agreement';
-            }
-        }
+
 
         // ===== AGREEMENT REVIEW CHECKBOX =====
         function setupAgreementReview() {
