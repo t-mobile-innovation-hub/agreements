@@ -883,9 +883,7 @@ opacity: 1;
                 <label for="agreement-reviewed">
                     I have reviewed and understood the complete agreement terms above. <span class="required">*</span>
                 </label>
-                        <button type="button" class="btn-primary" id="page3-next-btn" onclick="completePage3()" disabled>Next</button>
-
-        </div>
+</div>
 
         <!-- Page 4: Sign Agreement -->
         <div class="page" id="page-4">
@@ -1089,6 +1087,22 @@ let sessionToken = '';
             window.otpVerified = false;
             syncPage4Availability();
             syncSubmitAvailability();
+
+
+            // Page 3 acknowledgment acts as the Step 3 completion gate
+            const reviewedCb = document.getElementById('agreement-reviewed');
+            if (reviewedCb) {
+                reviewedCb.addEventListener('change', () => {
+                    if (reviewedCb.checked) {
+                        completedPages.add(3);
+                        updateProgressIndicator(3, true);
+                    } else {
+                        completedPages.delete(3);
+                        updateProgressIndicator(3, false);
+                    }
+                    syncSubmitAvailability();
+                });
+            }
 });
             
             let scrollTimeout;
@@ -1361,14 +1375,9 @@ let sessionToken = '';
         }
 
         function completePage3() {
-            const reviewed = document.getElementById('agreement-reviewed');
-            if (!reviewed?.checked) {
-                showMessage(3, 'Please confirm you have reviewed the agreement.', 'error');
-                return;
-            }
-            completedPages.add(3);
-            syncPage4Availability();
-            goToPage(4);
+            // Deprecated: Step 3 completion is driven by the "I have reviewed" checkbox.
+            // Kept as a no-op for backwards compatibility with any lingering markup.
+            syncSubmitAvailability();
         }
 
 // ===== PAGE NAVIGATION =====
@@ -1935,10 +1944,9 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
             const hasVerifiedEmail = !!(window.verifiedEmail && String(window.verifiedEmail).trim());
             const isOtpVerified = !!(window.otpVerified || otpVerified);
 const reviewed = !!document.getElementById('agreement-reviewed')?.checked;
-            const onStep4 = (currentPage === 4);
-            const step3Done = completedPages.has(3);
+                        const step3Done = completedPages.has(3);
 
-            btn.disabled = !(hasVerifiedEmail && isOtpVerified && onStep4 && step3Done && reviewed) || submissionComplete;
+            btn.disabled = !(hasVerifiedEmail && isOtpVerified && step3Done && reviewed) || submissionComplete;
         }
 
     </script>
