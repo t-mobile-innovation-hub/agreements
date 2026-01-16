@@ -893,14 +893,7 @@ opacity: 1;
             </h2>
             
             <div class="message" id="page4-message"></div>
-
-            <p style="text-align: center; margin-bottom: 30px;">
-                <a href="#page-3" class="btn-secondary" style="text-decoration: none; display: inline-block; padding: 10px 20px;" onclick="scrollToAgreement(event)">
-                    ← Review Agreement
-                </a>
-            </p>
-
-            <div class="form-group">
+<div class="form-group">
                 <label for="signatory-name">Authorized Signatory Name <span class="required">*</span></label>
                 <input type="text" id="signatory-name" required>
             </div>
@@ -1643,19 +1636,9 @@ completedPages.add(1);
 
         // ===== SCROLL TO AGREEMENT =====
         function scrollToAgreement(event) {
-            event.preventDefault();
-
-            currentPage = 3;
-            goToPage(3);
-
-            // Restore Page 4 availability based on checkbox state
-            syncPage4Availability();
-
-            const agreementContent = document.getElementById('agreement-content');
-            if (agreementContent?.classList.contains('collapsed')) {
-                agreementContent.classList.remove('collapsed');
-                document.querySelector('#page-3 .toggle-agreement').textContent = 'Hide Agreement';
-            }
+            if (event) event.preventDefault();
+            // Deprecated: agreement section is always visible; no action required.
+        }
         }
 
 
