@@ -897,6 +897,12 @@
                 }
                 pages.forEach(p => wrapper.appendChild(p));
 
+                const existingNotice = document.getElementById('existing-agreement-notice');
+                const page2 = document.getElementById('page-2');
+                if (existingNotice && page2) {
+                    wrapper.insertBefore(existingNotice, page2);
+                }
+
                 const success = document.getElementById('success-page');
                 if (success && success.parentNode === wrapper) {
                     wrapper.parentNode.insertBefore(success, wrapper.nextSibling);
