@@ -28,7 +28,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* Add margin on desktop for progress sidebar */
         @media (min-width: 769px) {
             .container {
                 margin-left: 140px;
@@ -235,7 +234,6 @@
             pointer-events: auto;
         }
 
-
         .page.completed .page-title {
             color: #4caf50;
         }
@@ -255,7 +253,6 @@
             opacity: 1;
             background: white;
         }
-
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -287,7 +284,6 @@
 
         input[type="email"],
         input[type="text"],
-        input[type="tel"],
         textarea,
         select {
             width: 100%;
@@ -370,14 +366,12 @@
             pointer-events: none;
         }
 
-        /* Exception: Page 4 is allowed when gated by checkbox */
         #page-4 .btn-primary:not(:disabled) {
             background: #e20074;
             cursor: pointer;
             opacity: 1;
             pointer-events: auto;
         }
-
 
         .btn-secondary {
             background: white;
@@ -396,16 +390,6 @@
         .btn-secondary:hover:not(:disabled) {
             background: #e20074;
             color: white;
-        }
-
-        .btn-secondary:disabled {
-            background: #f5f5f5 !important;
-            color: #999 !important;
-            border-color: #ddd !important;
-            cursor: not-allowed !important;
-            transform: none !important;
-            opacity: 0.5 !important;
-            pointer-events: none;
         }
 
         .resend-link {
@@ -427,109 +411,39 @@
             text-decoration: none;
         }
 
-        .code-boxes {
-            position: relative;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 25px 0;
-            max-width: 360px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* iOS OTP autofill overlay target */
-
-        .code-box {
-            width: 48px;
-            height: 58px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            transition: all 0.2s;
-            outline: none;
-        
-            appearance: none;
-            -webkit-appearance: none;
-opacity: 1;
-            caret-color: #e20074;
-
-            background-color: #fff;
-            color: #000 !important;
-            -webkit-text-fill-color: #000 !important;
-            text-shadow: 0 0 0 #000; /* forces iOS to paint text (incl. inside iframes) */
-            padding: 0;
-            line-height: normal;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-            transform: translateZ(0);
-        }
-
-        .code-box:focus {
-            border-color: #e20074;
-            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
-        }
-
-        .code-box.filled {
-            border-color: #4caf50;
-            background: #f1f8f4;
-        }
-
-        /* Single OTP field styled like 6 boxes (more reliable than 6 separate inputs on iOS/iframes) */
-        .otp-input{
+        .otp-input {
             width: 100%;
             max-width: 420px;
             height: 58px;
             box-sizing: border-box;
-
             font-size: 24px;
             font-weight: 600;
             text-align: center;
             letter-spacing: 18px;
             padding: 0 10px;
             white-space: nowrap;
-
             border: 2px solid #4caf50;
             border-radius: 8px;
             outline: none;
             background-color: #f1f8f4;
-
             color: #000;
             -webkit-text-fill-color: #000;
             caret-color: #e20074;
-
             font-variant-numeric: tabular-nums;
         }
 
-        .otp-input:focus{
+        .otp-input:focus {
             border-color: #e20074;
             box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
         }
 
-        @media (max-width: 768px){
-            .otp-input{
+        @media (max-width: 768px) {
+            .otp-input {
                 max-width: 340px;
                 height: 54px;
                 font-size: 22px;
                 letter-spacing: 14px;
                 padding: 0 10px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .code-boxes {
-                gap: 4px;
-                max-width: 300px;
-            }
-            
-            .code-box {
-                width: 42px;
-                height: 52px;
-                font-size: 16px;
             }
         }
 
@@ -556,10 +470,6 @@ opacity: 1;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-        }
-        
-        .page.completed .page-title {
-            color: #4caf50;
         }
 
         .loading-overlay {
@@ -593,11 +503,6 @@ opacity: 1;
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         small {
             display: block;
             color: #666;
@@ -623,13 +528,6 @@ opacity: 1;
             font-size: 16px;
         }
 
-        .agreement-content.collapsed {
-            max-height: 0;
-            padding: 0;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
         .agreement-content h4 {
             color: #000000;
             margin: 25px 0 15px 0;
@@ -650,10 +548,6 @@ opacity: 1;
         .agreement-content li {
             margin: 10px 0;
             color: #333;
-        }
-
-        .toggle-agreement {
-            margin-top: 15px;
         }
 
         .checkbox-group {
@@ -685,30 +579,70 @@ opacity: 1;
             display: block;
         }
 
-        /* Submission lock: dim/disable only the form pages wrapper, not the success panel */
         body.submission-complete #pages-wrapper {
             opacity: 0.5;
             pointer-events: none;
         }
+
         body.submission-complete #success-page,
         body.submission-complete #success-page * {
             pointer-events: auto !important;
         }
+
         body.submission-complete #success-page {
             opacity: 1 !important;
         }
-.success-container h2 {
+
+        .success-container h2 {
             color: #000000;
             margin-bottom: 20px;
             font-size: 24px;
             font-weight: 500;
         }
 
-
         .success-icon {
             font-size: 80px;
             color: #4caf50;
             margin-bottom: 25px;
+        }
+
+        .page.completed .edit-section-btn {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+    
+        #pages-wrapper.hidden {
+            display: none !important;
+        }
+
+        /* NEW: Existing agreement notification */
+        .existing-agreement-notice {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            display: none;
+        }
+
+        .existing-agreement-notice.show {
+            display: block;
+        }
+
+        .existing-agreement-notice h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .existing-agreement-notice p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .existing-agreement-notice strong {
+            color: #1b5e20;
         }
 
         @media (max-width: 768px) {
@@ -723,39 +657,8 @@ opacity: 1;
             .page-title {
                 font-size: 22px;
             }
-
-            .progress-label {
-                font-size: 12px;
-            }
         }
-
-        /* Also update the toggle-agreement button when in inactive pages */
-        .page:not(.active) .toggle-agreement {
-            background: #f5f5f5 !important;
-            color: #999 !important;
-            border-color: #ddd !important;
-            cursor: not-allowed !important;
-            pointer-events: none;
-            opacity: 0.5 !important;
-        }
-
-        /* Make sure edit buttons in completed sections are still clickable */
-        .page.completed .edit-section-btn {
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
-    
-        /* Hide/dim pages wrapper on success so only success panel is emphasized */
-        #pages-wrapper.hidden {
-            display: none !important;
-        }
-        .success-container.show {
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
-
-</style>
+    </style>
 </head>
 <body>
     <div class="container">
@@ -791,7 +694,6 @@ opacity: 1;
             </div>
         </div>
 
-        <!-- Loading Overlay -->
         <div class="loading-overlay" id="loading">
             <div class="spinner"></div>
         </div>
@@ -801,6 +703,22 @@ opacity: 1;
             <h2 class="page-title">Step 1: Verify Email Address</h2>
             
             <div class="message" id="page1-message"></div>
+
+            <!-- NEW: Existing Agreement Notice -->
+            <div class="existing-agreement-notice" id="existing-agreement-notice">
+                <h3>✓ Existing Agreement Found</h3>
+                <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
+                <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
+                <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
+                <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
+                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+                   class="btn-primary" 
+                   style="text-decoration: none; display: inline-block; margin-top: 15px;" 
+                   target="_blank">
+                    Go to Intake Form
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
+            </div>
 
             <div class="form-group">
                 <label for="email">Enter Work Email<span class="required">*</span></label>
@@ -813,8 +731,6 @@ opacity: 1;
             <div id="code-section" style="display: none; margin-top: 30px;">
                 <div class="form-group">
                     <label for="otp">Verification Code <span class="required">*</span></label>
-                    
-                    
                     <input
                         id="otp"
                         name="otp"
@@ -832,7 +748,6 @@ opacity: 1;
                         Didn't receive code? <a href="#" onclick="event.preventDefault(); sendCode();">Click here to resend code</a>
                     </p>
                 </div>
-
                 <button type="button" class="btn-primary" id="next-btn" onclick="verifyCode()" disabled>Next</button>
             </div>
         </div>
@@ -856,7 +771,6 @@ opacity: 1;
                 <textarea id="business-address" rows="3" required></textarea>
             </div>
 
-
             <button type="button" class="btn-primary" id="page2-next-btn" onclick="completePage2()" disabled>Next</button>
         </div>
 
@@ -873,9 +787,6 @@ opacity: 1;
                 <div class="agreement-content" id="agreement-content">
                     <!-- Dynamic agreement content loaded here -->
                 </div>
-                <button type="button" class="btn-secondary toggle-agreement" onclick="toggleAgreement()">
-                    Hide Agreement
-                </button>
             </div>
 
             <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
@@ -883,7 +794,10 @@ opacity: 1;
                 <label for="agreement-reviewed">
                     I have reviewed and hereby accept the agreement terms. <span class="required">*</span>
                 </label>
-</div>
+            </div>
+
+            <button type="button" class="btn-primary" id="page3-next-btn" onclick="completePage3()" disabled>Next</button>
+        </div>
 
         <!-- Page 4: Sign Agreement -->
         <div class="page" id="page-4">
@@ -893,7 +807,8 @@ opacity: 1;
             </h2>
             
             <div class="message" id="page4-message"></div>
-<div class="form-group">
+
+            <div class="form-group">
                 <label for="signatory-name">Name <span class="required">*</span></label>
                 <input type="text" id="signatory-name" required>
             </div>
@@ -906,10 +821,10 @@ opacity: 1;
             <div class="form-group">
                 <label for="digital-signature">Digital Signature (Enter Name) <span class="required">*</span></label>
                 <input type="text" id="digital-signature" required>
-                <small>Entering your name serves as your digital signature for agreement ID# </small>
+                <small>Entering your name serves as your digital signature</small>
             </div>
 
-            <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Next</button>
+            <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Submit Agreement</button>
         </div>
 
         <!-- Success Page -->
@@ -938,73 +853,20 @@ opacity: 1;
             history.scrollRestoration = 'manual';
         }
 
-
         // Configuration
         const CONFIG = {
             API_SEND_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4341c3c423ad4186bbbcbf6ec0f54b93/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HyJy3iw_YHiHM5-ViqOwH9SICVd5nw33ICIwkEgyTTU',
             API_VERIFY_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/199a3ec089864a5ea6d8006c1a270a2e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8iICSmnrlVsdPITEvcyK0I95YD-nKjM4U2GMGnBREQc',
+            API_CHECK_EXISTING: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/707a82c1ed9043d98cfbc0b484c5c655/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ZcsnJmv3cKqNrTYatxOiQvRQQK57cIEOH9vbw5RkGqQ',
             API_VALIDATE_TOKEN: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a60671f8d38444a09e3ac09442b80964/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KFQkiUfu8uPtDrSspU5o7cbKfDS2kdgKp3147UBVgjk',
             API_SUBMIT: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/f22ee6457eb84ca3a32e3f970a3150be/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sCEtdfiLOS_Ull_JD6DG12B23XJinjCk77mXDy8qUIA',
             GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com'],
             TELEMETRY_URL: ''
         };
 
-        
-        // Clear verification errors when user re-engages with OTP input
-        (function bindOtpClear() {
-            const otpInput = document.getElementById('otp');
-            if (!otpInput) return;
-
-            const clearAll = () => {
-                try { clearCodeMessage(); } catch (e) {}
-                try { clearPageMessage(1); } catch (e) {}
-            };
-
-            otpInput.addEventListener('focus', clearAll);
-            otpInput.addEventListener('input', clearAll);
-        })();
-
-        // OTP state
-        window.__codeSent = false;
-        window.__lastSendTs = 0;
-        window.__sendCooldownMs = 60000; // 60s cooldown
-
-
-        // Fetch with timeout (prevents "hung" UI when network/CORS stalls, especially in iframes on iOS)
-        async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), timeoutMs);
-
-            try {
-                const response = await fetch(url, { ...options, signal: controller.signal });
-                return response;
-            } finally {
-                clearTimeout(id);
-            }
-
-
-        function normalizeErrorMessage(x, fallback) {
-            if (x == null) return fallback || 'Something went wrong.';
-            if (typeof x === 'string') return x;
-            if (x instanceof Error) return x.message || fallback || 'Something went wrong.';
-            if (typeof x === 'object') {
-                // Common shapes: {message: '...'}, {error: '...'}, {Message: '...'}
-                const m = x.message || x.error || x.Message || x.Error;
-                if (typeof m === 'string') return m;
-                try { return JSON.stringify(x); } catch (e) { return fallback || 'Something went wrong.'; }
-            }
-            return String(x);
-        }
-
-        }
-
-
-        // Global state
         let verifiedEmail = '';
-        
         let otpVerified = false;
-        window.otpVerified = false;
-let sessionToken = '';
+        let sessionToken = '';
         let agreementId = null;
         let securityToken = null;
         let agreementType = 'NDA';
@@ -1012,18 +874,7 @@ let sessionToken = '';
         let currentPage = 1;
         let submissionComplete = false;
 
-
-        
-        otpVerified = false;
-// Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
-            
-            // Reset verification state
-            verifiedEmail = '';
-            window.verifiedEmail = '';
-            otpVerified = false;
-            window.otpVerified = false;
-// Wrap all .page sections so we can disable/dim them without affecting the success panel
             (function wrapPages() {
                 const pages = Array.from(document.querySelectorAll('.page'));
                 if (!pages.length) return;
@@ -1035,20 +886,16 @@ let sessionToken = '';
                 }
                 pages.forEach(p => wrapper.appendChild(p));
 
-                // Ensure success panel sits OUTSIDE the wrapper so it never gets dimmed/disabled
                 const success = document.getElementById('success-page');
                 if (success && success.parentNode === wrapper) {
                     wrapper.parentNode.insertBefore(success, wrapper.nextSibling);
                 } else if (success && success.previousElementSibling !== wrapper) {
-                    // Move it to immediately after wrapper for stable layout
                     wrapper.parentNode.insertBefore(success, wrapper.nextSibling);
                 }
             })();
 
             window.scrollTo(0, 0);
             parseURL();
-            track('flow_start');
-            track('step_view', { step: 1 });
             loadAgreementContent();
             setupOtpInput();
             setupAgreementReview();
@@ -1063,14 +910,8 @@ let sessionToken = '';
             window.addEventListener('resize', () => {
                 positionProgressDots();
                 updateProgressFillToActive();
-            // Initial gating
-            otpVerified = false;
-            window.otpVerified = false;
-            syncPage4Availability();
-            syncSubmitAvailability();
+            });
 
-
-            // Page 3 acknowledgment acts as the Step 3 completion gate
             const reviewedCb = document.getElementById('agreement-reviewed');
             if (reviewedCb) {
                 reviewedCb.addEventListener('change', () => {
@@ -1084,24 +925,12 @@ let sessionToken = '';
                     syncSubmitAvailability();
                 });
             }
-});
-            
-            let scrollTimeout;
-            window.addEventListener('scroll', () => {
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    positionProgressDots();
-                    updateProgressFillToActive();
-                }, 50);
-            });
         });
 
         document.addEventListener('keydown', function (e) {
             if (e.key !== 'Enter') return;
-
             const activePage = document.querySelector('.page.active');
             if (!activePage) return;
-
             const primaryButton = activePage.querySelector('.btn-primary:not(:disabled)');
             if (primaryButton) {
                 e.preventDefault();
@@ -1109,11 +938,8 @@ let sessionToken = '';
             }
         });
 
-
-        // ===== PROGRESS INDICATOR POSITIONING =====
         function positionProgressDots() {
             if (window.innerWidth <= 768) return;
-
             const progressIndicator = document.getElementById('progress-indicator');
             if (!progressIndicator) return;
             
@@ -1130,7 +956,6 @@ let sessionToken = '';
                     const sectionCenter = sectionRect.top + (sectionRect.height / 2);
                     const relativePosition = sectionCenter - indicatorTop;
                     const percentage = Math.max(0, Math.min(100, (relativePosition / indicatorHeight) * 100));
-                    
                     step.style.top = `${percentage}%`;
                 }
             });
@@ -1148,24 +973,19 @@ let sessionToken = '';
             }
         }
 
-        function updateProgressFill(stepNumber) {
-            const totalSteps = 5;
-            const percentage = ((stepNumber - 1) / (totalSteps - 1)) * 100;
-            const progressFill = document.getElementById('progress-fill');
-            if (progressFill) {
-                if (window.innerWidth <= 768) {
-                    progressFill.style.width = `${percentage}%`;
-                    progressFill.style.height = '100%';
+        function updateProgressIndicator(stepNumber, completed) {
+            const step = document.getElementById(`progress-${stepNumber}`);
+            if (step) {
+                if (completed) {
+                    step.classList.add('completed');
                 } else {
-                    setTimeout(updateProgressFillToActive, 100);
+                    step.classList.remove('completed');
                 }
             }
         }
 
-        // ===== MESSAGE MANAGEMENT =====
         function clearAllMessages() {
-            const messages = document.querySelectorAll('.message');
-            messages.forEach(msg => {
+            document.querySelectorAll('.message').forEach(msg => {
                 msg.classList.remove('show');
                 msg.textContent = '';
             });
@@ -1191,7 +1011,6 @@ let sessionToken = '';
         function showCodeMessage(text) {
             const msg = document.getElementById('code-message');
             if (!msg) return;
-
             msg.textContent = text;
             msg.classList.add('show');
         }
@@ -1199,15 +1018,12 @@ let sessionToken = '';
         function clearCodeMessage() {
             const msg = document.getElementById('code-message');
             if (!msg) return;
-
             msg.textContent = '';
             msg.classList.remove('show');
         }
 
-        // ===== URL PARSING =====
         function parseURL() {
             const urlParams = new URLSearchParams(window.location.search);
-            
             agreementId = urlParams.get('id');
             securityToken = urlParams.get('token');
             agreementType = urlParams.get('type') || 'NDA';
@@ -1227,30 +1043,26 @@ let sessionToken = '';
 
             if (emailParam) {
                 document.getElementById('email').value = emailParam;
-}
+            }
         }
 
-        // ===== SECURITY TOKEN VALIDATION =====
         async function validateSecurityToken() {
             if (!agreementId || !securityToken) return;
 
             try {
-                const response = await fetchWithTimeout(CONFIG.API_VALIDATE_TOKEN, {
+                const response = await fetch(CONFIG.API_VALIDATE_TOKEN, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         agreementId: agreementId,
                         securityToken: securityToken
                     })
                 });
 
-                let data = {};
-                try { data = await response.json(); } catch (e) { data = {}; }
-
+                const data = await response.json();
                 if (!response.ok || !data.valid) {
                     throw new Error(data.error || 'Invalid or expired link');
                 }
-
             } catch (error) {
                 console.error('Token validation error:', error);
                 showMessage(1, 'This link is invalid or has expired. Please request a new link.', 'error');
@@ -1258,7 +1070,6 @@ let sessionToken = '';
             }
         }
 
-        // ===== CODE INPUT SETUP =====
         function setupOtpInput() {
             const otp = document.getElementById('otp');
             const nextBtn = document.getElementById('next-btn');
@@ -1267,9 +1078,8 @@ let sessionToken = '';
             const sync = () => {
                 const digits = otp.value.replace(/\D/g, '').slice(0, 6);
                 otp.value = digits;
-
                 if (nextBtn) {
-                    nextBtn.disabled = !(window.__codeSent && digits.length === 6);
+                    nextBtn.disabled = !(digits.length === 6);
                 }
             };
 
@@ -1278,55 +1088,6 @@ let sessionToken = '';
             sync();
         }
 
-
-        // ===== TOMORROW-SAFE FEATURES =====
-        const FEATURES = {
-            autoScroll: false,
-            autoAdvance: false,
-            telemetry: true
-        };
-
-        // ===== MINIMAL TELEMETRY (NO PII) =====
-        function getSessionId() {
-            const k = 'session_id';
-            let v = sessionStorage.getItem(k);
-            if (!v) {
-                v = (crypto.randomUUID && crypto.randomUUID()) || (Date.now().toString(36) + Math.random().toString(36).slice(2));
-                sessionStorage.setItem(k, v);
-            }
-            return v;
-        }
-
-
-        const session_id = getSessionId();
-
-        function track(eventName, props = {}) {
-            if (!FEATURES.telemetry) return;
-            const payload = {
-                event: eventName,
-                ts: new Date().toISOString(),
-                session_id: getSessionId(),
-                page: currentPage,
-                viewport_w: window.innerWidth,
-                viewport_h: window.innerHeight,
-                ...props
-            };
-            try {
-                if (CONFIG.TELEMETRY_URL) {
-                    const body = JSON.stringify(payload);
-                    if (navigator.sendBeacon) {
-                        navigator.sendBeacon(CONFIG.TELEMETRY_URL, new Blob([body], { type: 'application/json' }));
-                    } else {
-                        fetch(CONFIG.TELEMETRY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() }, body });
-                    }
-                } else {
-                    window.__telemetry = window.__telemetry || [];
-                    window.__telemetry.push(payload);
-                }
-            } catch {}
-        }
-
-        // ===== PAGE 2 VALIDATION (NO AUTO-ADVANCE) =====
         function setupPage2Validation() {
             const name = document.getElementById('company-name');
             const address = document.getElementById('business-address');
@@ -1343,7 +1104,6 @@ let sessionToken = '';
             validate();
         }
 
-        // ===== PAGE 3 VALIDATION (NO AUTO-ADVANCE) =====
         function setupPage3Validation() {
             const reviewed = document.getElementById('agreement-reviewed');
             const nextBtn = document.getElementById('page3-next-btn');
@@ -1355,57 +1115,30 @@ let sessionToken = '';
             });
         }
 
-        function completePage3() {
-            // Deprecated: Step 3 completion is driven by the "I have reviewed" checkbox.
-            // Kept as a no-op for backwards compatibility with any lingering markup.
-            syncSubmitAvailability();
-        }
+        function setupAgreementReview() {
+            const reviewCheckbox = document.getElementById('agreement-reviewed');
+            if (!reviewCheckbox) return;
 
-// ===== PAGE NAVIGATION =====
-        function scrollPageIntoView(pageEl) {
-            // Disabled: programmatic scrolling causes unreliable behavior on mobile.
-            return;
+            reviewCheckbox.addEventListener('change', function () {
+                syncPage4Availability();
+                const next3 = document.getElementById('page3-next-btn');
+                if (next3) next3.disabled = !this.checked;
+            });
         }
 
         function goToPage(pageNumber) {
-            const maxCompleted = completedPages.size ? Math.max(...completedPages) : 0;
-            const maxAllowedPage = maxCompleted + 1;
-            if (pageNumber > maxAllowedPage && pageNumber > currentPage + 1) {
-                return;
-            }
-            
-            clearAllMessages();
             currentPage = pageNumber;
-            track('step_view', { step: pageNumber });
-            
+            clearAllMessages();
             
             if (pageNumber === 4) syncPage4Availability();
-
             syncSubmitAvailability();
-document.querySelectorAll('.page').forEach((page, index) => {
+
+            document.querySelectorAll('.page').forEach((page, index) => {
                 const pageNum = index + 1;
                 page.classList.remove('active', 'completed');
                 
                 const editBtn = page.querySelector('.edit-section-btn');
                 if (editBtn) editBtn.style.display = 'none';
-                
-                const buttons = page.querySelectorAll('button');
-                buttons.forEach(btn => {
-                    if (pageNum === pageNumber) {
-                        btn.disabled = false;
-                    } else if (pageNum > pageNumber) {
-                        // Allow Page 4 if agreement is reviewed
-                        if (pageNum === 4 && document.getElementById('agreement-reviewed')?.checked) {
-                            btn.disabled = false;
-                        } else {
-                            btn.disabled = true;
-                        }
-                    
-
-                    } else {
-                        btn.disabled = false;
-                    }
-                });
                 
                 if (pageNum === pageNumber) {
                     page.classList.add('active');
@@ -1425,14 +1158,13 @@ document.querySelectorAll('.page').forEach((page, index) => {
                     step.classList.add('completed');
                 }
             });
-            // No programmatic scrolling
+
             setTimeout(() => {
                 positionProgressDots();
                 updateProgressFillToActive();
             }, 200);
         }
 
-        // ===== EDIT SECTION =====
         function editSection(pageNumber) {
             if (submissionComplete) return;
             if (pageNumber === 3) return;
@@ -1445,7 +1177,6 @@ document.querySelectorAll('.page').forEach((page, index) => {
             goToPage(pageNumber);
         }
 
-        // ===== COMPLETE PAGE 2 =====
         function completePage2() {
             const companyName = document.getElementById('company-name').value.trim();
             const businessAddress = document.getElementById('business-address').value.trim();
@@ -1456,91 +1187,62 @@ document.querySelectorAll('.page').forEach((page, index) => {
             }
             
             completedPages.add(2);
-            track('step_complete', { step: 2 });
             goToPage(3);
         }
-        // ===== SEND VERIFICATION CODE =====
+
+        function completePage3() {
+            completedPages.add(3);
+            goToPage(4);
+        }
+
         async function sendCode() {
             clearPageMessage(1);
-
             const email = document.getElementById('email').value.trim();
             const sendButton = document.getElementById('send-code-btn');
 
-            const now = Date.now();
-            const cooldownMs = window.__sendCooldownMs || 45000;
-            if (now - (window.__lastSendTs || 0) < cooldownMs) {
-                const remaining = Math.ceil((cooldownMs - (now - window.__lastSendTs)) / 1000);
-                showMessage(1, `Please wait ${remaining}s before resending a code.`, 'info');
-                return;
-            }
-
-            if (!email) {
-                showMessage(1, 'Please enter your email address.', 'error');
-                return;
-            }
-
-            if (!isValidEmail(email)) {
+            if (!email || !isValidEmail(email)) {
                 showMessage(1, 'Please enter a valid email address.', 'error');
                 return;
             }
 
-            track('otp_send_start');
             if (sendButton) sendButton.disabled = true;
             document.getElementById('loading').classList.add('show');
 
             try {
-                const response = await fetchWithTimeout(CONFIG.API_SEND_CODE, {
+                const response = await fetch(CONFIG.API_SEND_CODE, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
-                    body: JSON.stringify({ email, Email: email, emailAddress: email, EmailAddress: email })
-                }, 15000);
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
 
-                let data = {};
-                try { data = await response.json(); } catch (e) { data = {}; }
-
+                const data = await response.json();
                 if (!response.ok) {
-                    const msg = normalizeErrorMessage(data?.message || data?.error, 'Failed to send verification code. Please try again.');
-                    throw new Error(msg);
+                    throw new Error(data.error || 'Failed to send verification code');
                 }
 
-                window.__codeSent = true;
-                window.__lastSendTs = now;
-
-                const codeSection = document.getElementById('code-section');
-                if (codeSection) codeSection.style.display = 'block';
-
+                document.getElementById('code-section').style.display = 'block';
                 if (sendButton) {
                     sendButton.textContent = 'Code Sent';
                     sendButton.disabled = true;
                 }
 
                 showMessage(1, 'Verification code sent. Check your email.', 'success');
-                track('otp_send_success');
             } catch (error) {
                 console.error('Send code error:', error);
-                track('otp_send_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
-                showMessage(1, error.message || 'Failed to send verification code. Please try again.', 'error');
+                showMessage(1, error.message || 'Failed to send verification code.', 'error');
                 if (sendButton) sendButton.disabled = false;
             } finally {
                 document.getElementById('loading').classList.remove('show');
             }
         }
 
-async function verifyCode() {
+        async function verifyCode() {
             clearPageMessage(1);
             clearCodeMessage();
 
             const email = document.getElementById('email').value.trim();
-            const sendButton = document.getElementById('send-code-btn');
+            const code = document.getElementById('otp').value.replace(/\D/g, '');
             const nextBtn = document.getElementById('next-btn');
-            const otpEl = document.getElementById('otp');
-            const code = (otpEl?.value || '').replace(/\D/g, '').slice(0, 6);
-
-            // Require that a code was sent first
-            if (!window.__codeSent) {
-                showCodeMessage('Please send a verification code first.');
-                return;
-            }
 
             if (code.length !== 6) {
                 showCodeMessage('Please enter the complete 6-digit verification code.');
@@ -1551,80 +1253,70 @@ async function verifyCode() {
             document.getElementById('loading').classList.add('show');
 
             try {
-                const response = await fetchWithTimeout(CONFIG.API_VERIFY_CODE, {
+                const response = await fetch(CONFIG.API_VERIFY_CODE, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
-                    body: JSON.stringify({ email, code, Email: email, Code: code, verificationCode: code, VerificationCode: code })
-                }, 15000);
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code })
+                });
 
                 if (!response.ok) {
-                    let msg = 'Invalid or expired code. Please try again.';
-                    try {
-                        let data = {};
-                try { data = await response.json(); } catch (e) { data = {}; }
-                        msg = normalizeErrorMessage(data?.message || data?.error, msg);
-                    } catch {}
-                    throw new Error(msg);
+                    throw new Error('Invalid or expired code');
                 }
 
                 verifiedEmail = email;
-                
-                window.verifiedEmail = verifiedEmail;
                 otpVerified = true;
-                window.otpVerified = true;
-                syncSubmitAvailability();
-completedPages.add(1);
 
-                // Keep send disabled after successful verify
-                if (sendButton) sendButton.disabled = true;
+                // NEW: Check for existing agreement
+                await checkExistingAgreement(email);
 
-                track('otp_verify_success');
-                track('step_complete', { step: 1 });
+                completedPages.add(1);
                 goToPage(2);
 
             } catch (error) {
                 console.error('Verify code error:', error);
-                track('otp_verify_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
-                showCodeMessage(error?.message || 'Invalid or expired code. Please try again.');
+                showCodeMessage(error.message || 'Invalid or expired code.');
                 if (nextBtn) nextBtn.disabled = false;
             } finally {
                 document.getElementById('loading').classList.remove('show');
             }
         }
 
+        // NEW: Check for existing agreement
+        async function checkExistingAgreement(email) {
+            try {
+                const response = await fetch(CONFIG.API_CHECK_EXISTING, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        agreementType: agreementType
+                    })
+                });
 
+                const data = await response.json();
 
-        // ===== AGREEMENT REVIEW CHECKBOX =====
-        function setupAgreementReview() {
-            const reviewCheckbox = document.getElementById('agreement-reviewed');
-            if (!reviewCheckbox) return;
-
-            reviewCheckbox.addEventListener('change', function () {
-                syncPage4Availability();
-                const next3 = document.getElementById('page3-next-btn');
-                if (next3) next3.disabled = !this.checked;
-            });
+                if (data.hasExisting) {
+                    // Show existing agreement notice
+                    document.getElementById('existing-agreement-id').textContent = data.agreementId || 'N/A';
+                    document.getElementById('existing-agreement-type').textContent = data.agreementType || agreementType;
+                    document.getElementById('existing-agreement-date').textContent = data.completionDate ? new Date(data.completionDate).toLocaleDateString() : 'N/A';
+                    document.getElementById('existing-agreement-notice').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error checking existing agreement:', error);
+                // Non-blocking error - proceed normally
+            }
         }
 
-
-
-
-
-        // ===== SCROLL TO AGREEMENT =====
-        function scrollToAgreement(event) {
-            if (event) event.preventDefault();
-            // Deprecated: agreement section is always visible; no action required.
-        }
-        // ===== SUBMIT AGREEMENT =====
         async function submitAgreement() {
             clearPageMessage(4);
             
-            
-            if (!(otpVerified && verifiedEmail && String(verifiedEmail).trim())) {
+            if (!otpVerified || !verifiedEmail) {
                 showMessage(4, 'Please verify your email before submitting.', 'error');
                 return;
             }
-if (!validateFinalForm()) {
+
+            if (!validateFinalForm()) {
                 return;
             }
 
@@ -1633,65 +1325,53 @@ if (!validateFinalForm()) {
             const formData = {
                 agreementId: agreementId,
                 securityToken: securityToken,
-                sessionToken: sessionToken,
                 agreementType: agreementType,
                 email: verifiedEmail,
                 companyName: document.getElementById('company-name').value,
                 businessAddress: document.getElementById('business-address').value,
                 signatoryName: document.getElementById('signatory-name').value,
                 signatoryTitle: document.getElementById('signatory-title').value,
-                phoneNumber: document.getElementById('phone-number').value,
                 digitalSignature: document.getElementById('digital-signature').value,
-                termsAgreement: document.getElementById('terms-agreement').checked,
                 submissionTimestamp: new Date().toISOString()
             };
 
             try {
-                const response = await fetchWithTimeout(CONFIG.API_SUBMIT, {
+                const response = await fetch(CONFIG.API_SUBMIT, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Id': getSessionId() },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
 
-                let data = {};
-                try { data = await response.json(); } catch (e) { data = {}; }
-
+                const data = await response.json();
                 if (!response.ok || !data.success) {
                     throw new Error(data.error || 'Submission failed');
                 }
 
-                // Extract the generated agreement ID from the flow response
                 if (data.agreementId) {
                     agreementId = data.agreementId;
                 }
 
                 completedPages.add(4);
-                track('submit_success');
-                track('step_complete', { step: 4 });
                 showSuccessPage();
 
             } catch (error) {
                 console.error('Submit error:', error);
-                track('submit_fail', { error: String(error && (error.message || error.name) || error).slice(0,120) });
-                showMessage(4, error.message || 'Failed to submit agreement. Please try again or contact support.', 'error');
+                showMessage(4, error.message || 'Failed to submit agreement.', 'error');
             } finally {
                 document.getElementById('loading').classList.remove('show');
             }
         }
 
-        // ===== VALIDATE FINAL FORM =====
         function validateFinalForm() {
-            
-            if (!(otpVerified && verifiedEmail && String(verifiedEmail).trim())) {
+            if (!otpVerified || !verifiedEmail) {
                 showMessage(4, 'Please verify your email before submitting.', 'error');
                 return false;
             }
-const signatoryName = document.getElementById('signatory-name').value.trim();
-            const digitalSignature = document.getElementById('digital-signature').value.trim();
-            const termsChecked = document.getElementById('terms-agreement').checked;
 
-            if (!signatoryName || !document.getElementById('signatory-title').value.trim() || 
-                !document.getElementById('phone-number').value.trim() || !digitalSignature) {
+            const signatoryName = document.getElementById('signatory-name').value.trim();
+            const digitalSignature = document.getElementById('digital-signature').value.trim();
+
+            if (!signatoryName || !document.getElementById('signatory-title').value.trim() || !digitalSignature) {
                 showMessage(4, 'Please fill in all required fields.', 'error');
                 return false;
             }
@@ -1701,15 +1381,9 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
                 return false;
             }
 
-            if (!termsChecked) {
-                showMessage(4, 'You must agree to the terms and conditions.', 'error');
-                return false;
-            }
-
             return true;
         }
 
-        // ===== SHOW SUCCESS PAGE =====
         function showSuccessPage() {
             submissionComplete = true;
             document.body.classList.add('submission-complete');
@@ -1728,29 +1402,16 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
                     step.classList.add('completed');
                 }
             });
-            
-            document.querySelectorAll('.edit-section-btn').forEach(btn => {
-                btn.disabled = true;
-                btn.style.pointerEvents = 'none';
-                btn.style.opacity = '0.4';
-            });
-
 
             document.getElementById('success-agreement-id').textContent = agreementId || 'Pending';
-            document.getElementById('success-email').textContent = verifiedEmail || document.getElementById('email').value.trim();
+            document.getElementById('success-email').textContent = verifiedEmail;
             
             const successPage = document.getElementById('success-page');
             successPage.classList.add('show');
             const pw = document.getElementById('pages-wrapper');
             if (pw) pw.classList.add('hidden');
-            
-            setTimeout(() => {
-                positionProgressDots();
-                updateProgressFillToActive();
-            }, 100);
         }
 
-        // ===== LOAD AGREEMENT CONTENT =====
         function loadAgreementContent() {
             let content = '';
             
@@ -1844,48 +1505,34 @@ const signatoryName = document.getElementById('signatory-name').value.trim();
             `;
         }
 
-        // ===== UTILITIES =====
+
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        function setupPage2AutoAdvance() { return; }
-
         function syncPage4Availability() {
             const page4 = document.getElementById('page-4');
             if (!page4) return;
-
-            // Keep page 4 fields interactive; gate only final submit button.
             page4.querySelectorAll('button, input, textarea, select').forEach(el => {
                 if (el && el.id === 'final-submit-btn') return;
                 el.disabled = false;
             });
         }
 
-
-        // ===== SUBMIT BUTTON AVAILABILITY =====
         function syncSubmitAvailability() {
             const btn = document.getElementById('final-submit-btn');
             if (!btn) return;
 
-            const hasVerifiedEmail = !!(window.verifiedEmail && String(window.verifiedEmail).trim());
-            const isOtpVerified = !!(window.otpVerified || otpVerified);
-
-            // Enablement is based on: verified email + OTP verified + required Step 4 fields + terms checkbox
             const signatoryName = document.getElementById('signatory-name')?.value.trim() || '';
             const signatoryTitle = document.getElementById('signatory-title')?.value.trim() || '';
-            const phoneNumber = document.getElementById('phone-number')?.value.trim() || '';
             const digitalSignature = document.getElementById('digital-signature')?.value.trim() || '';
-            const termsChecked = !!document.getElementById('terms-agreement')?.checked;
             const reviewedChecked = !!document.getElementById('agreement-reviewed')?.checked;
 
-            const fieldsFilled = !!(signatoryName && signatoryTitle && phoneNumber && digitalSignature);
+            const fieldsFilled = !!(signatoryName && signatoryTitle && digitalSignature);
             const sigMatches = fieldsFilled ? (signatoryName.toLowerCase() === digitalSignature.toLowerCase()) : false;
 
-            btn.disabled = !(hasVerifiedEmail && isOtpVerified && fieldsFilled && sigMatches && termsChecked && reviewedChecked) || submissionComplete;
+            btn.disabled = !(otpVerified && verifiedEmail && fieldsFilled && sigMatches && reviewedChecked) || submissionComplete;
         }
-
-
     </script>
 </body>
 </html>
