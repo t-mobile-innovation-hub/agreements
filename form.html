@@ -918,6 +918,7 @@
             setupAgreementReview();
             setupPage2Validation();
             setupPage3Validation();
+            setupPage4Validation();
             
             setTimeout(() => {
                 positionProgressDots();
@@ -1130,6 +1131,22 @@
             reviewed.addEventListener('change', () => {
                 nextBtn.disabled = !reviewed.checked;
             });
+        }
+
+        function setupPage4Validation() {
+            const signatoryName = document.getElementById('signatory-name');
+            const signatoryTitle = document.getElementById('signatory-title');
+            const digitalSignature = document.getElementById('digital-signature');
+            
+            if (!signatoryName || !signatoryTitle || !digitalSignature) return;
+
+            function validate() {
+                syncSubmitAvailability();
+            }
+
+            signatoryName.addEventListener('input', validate);
+            signatoryTitle.addEventListener('input', validate);
+            digitalSignature.addEventListener('input', validate);
         }
 
         function setupAgreementReview() {
