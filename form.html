@@ -869,7 +869,7 @@
         let sessionToken = '';
         let agreementId = null;
         let securityToken = null;
-        let agreementType = 'NDA';
+        let agreementType = 'Mutual NDA';
         let completedPages = new Set();
         let currentPage = 1;
         let submissionComplete = false;
@@ -1026,7 +1026,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             agreementId = urlParams.get('id');
             securityToken = urlParams.get('token');
-            agreementType = urlParams.get('type') || 'NDA';
+            agreementType = urlParams.get('type') || 'Mutual NDA';
             const emailParam = urlParams.get('email');
 
             if (agreementId) {
@@ -1416,13 +1416,13 @@
             let content = '';
             
             switch(agreementType.toLowerCase()) {
-                case 'nda':
+                case 'mutual nda':
                     content = getNDAContent();
                     break;
-                case 'companyhub':
+                case 'company hub':
                     content = getCompanyHubContent();
                     break;
-                case 'employeehub':
+                case 'employee hub':
                     content = getEmployeeHubContent();
                     break;
                 default:
