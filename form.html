@@ -541,6 +541,10 @@
                 <div class="progress-dot"></div>
                 <div class="progress-label">Sign Agreement</div>
             </div>
+            <div class="progress-step" id="progress-5">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Complete Intake</div>
+            </div>
         </div>
 
         <div class="loading-overlay" id="loading">
@@ -1140,11 +1144,14 @@
             document.getElementById('success-agreement-id').textContent = agreementId;
             document.getElementById('success-email').textContent = verifiedEmail;
             
-            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
-            
+            // Don't add 5 to completedPages - leave it incomplete
+            currentPage = 5; // Set current to step 5 to show it as active/next
             updateProgressIndicator();
+            
+            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
         }
 
+        
         function loadAgreementContent() {
             let content = '';
             
