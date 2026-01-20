@@ -726,7 +726,7 @@ label {
 
             <div class="button-group">
                 <button type="button" class="btn-back" onclick="goToPage(3)">Back</button>
-                <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Submit Agreement</button>
+                <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Next</button>
             </div>
         </div>
 
@@ -1380,24 +1380,66 @@ label {
     
 
             function updateExistingAgreementVisibility() {
-    const section = document.getElementById('existing-agreement-section');
-    if (!section) return;
-    const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
-    const isOnVerificationPage = currentPage === 1;
-    section.style.display = (hasAgreement && hasAgreement.value === 'yes' && isOnVerificationPage)
-        ? 'block'
-        : 'none';
-}
+            const notice = document.getElementById('existing-agreement-notice');
+            if (!notice) return;
 
-document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
-    r.addEventListener('change', updateExistingAgreementVisibility);
-});
+            // "found" is set when the backend/API indicates an existing agreement.
+            const found = notice.dataset.found === 'true';
 
-const originalGoToPage = goToPage;
-goToPage = function(page) {
-    originalGoToPage(page);
-    updateExistingAgreementVisibility();
-};
+            // Dismissed once the user proceeds past the verification page.
+            const dismissed = notice.dataset.dismissed === 'true';
+
+            const isOnVerificationPage = currentPage === 1;
+
+            if (found && !dismissed && isOnVerificationPage) {
+                notice.classList.add('show');
+            } else {
+                notice.classList.remove('show');
+            }
+        }
+
+        // Ensure we remember "found" even when we hide the notice later.
+        (function patchExistingAgreementFoundFlag() {
+            const orig = window.checkExistingAgreement;
+            if (typeof orig !== 'function') return;
+
+            window.checkExistingAgreement = async function(...args) {
+                const result = await orig.apply(this, args);
+
+                // If the original function showed the notice, mark it as found.
+                const notice = document.getElementById('existing-agreement-notice');
+                if (notice && notice.classList.contains('show')) {
+                    notice.dataset.found = 'true';
+                }
+
+                updateExistingAgreementVisibility();
+                return result;
+            };
+        })();
+
+        document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
+            r.addEventListener('change', updateExistingAgreementVisibility);
+        });
+
+        // Wrap goToPage so leaving page 1 dismisses the notice for the remainder of the flow.
+        (function wrapGoToPageForExistingAgreement() {
+            const originalGoToPage = window.goToPage;
+            if (typeof originalGoToPage !== 'function') return;
+
+            window.goToPage = function(page) {
+                // If we are leaving the verification page, dismiss the banner permanently.
+                if (currentPage === 1 && page !== 1) {
+                    const notice = document.getElementById('existing-agreement-notice');
+                    if (notice) notice.dataset.dismissed = 'true';
+                }
+
+                originalGoToPage(page);
+                updateExistingAgreementVisibility();
+            };
+        })();
+
+        // Initial state.
+        updateExistingAgreementVisibility();
 </script>
 </body>
 </html>
