@@ -774,6 +774,47 @@ label {
         let completedPages = new Set();
         let currentPage = 1;
 
+// Existing Agreement visibility (Page 2 only; dismiss after leaving Page 2)
+let existingAgreementDismissed = false;
+
+function updateExistingAgreementVisibility() {
+    const section = document.getElementById('existing-agreement-section');
+    if (!section) return;
+
+    const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
+    const shouldShowOnPage2 = (currentPage === 2);
+    const shouldShow = !existingAgreementDismissed
+        && shouldShowOnPage2
+        && hasAgreement
+        && hasAgreement.value === 'yes';
+
+    section.style.display = shouldShow ? 'block' : 'none';
+}
+
+// Dismiss permanently once user advances past Page 2 (i.e., leaves Page 2 to any other page)
+function dismissExistingAgreementIfLeavingPage2(nextPage) {
+    if (currentPage === 2 && nextPage !== 2) {
+        existingAgreementDismissed = true;
+    }
+}
+
+document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
+    r.addEventListener('change', updateExistingAgreementVisibility);
+});
+
+// Wrap goToPage to keep behavior centralized
+(function() {
+    const _goToPage = goToPage;
+    goToPage = function(page) {
+        dismissExistingAgreementIfLeavingPage2(page);
+        _goToPage(page);
+        updateExistingAgreementVisibility();
+    };
+})();
+// End Existing Agreement visibility
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, 0);
             parseURL();
