@@ -1423,17 +1423,14 @@ function showSuccessPage() {
     
     // Prepare Braineet URL with pre-populated data
     const signatoryName = document.getElementById('signatory-name').value.trim();
-    const nameParts = signatoryName.split(' ');
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' ') || nameParts[0];
+    const signatoryTitle = document.getElementById('signatory-title').value.trim();
+    const companyName = document.getElementById('company-name').value.trim();
     
     const braineetParams = new URLSearchParams({
-        companyName: document.getElementById('company-name').value,
-        email: verifiedEmail,
-        firstName: firstName,
-        lastName: lastName,
-        phone: '', // We don't collect phone in our form
-        description: `Agreement ${agreementId} - ${document.getElementById('company-name').value}`
+        'fields[1].text': companyName,                    // Company Name
+        'fields[3].text': signatoryName,                  // Contact Name
+        'fields[4].text': signatoryTitle,                 // Contact Job Title
+        'fields[5].text': verifiedEmail                   // Contact Email
     });
     
     const braineetUrl = `https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests&${braineetParams}`;
@@ -1454,6 +1451,7 @@ function showSuccessPage() {
         step.classList.add('completed');
     });
 }
+
 
         function loadAgreementContent() {
             let content = '';
