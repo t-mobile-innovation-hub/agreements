@@ -1418,40 +1418,25 @@
             return true;
         }
 
-function showSuccessPage() {
-    submissionComplete = true;
-    
-    // Prepare Braineet URL with pre-populated data
-    const signatoryName = document.getElementById('signatory-name').value.trim();
-    const signatoryTitle = document.getElementById('signatory-title').value.trim();
-    const companyName = document.getElementById('company-name').value.trim();
-    
-    const braineetParams = new URLSearchParams({
-        'fields[1].text': companyName,                    // Company Name
-        'fields[3].text': signatoryName,                  // Contact Name
-        'fields[4].text': signatoryTitle,                 // Contact Job Title
-        'fields[5].text': verifiedEmail                   // Contact Email
-    });
-    
-    const braineetUrl = `https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests&${braineetParams}`;
-    
-    // Open Braineet intake form with pre-populated data
-    window.open(braineetUrl, '_blank');
-    
-    // Show success message
-    showMessage(4, 'Agreement submitted successfully! Opening intake form...', 'success');
-    
-    // Mark all pages as completed
-    completedPages.add(4);
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.add('completed');
-    });
-    
-    document.querySelectorAll('.progress-step').forEach(step => {
-        step.classList.add('completed');
-    });
-}
-
+        function showSuccessPage() {
+            submissionComplete = true;
+            
+            // Open Braineet intake form immediately
+            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
+            
+            // Optionally show a brief message in page 4
+            showMessage(4, 'Agreement submitted successfully! Opening intake form...', 'success');
+            
+            // Mark all pages as completed
+            completedPages.add(4);
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('completed');
+            });
+            
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.add('completed');
+            });
+        }
 
         function loadAgreementContent() {
             let content = '';
