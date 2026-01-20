@@ -175,7 +175,25 @@
             margin-bottom: 25px;
         }
 
-        label {
+        
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+label {
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
@@ -616,9 +634,40 @@
                 <input type="text" id="company-name" required>
             </div>
 
+                        <div class="form-group">
+                <label for="address-line1">Address Line 1 <span class="required">*</span></label>
+                <input type="text" id="address-line1" autocomplete="address-line1" required>
+            </div>
+
             <div class="form-group">
-                <label for="business-address">Business Address <span class="required">*</span></label>
-                <textarea id="business-address" rows="3" required></textarea>
+                <label for="address-line2">Address Line 2</label>
+                <input type="text" id="address-line2" autocomplete="address-line2">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address-city">City / Locality <span class="required">*</span></label>
+                    <input type="text" id="address-city" autocomplete="address-level2" required>
+                </div>
+
+                <div class="form-group" id="region-group">
+                    <label for="address-region-text" id="region-label">State / Province / Region <span class="required">*</span></label>
+
+                    <select id="address-region-select" aria-label="State or province" style="display:none;"></select>
+                    <input type="text" id="address-region-text" autocomplete="address-level1" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address-postal" id="postal-label">Postal / ZIP Code <span class="required">*</span></label>
+                    <input type="text" id="address-postal" autocomplete="postal-code" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address-country">Country <span class="required">*</span></label>
+                    <select id="address-country" autocomplete="country" required></select>
+                </div>
             </div>
 
             <div class="button-group">
@@ -683,8 +732,8 @@
 
         <!-- Success Page -->
         <div class="success-container" id="success-page">
-            <div class="success-icon">✓</div>
-            <h2>Agreement successfully submitted.</h2>
+           <!-- <div class="success-icon">✓</div> 
+            <h2>Agreement successfully submitted.</h2> -->
             <p style="font-size: 18px; margin: 20px 0;">Thank you for signing the agreement.<br />You may now continue your intake request.</p>
             
             <div style="background: white; padding: 25px; border-radius: 5px; margin: 30px 0; text-align: left;">
@@ -730,6 +779,7 @@
             parseURL();
             loadAgreementContent();
             setupOtpInput();
+            setupAddressFields();
             setupPage2Validation();
             setupPage3Validation();
             setupPage4Validation();
@@ -864,16 +914,145 @@
             sync();
         }
 
+        function setupAddressFields() {
+            // Country list (ISO 3166-1 alpha-2) generated at build time
+            const COUNTRIES = [{"code": "AF", "name": "Afghanistan"}, {"code": "AL", "name": "Albania"}, {"code": "DZ", "name": "Algeria"}, {"code": "AS", "name": "American Samoa"}, {"code": "AD", "name": "Andorra"}, {"code": "AO", "name": "Angola"}, {"code": "AI", "name": "Anguilla"}, {"code": "AQ", "name": "Antarctica"}, {"code": "AG", "name": "Antigua and Barbuda"}, {"code": "AR", "name": "Argentina"}, {"code": "AM", "name": "Armenia"}, {"code": "AW", "name": "Aruba"}, {"code": "AU", "name": "Australia"}, {"code": "AT", "name": "Austria"}, {"code": "AZ", "name": "Azerbaijan"}, {"code": "BS", "name": "Bahamas"}, {"code": "BH", "name": "Bahrain"}, {"code": "BD", "name": "Bangladesh"}, {"code": "BB", "name": "Barbados"}, {"code": "BY", "name": "Belarus"}, {"code": "BE", "name": "Belgium"}, {"code": "BZ", "name": "Belize"}, {"code": "BJ", "name": "Benin"}, {"code": "BM", "name": "Bermuda"}, {"code": "BT", "name": "Bhutan"}, {"code": "BO", "name": "Bolivia, Plurinational State of"}, {"code": "BQ", "name": "Bonaire, Sint Eustatius and Saba"}, {"code": "BA", "name": "Bosnia and Herzegovina"}, {"code": "BW", "name": "Botswana"}, {"code": "BV", "name": "Bouvet Island"}, {"code": "BR", "name": "Brazil"}, {"code": "IO", "name": "British Indian Ocean Territory"}, {"code": "BN", "name": "Brunei Darussalam"}, {"code": "BG", "name": "Bulgaria"}, {"code": "BF", "name": "Burkina Faso"}, {"code": "BI", "name": "Burundi"}, {"code": "CV", "name": "Cabo Verde"}, {"code": "KH", "name": "Cambodia"}, {"code": "CM", "name": "Cameroon"}, {"code": "CA", "name": "Canada"}, {"code": "KY", "name": "Cayman Islands"}, {"code": "CF", "name": "Central African Republic"}, {"code": "TD", "name": "Chad"}, {"code": "CL", "name": "Chile"}, {"code": "CN", "name": "China"}, {"code": "CX", "name": "Christmas Island"}, {"code": "CC", "name": "Cocos (Keeling) Islands"}, {"code": "CO", "name": "Colombia"}, {"code": "KM", "name": "Comoros"}, {"code": "CG", "name": "Congo"}, {"code": "CD", "name": "Congo, The Democratic Republic of the"}, {"code": "CK", "name": "Cook Islands"}, {"code": "CR", "name": "Costa Rica"}, {"code": "HR", "name": "Croatia"}, {"code": "CU", "name": "Cuba"}, {"code": "CW", "name": "Curaçao"}, {"code": "CY", "name": "Cyprus"}, {"code": "CZ", "name": "Czechia"}, {"code": "CI", "name": "Côte d'Ivoire"}, {"code": "DK", "name": "Denmark"}, {"code": "DJ", "name": "Djibouti"}, {"code": "DM", "name": "Dominica"}, {"code": "DO", "name": "Dominican Republic"}, {"code": "EC", "name": "Ecuador"}, {"code": "EG", "name": "Egypt"}, {"code": "SV", "name": "El Salvador"}, {"code": "GQ", "name": "Equatorial Guinea"}, {"code": "ER", "name": "Eritrea"}, {"code": "EE", "name": "Estonia"}, {"code": "SZ", "name": "Eswatini"}, {"code": "ET", "name": "Ethiopia"}, {"code": "FK", "name": "Falkland Islands (Malvinas)"}, {"code": "FO", "name": "Faroe Islands"}, {"code": "FJ", "name": "Fiji"}, {"code": "FI", "name": "Finland"}, {"code": "FR", "name": "France"}, {"code": "GF", "name": "French Guiana"}, {"code": "PF", "name": "French Polynesia"}, {"code": "TF", "name": "French Southern Territories"}, {"code": "GA", "name": "Gabon"}, {"code": "GM", "name": "Gambia"}, {"code": "GE", "name": "Georgia"}, {"code": "DE", "name": "Germany"}, {"code": "GH", "name": "Ghana"}, {"code": "GI", "name": "Gibraltar"}, {"code": "GR", "name": "Greece"}, {"code": "GL", "name": "Greenland"}, {"code": "GD", "name": "Grenada"}, {"code": "GP", "name": "Guadeloupe"}, {"code": "GU", "name": "Guam"}, {"code": "GT", "name": "Guatemala"}, {"code": "GG", "name": "Guernsey"}, {"code": "GN", "name": "Guinea"}, {"code": "GW", "name": "Guinea-Bissau"}, {"code": "GY", "name": "Guyana"}, {"code": "HT", "name": "Haiti"}, {"code": "HM", "name": "Heard Island and McDonald Islands"}, {"code": "VA", "name": "Holy See (Vatican City State)"}, {"code": "HN", "name": "Honduras"}, {"code": "HK", "name": "Hong Kong"}, {"code": "HU", "name": "Hungary"}, {"code": "IS", "name": "Iceland"}, {"code": "IN", "name": "India"}, {"code": "ID", "name": "Indonesia"}, {"code": "IR", "name": "Iran, Islamic Republic of"}, {"code": "IQ", "name": "Iraq"}, {"code": "IE", "name": "Ireland"}, {"code": "IM", "name": "Isle of Man"}, {"code": "IL", "name": "Israel"}, {"code": "IT", "name": "Italy"}, {"code": "JM", "name": "Jamaica"}, {"code": "JP", "name": "Japan"}, {"code": "JE", "name": "Jersey"}, {"code": "JO", "name": "Jordan"}, {"code": "KZ", "name": "Kazakhstan"}, {"code": "KE", "name": "Kenya"}, {"code": "KI", "name": "Kiribati"}, {"code": "KP", "name": "Korea, Democratic People's Republic of"}, {"code": "KR", "name": "Korea, Republic of"}, {"code": "KW", "name": "Kuwait"}, {"code": "KG", "name": "Kyrgyzstan"}, {"code": "LA", "name": "Lao People's Democratic Republic"}, {"code": "LV", "name": "Latvia"}, {"code": "LB", "name": "Lebanon"}, {"code": "LS", "name": "Lesotho"}, {"code": "LR", "name": "Liberia"}, {"code": "LY", "name": "Libya"}, {"code": "LI", "name": "Liechtenstein"}, {"code": "LT", "name": "Lithuania"}, {"code": "LU", "name": "Luxembourg"}, {"code": "MO", "name": "Macao"}, {"code": "MG", "name": "Madagascar"}, {"code": "MW", "name": "Malawi"}, {"code": "MY", "name": "Malaysia"}, {"code": "MV", "name": "Maldives"}, {"code": "ML", "name": "Mali"}, {"code": "MT", "name": "Malta"}, {"code": "MH", "name": "Marshall Islands"}, {"code": "MQ", "name": "Martinique"}, {"code": "MR", "name": "Mauritania"}, {"code": "MU", "name": "Mauritius"}, {"code": "YT", "name": "Mayotte"}, {"code": "MX", "name": "Mexico"}, {"code": "FM", "name": "Micronesia, Federated States of"}, {"code": "MD", "name": "Moldova, Republic of"}, {"code": "MC", "name": "Monaco"}, {"code": "MN", "name": "Mongolia"}, {"code": "ME", "name": "Montenegro"}, {"code": "MS", "name": "Montserrat"}, {"code": "MA", "name": "Morocco"}, {"code": "MZ", "name": "Mozambique"}, {"code": "MM", "name": "Myanmar"}, {"code": "NA", "name": "Namibia"}, {"code": "NR", "name": "Nauru"}, {"code": "NP", "name": "Nepal"}, {"code": "NL", "name": "Netherlands"}, {"code": "NC", "name": "New Caledonia"}, {"code": "NZ", "name": "New Zealand"}, {"code": "NI", "name": "Nicaragua"}, {"code": "NE", "name": "Niger"}, {"code": "NG", "name": "Nigeria"}, {"code": "NU", "name": "Niue"}, {"code": "NF", "name": "Norfolk Island"}, {"code": "MK", "name": "North Macedonia"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "NO", "name": "Norway"}, {"code": "OM", "name": "Oman"}, {"code": "PK", "name": "Pakistan"}, {"code": "PW", "name": "Palau"}, {"code": "PS", "name": "Palestine, State of"}, {"code": "PA", "name": "Panama"}, {"code": "PG", "name": "Papua New Guinea"}, {"code": "PY", "name": "Paraguay"}, {"code": "PE", "name": "Peru"}, {"code": "PH", "name": "Philippines"}, {"code": "PN", "name": "Pitcairn"}, {"code": "PL", "name": "Poland"}, {"code": "PT", "name": "Portugal"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "QA", "name": "Qatar"}, {"code": "RO", "name": "Romania"}, {"code": "RU", "name": "Russian Federation"}, {"code": "RW", "name": "Rwanda"}, {"code": "RE", "name": "Réunion"}, {"code": "BL", "name": "Saint Barthélemy"}, {"code": "SH", "name": "Saint Helena, Ascension and Tristan da Cunha"}, {"code": "KN", "name": "Saint Kitts and Nevis"}, {"code": "LC", "name": "Saint Lucia"}, {"code": "MF", "name": "Saint Martin (French part)"}, {"code": "PM", "name": "Saint Pierre and Miquelon"}, {"code": "VC", "name": "Saint Vincent and the Grenadines"}, {"code": "WS", "name": "Samoa"}, {"code": "SM", "name": "San Marino"}, {"code": "ST", "name": "Sao Tome and Principe"}, {"code": "SA", "name": "Saudi Arabia"}, {"code": "SN", "name": "Senegal"}, {"code": "RS", "name": "Serbia"}, {"code": "SC", "name": "Seychelles"}, {"code": "SL", "name": "Sierra Leone"}, {"code": "SG", "name": "Singapore"}, {"code": "SX", "name": "Sint Maarten (Dutch part)"}, {"code": "SK", "name": "Slovakia"}, {"code": "SI", "name": "Slovenia"}, {"code": "SB", "name": "Solomon Islands"}, {"code": "SO", "name": "Somalia"}, {"code": "ZA", "name": "South Africa"}, {"code": "GS", "name": "South Georgia and the South Sandwich Islands"}, {"code": "SS", "name": "South Sudan"}, {"code": "ES", "name": "Spain"}, {"code": "LK", "name": "Sri Lanka"}, {"code": "SD", "name": "Sudan"}, {"code": "SR", "name": "Suriname"}, {"code": "SJ", "name": "Svalbard and Jan Mayen"}, {"code": "SE", "name": "Sweden"}, {"code": "CH", "name": "Switzerland"}, {"code": "SY", "name": "Syrian Arab Republic"}, {"code": "TW", "name": "Taiwan, Province of China"}, {"code": "TJ", "name": "Tajikistan"}, {"code": "TZ", "name": "Tanzania, United Republic of"}, {"code": "TH", "name": "Thailand"}, {"code": "TL", "name": "Timor-Leste"}, {"code": "TG", "name": "Togo"}, {"code": "TK", "name": "Tokelau"}, {"code": "TO", "name": "Tonga"}, {"code": "TT", "name": "Trinidad and Tobago"}, {"code": "TN", "name": "Tunisia"}, {"code": "TR", "name": "Turkey"}, {"code": "TM", "name": "Turkmenistan"}, {"code": "TC", "name": "Turks and Caicos Islands"}, {"code": "TV", "name": "Tuvalu"}, {"code": "UG", "name": "Uganda"}, {"code": "UA", "name": "Ukraine"}, {"code": "AE", "name": "United Arab Emirates"}, {"code": "GB", "name": "United Kingdom"}, {"code": "US", "name": "United States"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UY", "name": "Uruguay"}, {"code": "UZ", "name": "Uzbekistan"}, {"code": "VU", "name": "Vanuatu"}, {"code": "VE", "name": "Venezuela, Bolivarian Republic of"}, {"code": "VN", "name": "Viet Nam"}, {"code": "VG", "name": "Virgin Islands, British"}, {"code": "VI", "name": "Virgin Islands, U.S."}, {"code": "WF", "name": "Wallis and Futuna"}, {"code": "EH", "name": "Western Sahara"}, {"code": "YE", "name": "Yemen"}, {"code": "ZM", "name": "Zambia"}, {"code": "ZW", "name": "Zimbabwe"}, {"code": "AX", "name": "Åland Islands"}];
+
+            // Subdivisions for common address flows
+            const SUBDIVISIONS = {"US": [{"code": "AL", "name": "Alabama"}, {"code": "AK", "name": "Alaska"}, {"code": "AS", "name": "American Samoa"}, {"code": "AZ", "name": "Arizona"}, {"code": "AR", "name": "Arkansas"}, {"code": "CA", "name": "California"}, {"code": "CO", "name": "Colorado"}, {"code": "CT", "name": "Connecticut"}, {"code": "DE", "name": "Delaware"}, {"code": "DC", "name": "District of Columbia"}, {"code": "FL", "name": "Florida"}, {"code": "GA", "name": "Georgia"}, {"code": "GU", "name": "Guam"}, {"code": "HI", "name": "Hawaii"}, {"code": "ID", "name": "Idaho"}, {"code": "IL", "name": "Illinois"}, {"code": "IN", "name": "Indiana"}, {"code": "IA", "name": "Iowa"}, {"code": "KS", "name": "Kansas"}, {"code": "KY", "name": "Kentucky"}, {"code": "LA", "name": "Louisiana"}, {"code": "ME", "name": "Maine"}, {"code": "MD", "name": "Maryland"}, {"code": "MA", "name": "Massachusetts"}, {"code": "MI", "name": "Michigan"}, {"code": "MN", "name": "Minnesota"}, {"code": "MS", "name": "Mississippi"}, {"code": "MO", "name": "Missouri"}, {"code": "MT", "name": "Montana"}, {"code": "NE", "name": "Nebraska"}, {"code": "NV", "name": "Nevada"}, {"code": "NH", "name": "New Hampshire"}, {"code": "NJ", "name": "New Jersey"}, {"code": "NM", "name": "New Mexico"}, {"code": "NY", "name": "New York"}, {"code": "NC", "name": "North Carolina"}, {"code": "ND", "name": "North Dakota"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "OH", "name": "Ohio"}, {"code": "OK", "name": "Oklahoma"}, {"code": "OR", "name": "Oregon"}, {"code": "PA", "name": "Pennsylvania"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "RI", "name": "Rhode Island"}, {"code": "SC", "name": "South Carolina"}, {"code": "SD", "name": "South Dakota"}, {"code": "TN", "name": "Tennessee"}, {"code": "TX", "name": "Texas"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UT", "name": "Utah"}, {"code": "VT", "name": "Vermont"}, {"code": "VI", "name": "Virgin Islands"}, {"code": "VA", "name": "Virginia"}, {"code": "WA", "name": "Washington"}, {"code": "WV", "name": "West Virginia"}, {"code": "WI", "name": "Wisconsin"}, {"code": "WY", "name": "Wyoming"}], "CA": [{"code": "AB", "name": "Alberta"}, {"code": "BC", "name": "British Columbia"}, {"code": "MB", "name": "Manitoba"}, {"code": "NB", "name": "New Brunswick"}, {"code": "NL", "name": "Newfoundland and Labrador"}, {"code": "NT", "name": "Northwest Territories"}, {"code": "NS", "name": "Nova Scotia"}, {"code": "NU", "name": "Nunavut"}, {"code": "ON", "name": "Ontario"}, {"code": "PE", "name": "Prince Edward Island"}, {"code": "QC", "name": "Quebec"}, {"code": "SK", "name": "Saskatchewan"}, {"code": "YT", "name": "Yukon Territory"}]};
+
+            const countryEl = document.getElementById('address-country');
+            const regionSelect = document.getElementById('address-region-select');
+            const regionText = document.getElementById('address-region-text');
+            const regionLabel = document.getElementById('region-label');
+            const postalLabel = document.getElementById('postal-label');
+
+            if (!countryEl || !regionSelect || !regionText || !regionLabel || !postalLabel) return;
+
+            // Build country options
+            countryEl.innerHTML = '<option value="">Select a country</option>' +
+                COUNTRIES.map(c => `<option value="${c.code}">${c.name}</option>`).join('');
+
+            // Default to US if empty (common for this form); otherwise leave blank.
+            if (!countryEl.value) countryEl.value = 'US';
+
+            function setRegionMode(countryCode) {
+                const subs = SUBDIVISIONS[countryCode] || null;
+
+                // Label tweaks
+                if (countryCode === 'US') {
+                    regionLabel.textContent = 'State / Territory *';
+                    postalLabel.textContent = 'ZIP Code *';
+                } else if (countryCode === 'CA') {
+                    regionLabel.textContent = 'Province / Territory *';
+                    postalLabel.textContent = 'Postal Code *';
+                } else {
+                    regionLabel.textContent = 'State / Province / Region *';
+                    postalLabel.textContent = 'Postal / ZIP Code *';
+                }
+
+                if (subs && subs.length) {
+                    // Use select
+                    regionSelect.style.display = '';
+                    regionText.style.display = 'none';
+                    regionText.value = '';
+
+                    regionSelect.innerHTML = '<option value="">Select</option>' +
+                        subs.map(s => `<option value="${s.code}">${s.name}</option>`).join('');
+
+                    regionSelect.required = true;
+                    regionText.required = false;
+                } else {
+                    // Use text input
+                    regionSelect.style.display = 'none';
+                    regionText.style.display = '';
+                    regionSelect.value = '';
+                    regionSelect.required = false;
+                    regionText.required = true;
+                }
+            }
+
+            countryEl.addEventListener('change', () => setRegionMode(countryEl.value));
+            setRegionMode(countryEl.value);
+        }
+
+        function getAddressModel() {
+            const countryEl = document.getElementById('address-country');
+            const regionSelect = document.getElementById('address-region-select');
+            const regionText = document.getElementById('address-region-text');
+
+            const countryCode = (countryEl?.value || '').trim();
+            const countryName = countryEl?.selectedOptions?.[0]?.textContent || '';
+
+            const usingSelect = regionSelect && regionSelect.style.display !== 'none';
+            const regionCode = usingSelect ? (regionSelect.value || '').trim() : '';
+            const region = usingSelect
+                ? (regionSelect.selectedOptions?.[0]?.textContent || '').trim()
+                : (regionText?.value || '').trim();
+
+            return {
+                addressLine1: (document.getElementById('address-line1')?.value || '').trim(),
+                addressLine2: (document.getElementById('address-line2')?.value || '').trim(),
+                city: (document.getElementById('address-city')?.value || '').trim(),
+                region,
+                regionCode,
+                postalCode: (document.getElementById('address-postal')?.value || '').trim(),
+                countryCode,
+                countryName
+            };
+        }
+
+        function formatBusinessAddress(addr) {
+            const lines = [
+                addr.addressLine1,
+                addr.addressLine2,
+                [addr.city, addr.regionCode || addr.region, addr.postalCode].filter(Boolean).join(', ').replace(', ,', ',').trim(),
+                addr.countryName || addr.countryCode
+            ].filter(Boolean);
+
+            return lines.join('
+');
+        }
+
         function setupPage2Validation() {
-            const name = document.getElementById('company-name');
-            const address = document.getElementById('business-address');
             const nextBtn = document.getElementById('page2-next-btn');
-            if (!name || !address || !nextBtn) return;
+            if (!nextBtn) return;
+
+            const watchedIds = [
+                'company-name',
+                'address-line1',
+                'address-line2',
+                'address-city',
+                'address-region-select',
+                'address-region-text',
+                'address-postal',
+                'address-country'
+            ];
+
+            const watched = watchedIds
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
 
             function validate() {
-                const ok = name.value.trim().length > 1 && address.value.trim().length > 5;
+                const companyName = (document.getElementById('company-name')?.value || '').trim();
+                const addr = getAddressModel();
+
+                const regionOk = addr.region.trim().length > 0;
+                const ok =
+                    companyName.length > 1 &&
+                    addr.addressLine1.length > 3 &&
+                    addr.city.length > 1 &&
+                    regionOk &&
+                    addr.postalCode.length > 2 &&
+                    addr.countryCode.length === 2;
+
                 nextBtn.disabled = !ok;
             }
+
+            watched.forEach(el => el.addEventListener('input', validate));
+            watched.forEach(el => el.addEventListener('change', validate));
+            validate();
+        }
 
             name.addEventListener('input', validate);
             address.addEventListener('input', validate);
@@ -934,13 +1113,25 @@
         }
 
         function completePage2() {
-            const companyName = document.getElementById('company-name').value.trim();
-            const businessAddress = document.getElementById('business-address').value.trim();
-            
-            if (!companyName || !businessAddress) {
+            const companyName = (document.getElementById('company-name')?.value || '').trim();
+            const addr = getAddressModel();
+
+            const missing = [];
+            if (!companyName) missing.push('Legal Company Name');
+            if (!addr.addressLine1) missing.push('Address Line 1');
+            if (!addr.city) missing.push('City / Locality');
+            if (!addr.region) missing.push('State / Province / Region');
+            if (!addr.postalCode) missing.push('Postal / ZIP Code');
+            if (!addr.countryCode) missing.push('Country');
+
+            if (missing.length) {
                 showMessage(2, 'Please fill in all required fields.', 'error');
                 return;
             }
+
+            completedPages.add(2);
+            goToPage(3);
+        }
             
             completedPages.add(2);
             goToPage(3);
@@ -1086,7 +1277,15 @@
                 agreementType: agreementType,
                 email: verifiedEmail,
                 companyName: document.getElementById('company-name').value,
-                businessAddress: document.getElementById('business-address').value,
+                addressLine1: (document.getElementById('address-line1')?.value || ''),
+                addressLine2: (document.getElementById('address-line2')?.value || ''),
+                city: (document.getElementById('address-city')?.value || ''),
+                region: getAddressModel().region,
+                regionCode: getAddressModel().regionCode,
+                postalCode: (document.getElementById('address-postal')?.value || ''),
+                countryCode: getAddressModel().countryCode,
+                countryName: getAddressModel().countryName,
+                businessAddress: formatBusinessAddress(getAddressModel()),
                 signatoryName: document.getElementById('signatory-name').value,
                 signatoryTitle: document.getElementById('signatory-title').value,
                 digitalSignature: document.getElementById('digital-signature').value,
@@ -1151,7 +1350,7 @@
             window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
         }
 
-        
+
         function loadAgreementContent() {
             let content = '';
             
