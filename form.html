@@ -1377,6 +1377,28 @@ label {
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
-    </script>
+    
+<script>
+function updateExistingAgreementVisibility() {
+    const section = document.getElementById('existing-agreement-section');
+    if (!section) return;
+    const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
+    const isOnVerificationPage = currentPage === 1;
+    section.style.display = (hasAgreement && hasAgreement.value === 'yes' && isOnVerificationPage)
+        ? 'block'
+        : 'none';
+}
+
+document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
+    r.addEventListener('change', updateExistingAgreementVisibility);
+});
+
+const originalGoToPage = goToPage;
+goToPage = function(page) {
+    originalGoToPage(page);
+    updateExistingAgreementVisibility();
+};
+</script>
+</script>
 </body>
 </html>
