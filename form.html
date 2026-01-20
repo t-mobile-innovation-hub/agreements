@@ -1378,8 +1378,8 @@ label {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
     
-<script>
-function updateExistingAgreementVisibility() {
+
+            function updateExistingAgreementVisibility() {
     const section = document.getElementById('existing-agreement-section');
     if (!section) return;
     const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
@@ -1398,7 +1398,6 @@ goToPage = function(page) {
     originalGoToPage(page);
     updateExistingAgreementVisibility();
 };
-</script>
 </script>
 </body>
 </html>
