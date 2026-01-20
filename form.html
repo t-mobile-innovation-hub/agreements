@@ -531,7 +531,9 @@ label {
                 letter-spacing: 14px;
             }
         }
-    </style>
+    .req-star{font-weight:700;margin-left:4px}
+.req-star.hidden{display:none}
+</style>
 </head>
 <body>
     <div class="container">
@@ -576,7 +578,7 @@ label {
             <div class="message" id="page1-message"></div>
 
             <div class="form-group">
-                <label for="email">Enter Work Email<span class="required">*</span></label>
+                <label for="email">Enter Work Email<span class="req-star">*</span></label>
                 <input type="email" id="email" placeholder="your.email@company.com" required>
                 <small>We'll send a verification code to this address</small>
             </div>
@@ -585,7 +587,7 @@ label {
 
             <div id="code-section" style="display: none; margin-top: 30px;">
                 <div class="form-group">
-                    <label for="otp">Verification Code <span class="required">*</span></label>
+                    <label for="otp">Verification Code <span class="req-star">*</span></label>
                     <input
                         id="otp"
                         name="otp"
@@ -630,12 +632,12 @@ label {
             <div class="message" id="page2-message"></div>
 
             <div class="form-group">
-                <label for="company-name">Legal Company Name <span class="required">*</span></label>
+                <label for="company-name">Legal Company Name <span class="req-star">*</span></label>
                 <input type="text" id="company-name" required>
             </div>
 
                         <div class="form-group">
-                <label for="address-line1">Address Line 1 <span class="required">*</span></label>
+                <label for="address-line1">Address Line 1 <span class="req-star">*</span></label>
                 <input type="text" id="address-line1" autocomplete="address-line1" required>
             </div>
 
@@ -646,12 +648,12 @@ label {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="address-city">City / Locality <span class="required">*</span></label>
+                    <label for="address-city">City / Locality <span class="req-star">*</span></label>
                     <input type="text" id="address-city" autocomplete="address-level2" required>
                 </div>
 
                 <div class="form-group" id="region-group">
-                    <label for="address-region-text" id="region-label">State / Province / Region <span class="required">*</span></label>
+                    <label for="address-region-text" id="region-label">State / Province / Region <span class="req-star">*</span></label>
 
                     <select id="address-region-select" aria-label="State or province" style="display:none;"></select>
                     <input type="text" id="address-region-text" autocomplete="address-level1" required>
@@ -660,12 +662,12 @@ label {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="address-postal" id="postal-label">Postal / ZIP Code <span class="required">*</span></label>
+                    <label for="address-postal" id="postal-label">Postal / ZIP Code <span class="req-star">*</span></label>
                     <input type="text" id="address-postal" autocomplete="postal-code" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="address-country">Country <span class="required">*</span></label>
+                    <label for="address-country">Country <span class="req-star">*</span></label>
                     <select id="address-country" autocomplete="country" required></select>
                 </div>
             </div>
@@ -692,7 +694,7 @@ label {
             <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
                 <input type="checkbox" id="agreement-reviewed" required>
                 <label for="agreement-reviewed">
-                    I have reviewed and hereby accept the agreement terms. <span class="required">*</span>
+                    I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
                 </label>
             </div>
 
@@ -709,17 +711,17 @@ label {
             <div class="message" id="page4-message"></div>
 
             <div class="form-group">
-                <label for="signatory-name">Name <span class="required">*</span></label>
+                <label for="signatory-name">Name <span class="req-star">*</span></label>
                 <input type="text" id="signatory-name" required>
             </div>
 
             <div class="form-group">
-                <label for="signatory-title">Title <span class="required">*</span></label>
+                <label for="signatory-title">Title <span class="req-star">*</span></label>
                 <input type="text" id="signatory-title" required>
             </div>
 
             <div class="form-group">
-                <label for="digital-signature">Digital Signature (Enter Name) <span class="required">*</span></label>
+                <label for="digital-signature">Digital Signature (Enter Name) <span class="req-star">*</span></label>
                 <input type="text" id="digital-signature" required>
                 <small>Entering your name serves as your digital signature</small>
             </div>
@@ -766,7 +768,37 @@ label {
             GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com']
         };
 
-        let verifiedEmail = '';
+        
+
+// Required-star toggle: remove asterisk entirely when not required
+function setFieldRequired(fieldId, isRequired) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.required = !!isRequired;
+        if (!isRequired) {
+            // clear validity UI if it was previously required
+            field.setCustomValidity('');
+        }
+    }
+    // Try to find the label associated with this field
+    const label = document.querySelector(`label[for="${fieldId}"]`);
+    if (!label) return;
+
+    let star = label.querySelector('.req-star');
+    if (isRequired) {
+        if (!star) {
+            star = document.createElement('span');
+            star.className = 'req-star';
+            star.textContent = '*';
+            label.appendChild(star);
+        }
+        star.classList.remove('hidden');
+    } else {
+        if (star) star.classList.add('hidden');
+    }
+}
+
+let verifiedEmail = '';
         let otpVerified = false;
         let agreementId = null;
         let securityToken = null;
@@ -774,44 +806,50 @@ label {
         let completedPages = new Set();
         let currentPage = 1;
 
-// Existing Agreement visibility (Page 2 only; dismiss after leaving Page 2)
+
+// Existing Agreement visibility (DOM-based; Page 2 only)
 let existingAgreementDismissed = false;
 
 function updateExistingAgreementVisibility() {
     const section = document.getElementById('existing-agreement-section');
     if (!section) return;
 
+    const page2 = document.querySelector('.form-page[data-page="2"]');
+    const page2Active = page2 && page2.classList.contains('active');
+
     const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
-    const shouldShowOnPage2 = (currentPage === 2);
-    const shouldShow = !existingAgreementDismissed
-        && shouldShowOnPage2
-        && hasAgreement
-        && hasAgreement.value === 'yes';
+    const shouldShow =
+        !existingAgreementDismissed &&
+        page2Active &&
+        hasAgreement &&
+        hasAgreement.value === 'yes';
 
     section.style.display = shouldShow ? 'block' : 'none';
 }
 
-// Dismiss permanently once user advances past Page 2 (i.e., leaves Page 2 to any other page)
-function dismissExistingAgreementIfLeavingPage2(nextPage) {
-    if (currentPage === 2 && nextPage !== 2) {
-        existingAgreementDismissed = true;
-    }
-}
+// Dismiss permanently once user leaves Page 2
+(function() {
+    const _goToPage = goToPage;
+    goToPage = function(page) {
+        const page2 = document.querySelector('.form-page[data-page="2"]');
+        const wasOnPage2 = page2 && page2.classList.contains('active');
+
+        _goToPage(page);
+
+        const nowOnPage2 = page2 && page2.classList.contains('active');
+        if (wasOnPage2 && !nowOnPage2) {
+            existingAgreementDismissed = true;
+        }
+
+        updateExistingAgreementVisibility();
+    };
+})();
 
 document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
     r.addEventListener('change', updateExistingAgreementVisibility);
 });
-
-// Wrap goToPage to keep behavior centralized
-(function() {
-    const _goToPage = goToPage;
-    goToPage = function(page) {
-        dismissExistingAgreementIfLeavingPage2(page);
-        _goToPage(page);
-        updateExistingAgreementVisibility();
-    };
-})();
 // End Existing Agreement visibility
+
 
 
 
