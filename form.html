@@ -175,8 +175,6 @@
             margin-bottom: 25px;
         }
 
-        
-
         .form-row {
             display: flex;
             gap: 12px;
@@ -193,7 +191,8 @@
                 gap: 0;
             }
         }
-label {
+
+        label {
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
@@ -607,34 +606,34 @@ label {
             </div>
         </div>
 
-        <!-- Existing Agreement Notice -->
-        <div class="existing-agreement-notice" id="existing-agreement-notice">
-            <h3>✓ Existing Agreement Found</h3>
-            <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
-            <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
-            <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
-            <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
-            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
-               class="btn-primary" 
-               style="text-decoration: none; display: inline-block; margin-top: 15px;" 
-               target="_blank">
-                Go to Intake Form
-            </a>
-            <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
-        </div>
-
         <!-- Page 2: Company Information -->
         <div class="page" id="page-2">
             <h2 class="page-title">Step 2: Company Information</h2>
             
             <div class="message" id="page2-message"></div>
 
+            <!-- Existing Agreement Notice -->
+            <div class="existing-agreement-notice" id="existing-agreement-notice">
+                <h3>✓ Existing Agreement Found</h3>
+                <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
+                <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
+                <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
+                <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
+                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+                   class="btn-primary" 
+                   style="text-decoration: none; display: inline-block; margin-top: 15px;" 
+                   target="_blank">
+                    Go to Intake Form
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
+            </div>
+
             <div class="form-group">
                 <label for="company-name">Legal Company Name <span class="required">*</span></label>
                 <input type="text" id="company-name" required>
             </div>
 
-                        <div class="form-group">
+            <div class="form-group">
                 <label for="address-line1">Address Line 1 <span class="required">*</span></label>
                 <input type="text" id="address-line1" autocomplete="address-line1" required>
             </div>
@@ -732,8 +731,6 @@ label {
 
         <!-- Success Page -->
         <div class="success-container" id="success-page">
-           <!-- <div class="success-icon">✓</div> 
-            <h2>Agreement successfully submitted.</h2> -->
             <p style="font-size: 18px; margin: 20px 0;">Thank you for signing the agreement.<br />You may now continue your intake request.</p>
             
             <div style="background: white; padding: 25px; border-radius: 5px; margin: 30px 0; text-align: left;">
@@ -773,53 +770,7 @@ label {
         let agreementType = 'Mutual NDA';
         let completedPages = new Set();
         let currentPage = 1;
-
-
-// Existing Agreement visibility (DOM-based; Page 2 only)
-let existingAgreementDismissed = false;
-
-function updateExistingAgreementVisibility() {
-    const section = document.getElementById('existing-agreement-section');
-    if (!section) return;
-
-    const page2 = document.querySelector('.form-page[data-page="2"]');
-    const page2Active = page2 && page2.classList.contains('active');
-
-    const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
-    const shouldShow =
-        !existingAgreementDismissed &&
-        page2Active &&
-        hasAgreement &&
-        hasAgreement.value === 'yes';
-
-    section.style.display = shouldShow ? 'block' : 'none';
-}
-
-// Dismiss permanently once user leaves Page 2
-(function() {
-    const _goToPage = goToPage;
-    goToPage = function(page) {
-        const page2 = document.querySelector('.form-page[data-page="2"]');
-        const wasOnPage2 = page2 && page2.classList.contains('active');
-
-        _goToPage(page);
-
-        const nowOnPage2 = page2 && page2.classList.contains('active');
-        if (wasOnPage2 && !nowOnPage2) {
-            existingAgreementDismissed = true;
-        }
-
-        updateExistingAgreementVisibility();
-    };
-})();
-
-document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
-    r.addEventListener('change', updateExistingAgreementVisibility);
-});
-// End Existing Agreement visibility
-
-
-
+        let existingAgreementDismissed = false;
 
         document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, 0);
@@ -962,10 +913,8 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
         }
 
         function setupAddressFields() {
-            // Country list (ISO 3166-1 alpha-2) generated at build time
             const COUNTRIES = [{"code": "AF", "name": "Afghanistan"}, {"code": "AL", "name": "Albania"}, {"code": "DZ", "name": "Algeria"}, {"code": "AS", "name": "American Samoa"}, {"code": "AD", "name": "Andorra"}, {"code": "AO", "name": "Angola"}, {"code": "AI", "name": "Anguilla"}, {"code": "AQ", "name": "Antarctica"}, {"code": "AG", "name": "Antigua and Barbuda"}, {"code": "AR", "name": "Argentina"}, {"code": "AM", "name": "Armenia"}, {"code": "AW", "name": "Aruba"}, {"code": "AU", "name": "Australia"}, {"code": "AT", "name": "Austria"}, {"code": "AZ", "name": "Azerbaijan"}, {"code": "BS", "name": "Bahamas"}, {"code": "BH", "name": "Bahrain"}, {"code": "BD", "name": "Bangladesh"}, {"code": "BB", "name": "Barbados"}, {"code": "BY", "name": "Belarus"}, {"code": "BE", "name": "Belgium"}, {"code": "BZ", "name": "Belize"}, {"code": "BJ", "name": "Benin"}, {"code": "BM", "name": "Bermuda"}, {"code": "BT", "name": "Bhutan"}, {"code": "BO", "name": "Bolivia, Plurinational State of"}, {"code": "BQ", "name": "Bonaire, Sint Eustatius and Saba"}, {"code": "BA", "name": "Bosnia and Herzegovina"}, {"code": "BW", "name": "Botswana"}, {"code": "BV", "name": "Bouvet Island"}, {"code": "BR", "name": "Brazil"}, {"code": "IO", "name": "British Indian Ocean Territory"}, {"code": "BN", "name": "Brunei Darussalam"}, {"code": "BG", "name": "Bulgaria"}, {"code": "BF", "name": "Burkina Faso"}, {"code": "BI", "name": "Burundi"}, {"code": "CV", "name": "Cabo Verde"}, {"code": "KH", "name": "Cambodia"}, {"code": "CM", "name": "Cameroon"}, {"code": "CA", "name": "Canada"}, {"code": "KY", "name": "Cayman Islands"}, {"code": "CF", "name": "Central African Republic"}, {"code": "TD", "name": "Chad"}, {"code": "CL", "name": "Chile"}, {"code": "CN", "name": "China"}, {"code": "CX", "name": "Christmas Island"}, {"code": "CC", "name": "Cocos (Keeling) Islands"}, {"code": "CO", "name": "Colombia"}, {"code": "KM", "name": "Comoros"}, {"code": "CG", "name": "Congo"}, {"code": "CD", "name": "Congo, The Democratic Republic of the"}, {"code": "CK", "name": "Cook Islands"}, {"code": "CR", "name": "Costa Rica"}, {"code": "HR", "name": "Croatia"}, {"code": "CU", "name": "Cuba"}, {"code": "CW", "name": "Curaçao"}, {"code": "CY", "name": "Cyprus"}, {"code": "CZ", "name": "Czechia"}, {"code": "CI", "name": "Côte d'Ivoire"}, {"code": "DK", "name": "Denmark"}, {"code": "DJ", "name": "Djibouti"}, {"code": "DM", "name": "Dominica"}, {"code": "DO", "name": "Dominican Republic"}, {"code": "EC", "name": "Ecuador"}, {"code": "EG", "name": "Egypt"}, {"code": "SV", "name": "El Salvador"}, {"code": "GQ", "name": "Equatorial Guinea"}, {"code": "ER", "name": "Eritrea"}, {"code": "EE", "name": "Estonia"}, {"code": "SZ", "name": "Eswatini"}, {"code": "ET", "name": "Ethiopia"}, {"code": "FK", "name": "Falkland Islands (Malvinas)"}, {"code": "FO", "name": "Faroe Islands"}, {"code": "FJ", "name": "Fiji"}, {"code": "FI", "name": "Finland"}, {"code": "FR", "name": "France"}, {"code": "GF", "name": "French Guiana"}, {"code": "PF", "name": "French Polynesia"}, {"code": "TF", "name": "French Southern Territories"}, {"code": "GA", "name": "Gabon"}, {"code": "GM", "name": "Gambia"}, {"code": "GE", "name": "Georgia"}, {"code": "DE", "name": "Germany"}, {"code": "GH", "name": "Ghana"}, {"code": "GI", "name": "Gibraltar"}, {"code": "GR", "name": "Greece"}, {"code": "GL", "name": "Greenland"}, {"code": "GD", "name": "Grenada"}, {"code": "GP", "name": "Guadeloupe"}, {"code": "GU", "name": "Guam"}, {"code": "GT", "name": "Guatemala"}, {"code": "GG", "name": "Guernsey"}, {"code": "GN", "name": "Guinea"}, {"code": "GW", "name": "Guinea-Bissau"}, {"code": "GY", "name": "Guyana"}, {"code": "HT", "name": "Haiti"}, {"code": "HM", "name": "Heard Island and McDonald Islands"}, {"code": "VA", "name": "Holy See (Vatican City State)"}, {"code": "HN", "name": "Honduras"}, {"code": "HK", "name": "Hong Kong"}, {"code": "HU", "name": "Hungary"}, {"code": "IS", "name": "Iceland"}, {"code": "IN", "name": "India"}, {"code": "ID", "name": "Indonesia"}, {"code": "IR", "name": "Iran, Islamic Republic of"}, {"code": "IQ", "name": "Iraq"}, {"code": "IE", "name": "Ireland"}, {"code": "IM", "name": "Isle of Man"}, {"code": "IL", "name": "Israel"}, {"code": "IT", "name": "Italy"}, {"code": "JM", "name": "Jamaica"}, {"code": "JP", "name": "Japan"}, {"code": "JE", "name": "Jersey"}, {"code": "JO", "name": "Jordan"}, {"code": "KZ", "name": "Kazakhstan"}, {"code": "KE", "name": "Kenya"}, {"code": "KI", "name": "Kiribati"}, {"code": "KP", "name": "Korea, Democratic People's Republic of"}, {"code": "KR", "name": "Korea, Republic of"}, {"code": "KW", "name": "Kuwait"}, {"code": "KG", "name": "Kyrgyzstan"}, {"code": "LA", "name": "Lao People's Democratic Republic"}, {"code": "LV", "name": "Latvia"}, {"code": "LB", "name": "Lebanon"}, {"code": "LS", "name": "Lesotho"}, {"code": "LR", "name": "Liberia"}, {"code": "LY", "name": "Libya"}, {"code": "LI", "name": "Liechtenstein"}, {"code": "LT", "name": "Lithuania"}, {"code": "LU", "name": "Luxembourg"}, {"code": "MO", "name": "Macao"}, {"code": "MG", "name": "Madagascar"}, {"code": "MW", "name": "Malawi"}, {"code": "MY", "name": "Malaysia"}, {"code": "MV", "name": "Maldives"}, {"code": "ML", "name": "Mali"}, {"code": "MT", "name": "Malta"}, {"code": "MH", "name": "Marshall Islands"}, {"code": "MQ", "name": "Martinique"}, {"code": "MR", "name": "Mauritania"}, {"code": "MU", "name": "Mauritius"}, {"code": "YT", "name": "Mayotte"}, {"code": "MX", "name": "Mexico"}, {"code": "FM", "name": "Micronesia, Federated States of"}, {"code": "MD", "name": "Moldova, Republic of"}, {"code": "MC", "name": "Monaco"}, {"code": "MN", "name": "Mongolia"}, {"code": "ME", "name": "Montenegro"}, {"code": "MS", "name": "Montserrat"}, {"code": "MA", "name": "Morocco"}, {"code": "MZ", "name": "Mozambique"}, {"code": "MM", "name": "Myanmar"}, {"code": "NA", "name": "Namibia"}, {"code": "NR", "name": "Nauru"}, {"code": "NP", "name": "Nepal"}, {"code": "NL", "name": "Netherlands"}, {"code": "NC", "name": "New Caledonia"}, {"code": "NZ", "name": "New Zealand"}, {"code": "NI", "name": "Nicaragua"}, {"code": "NE", "name": "Niger"}, {"code": "NG", "name": "Nigeria"}, {"code": "NU", "name": "Niue"}, {"code": "NF", "name": "Norfolk Island"}, {"code": "MK", "name": "North Macedonia"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "NO", "name": "Norway"}, {"code": "OM", "name": "Oman"}, {"code": "PK", "name": "Pakistan"}, {"code": "PW", "name": "Palau"}, {"code": "PS", "name": "Palestine, State of"}, {"code": "PA", "name": "Panama"}, {"code": "PG", "name": "Papua New Guinea"}, {"code": "PY", "name": "Paraguay"}, {"code": "PE", "name": "Peru"}, {"code": "PH", "name": "Philippines"}, {"code": "PN", "name": "Pitcairn"}, {"code": "PL", "name": "Poland"}, {"code": "PT", "name": "Portugal"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "QA", "name": "Qatar"}, {"code": "RO", "name": "Romania"}, {"code": "RU", "name": "Russian Federation"}, {"code": "RW", "name": "Rwanda"}, {"code": "RE", "name": "Réunion"}, {"code": "BL", "name": "Saint Barthélemy"}, {"code": "SH", "name": "Saint Helena, Ascension and Tristan da Cunha"}, {"code": "KN", "name": "Saint Kitts and Nevis"}, {"code": "LC", "name": "Saint Lucia"}, {"code": "MF", "name": "Saint Martin (French part)"}, {"code": "PM", "name": "Saint Pierre and Miquelon"}, {"code": "VC", "name": "Saint Vincent and the Grenadines"}, {"code": "WS", "name": "Samoa"}, {"code": "SM", "name": "San Marino"}, {"code": "ST", "name": "Sao Tome and Principe"}, {"code": "SA", "name": "Saudi Arabia"}, {"code": "SN", "name": "Senegal"}, {"code": "RS", "name": "Serbia"}, {"code": "SC", "name": "Seychelles"}, {"code": "SL", "name": "Sierra Leone"}, {"code": "SG", "name": "Singapore"}, {"code": "SX", "name": "Sint Maarten (Dutch part)"}, {"code": "SK", "name": "Slovakia"}, {"code": "SI", "name": "Slovenia"}, {"code": "SB", "name": "Solomon Islands"}, {"code": "SO", "name": "Somalia"}, {"code": "ZA", "name": "South Africa"}, {"code": "GS", "name": "South Georgia and the South Sandwich Islands"}, {"code": "SS", "name": "South Sudan"}, {"code": "ES", "name": "Spain"}, {"code": "LK", "name": "Sri Lanka"}, {"code": "SD", "name": "Sudan"}, {"code": "SR", "name": "Suriname"}, {"code": "SJ", "name": "Svalbard and Jan Mayen"}, {"code": "SE", "name": "Sweden"}, {"code": "CH", "name": "Switzerland"}, {"code": "SY", "name": "Syrian Arab Republic"}, {"code": "TW", "name": "Taiwan, Province of China"}, {"code": "TJ", "name": "Tajikistan"}, {"code": "TZ", "name": "Tanzania, United Republic of"}, {"code": "TH", "name": "Thailand"}, {"code": "TL", "name": "Timor-Leste"}, {"code": "TG", "name": "Togo"}, {"code": "TK", "name": "Tokelau"}, {"code": "TO", "name": "Tonga"}, {"code": "TT", "name": "Trinidad and Tobago"}, {"code": "TN", "name": "Tunisia"}, {"code": "TR", "name": "Turkey"}, {"code": "TM", "name": "Turkmenistan"}, {"code": "TC", "name": "Turks and Caicos Islands"}, {"code": "TV", "name": "Tuvalu"}, {"code": "UG", "name": "Uganda"}, {"code": "UA", "name": "Ukraine"}, {"code": "AE", "name": "United Arab Emirates"}, {"code": "GB", "name": "United Kingdom"}, {"code": "US", "name": "United States"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UY", "name": "Uruguay"}, {"code": "UZ", "name": "Uzbekistan"}, {"code": "VU", "name": "Vanuatu"}, {"code": "VE", "name": "Venezuela, Bolivarian Republic of"}, {"code": "VN", "name": "Viet Nam"}, {"code": "VG", "name": "Virgin Islands, British"}, {"code": "VI", "name": "Virgin Islands, U.S."}, {"code": "WF", "name": "Wallis and Futuna"}, {"code": "EH", "name": "Western Sahara"}, {"code": "YE", "name": "Yemen"}, {"code": "ZM", "name": "Zambia"}, {"code": "ZW", "name": "Zimbabwe"}, {"code": "AX", "name": "Åland Islands"}];
 
-            // Subdivisions for common address flows
             const SUBDIVISIONS = {"US": [{"code": "AL", "name": "Alabama"}, {"code": "AK", "name": "Alaska"}, {"code": "AS", "name": "American Samoa"}, {"code": "AZ", "name": "Arizona"}, {"code": "AR", "name": "Arkansas"}, {"code": "CA", "name": "California"}, {"code": "CO", "name": "Colorado"}, {"code": "CT", "name": "Connecticut"}, {"code": "DE", "name": "Delaware"}, {"code": "DC", "name": "District of Columbia"}, {"code": "FL", "name": "Florida"}, {"code": "GA", "name": "Georgia"}, {"code": "GU", "name": "Guam"}, {"code": "HI", "name": "Hawaii"}, {"code": "ID", "name": "Idaho"}, {"code": "IL", "name": "Illinois"}, {"code": "IN", "name": "Indiana"}, {"code": "IA", "name": "Iowa"}, {"code": "KS", "name": "Kansas"}, {"code": "KY", "name": "Kentucky"}, {"code": "LA", "name": "Louisiana"}, {"code": "ME", "name": "Maine"}, {"code": "MD", "name": "Maryland"}, {"code": "MA", "name": "Massachusetts"}, {"code": "MI", "name": "Michigan"}, {"code": "MN", "name": "Minnesota"}, {"code": "MS", "name": "Mississippi"}, {"code": "MO", "name": "Missouri"}, {"code": "MT", "name": "Montana"}, {"code": "NE", "name": "Nebraska"}, {"code": "NV", "name": "Nevada"}, {"code": "NH", "name": "New Hampshire"}, {"code": "NJ", "name": "New Jersey"}, {"code": "NM", "name": "New Mexico"}, {"code": "NY", "name": "New York"}, {"code": "NC", "name": "North Carolina"}, {"code": "ND", "name": "North Dakota"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "OH", "name": "Ohio"}, {"code": "OK", "name": "Oklahoma"}, {"code": "OR", "name": "Oregon"}, {"code": "PA", "name": "Pennsylvania"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "RI", "name": "Rhode Island"}, {"code": "SC", "name": "South Carolina"}, {"code": "SD", "name": "South Dakota"}, {"code": "TN", "name": "Tennessee"}, {"code": "TX", "name": "Texas"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UT", "name": "Utah"}, {"code": "VT", "name": "Vermont"}, {"code": "VI", "name": "Virgin Islands"}, {"code": "VA", "name": "Virginia"}, {"code": "WA", "name": "Washington"}, {"code": "WV", "name": "West Virginia"}, {"code": "WI", "name": "Wisconsin"}, {"code": "WY", "name": "Wyoming"}], "CA": [{"code": "AB", "name": "Alberta"}, {"code": "BC", "name": "British Columbia"}, {"code": "MB", "name": "Manitoba"}, {"code": "NB", "name": "New Brunswick"}, {"code": "NL", "name": "Newfoundland and Labrador"}, {"code": "NT", "name": "Northwest Territories"}, {"code": "NS", "name": "Nova Scotia"}, {"code": "NU", "name": "Nunavut"}, {"code": "ON", "name": "Ontario"}, {"code": "PE", "name": "Prince Edward Island"}, {"code": "QC", "name": "Quebec"}, {"code": "SK", "name": "Saskatchewan"}, {"code": "YT", "name": "Yukon Territory"}]};
 
             const countryEl = document.getElementById('address-country');
@@ -976,17 +925,14 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
 
             if (!countryEl || !regionSelect || !regionText || !regionLabel || !postalLabel) return;
 
-            // Build country options
             countryEl.innerHTML = '<option value="">Select a country</option>' +
                 COUNTRIES.map(c => `<option value="${c.code}">${c.name}</option>`).join('');
 
-            // Default to US if empty (common for this form); otherwise leave blank.
             if (!countryEl.value) countryEl.value = 'US';
 
             function setRegionMode(countryCode) {
                 const subs = SUBDIVISIONS[countryCode] || null;
 
-                // Label tweaks
                 if (countryCode === 'US') {
                     regionLabel.textContent = 'State / Territory *';
                     postalLabel.textContent = 'ZIP Code *';
@@ -999,7 +945,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                 }
 
                 if (subs && subs.length) {
-                    // Use select
                     regionSelect.style.display = '';
                     regionText.style.display = 'none';
                     regionText.value = '';
@@ -1010,7 +955,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                     regionSelect.required = true;
                     regionText.required = false;
                 } else {
-                    // Use text input
                     regionSelect.style.display = 'none';
                     regionText.style.display = '';
                     regionSelect.value = '';
@@ -1100,7 +1044,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             validate();
         }
 
-
         function setupPage3Validation() {
             const reviewed = document.getElementById('agreement-reviewed');
             const nextBtn = document.getElementById('page3-next-btn');
@@ -1139,7 +1082,23 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             validate();
         }
 
+        function updateExistingAgreementVisibility() {
+            const notice = document.getElementById('existing-agreement-notice');
+            if (!notice) return;
+
+            const onPage2 = currentPage === 2;
+            const hasData = notice.classList.contains('show') || notice.dataset.found === 'true';
+            
+            if (hasData && !existingAgreementDismissed && onPage2) {
+                notice.classList.add('show');
+            } else {
+                notice.classList.remove('show');
+            }
+        }
+
         function goToPage(pageNumber) {
+            const wasOnPage2 = currentPage === 2;
+            
             currentPage = pageNumber;
             clearAllMessages();
             window.scrollTo(0, 0);
@@ -1151,7 +1110,12 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                 }
             });
 
+            if (wasOnPage2 && pageNumber !== 2) {
+                existingAgreementDismissed = true;
+            }
+
             updateProgressIndicator();
+            updateExistingAgreementVisibility();
         }
 
         function completePage2() {
@@ -1285,10 +1249,13 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                 const data = await response.json();
 
                 if (data.hasExisting) {
+                    const notice = document.getElementById('existing-agreement-notice');
                     document.getElementById('existing-agreement-id').textContent = data.agreementId || 'N/A';
                     document.getElementById('existing-agreement-type').textContent = data.agreementType || agreementType;
                     document.getElementById('existing-agreement-date').textContent = data.completionDate ? new Date(data.completionDate).toLocaleDateString() : 'N/A';
-                    document.getElementById('existing-agreement-notice').classList.add('show');
+                    notice.dataset.found = 'true';
+                    notice.classList.add('show');
+                    updateExistingAgreementVisibility();
                 }
             } catch (error) {
                 console.error('Error checking existing agreement:', error);
@@ -1381,13 +1348,11 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             document.getElementById('success-agreement-id').textContent = agreementId;
             document.getElementById('success-email').textContent = verifiedEmail;
             
-            // Don't add 5 to completedPages - leave it incomplete
-            currentPage = 5; // Set current to step 5 to show it as active/next
+            currentPage = 5;
             updateProgressIndicator();
             
             window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
         }
-
 
         function loadAgreementContent() {
             let content = '';
@@ -1424,69 +1389,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
-    
-
-            function updateExistingAgreementVisibility() {
-            const notice = document.getElementById('existing-agreement-notice');
-            if (!notice) return;
-
-            // "found" is set when the backend/API indicates an existing agreement.
-            const found = notice.dataset.found === 'true';
-
-            // Dismissed once the user proceeds past the verification page.
-            const dismissed = notice.dataset.dismissed === 'true';
-
-            const isOnVerificationPage = currentPage === 1;
-
-            if (found && !dismissed && isOnVerificationPage) {
-                notice.classList.add('show');
-            } else {
-                notice.classList.remove('show');
-            }
-        }
-
-        // Ensure we remember "found" even when we hide the notice later.
-        (function patchExistingAgreementFoundFlag() {
-            const orig = window.checkExistingAgreement;
-            if (typeof orig !== 'function') return;
-
-            window.checkExistingAgreement = async function(...args) {
-                const result = await orig.apply(this, args);
-
-                // If the original function showed the notice, mark it as found.
-                const notice = document.getElementById('existing-agreement-notice');
-                if (notice && notice.classList.contains('show')) {
-                    notice.dataset.found = 'true';
-                }
-
-                updateExistingAgreementVisibility();
-                return result;
-            };
-        })();
-
-        document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
-            r.addEventListener('change', updateExistingAgreementVisibility);
-        });
-
-        // Wrap goToPage so leaving page 1 dismisses the notice for the remainder of the flow.
-        (function wrapGoToPageForExistingAgreement() {
-            const originalGoToPage = window.goToPage;
-            if (typeof originalGoToPage !== 'function') return;
-
-            window.goToPage = function(page) {
-                // If we are leaving the verification page, dismiss the banner permanently.
-                if (currentPage === 1 && page !== 1) {
-                    const notice = document.getElementById('existing-agreement-notice');
-                    if (notice) notice.dataset.dismissed = 'true';
-                }
-
-                originalGoToPage(page);
-                updateExistingAgreementVisibility();
-            };
-        })();
-
-        // Initial state.
-        updateExistingAgreementVisibility();
-</script>
+    </script>
 </body>
 </html>
