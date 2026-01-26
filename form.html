@@ -480,7 +480,7 @@ label {
             border: 2px solid #4caf50;
             border-radius: 8px;
             padding: 25px;
-            margin: 25px 0;
+            margin: 0 0 25px 0;
             display: none;
         }
 
@@ -610,27 +610,27 @@ label {
             </div>
         </div>
 
-        <!-- Existing Agreement Notice -->
-        <div class="existing-agreement-notice" id="existing-agreement-notice" style="display:none;">
-            <h3>✓ Existing Agreement Found</h3>
-            <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
-            <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
-            <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
-            <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
-            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
-               class="btn-primary" 
-               style="text-decoration: none; display: inline-block; margin-top: 15px;" 
-               target="_blank">
-                Go to Intake Form
-            </a>
-            <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
-        </div>
-
         <!-- Page 2: Company Information -->
         <div class="page" id="page-2">
             <h2 class="page-title">Step 2: Company Information</h2>
             
             <div class="message" id="page2-message"></div>
+
+            <!-- Existing Agreement Notice - NOW INSIDE PAGE 2 -->
+            <div class="existing-agreement-notice" id="existing-agreement-notice">
+                <h3>✓ Existing Agreement Found</h3>
+                <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
+                <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
+                <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
+                <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
+                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+                   class="btn-primary" 
+                   style="text-decoration: none; display: inline-block; margin-top: 15px;" 
+                   target="_blank">
+                    Go to Intake Form
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
+            </div>
 
             <div class="form-group">
                 <label for="company-name">Legal Company Name <span class="req-star">*</span></label>
@@ -799,60 +799,13 @@ function setFieldRequired(fieldId, isRequired) {
     }
 }
 
-let verifiedEmail = '';
+        let verifiedEmail = '';
         let otpVerified = false;
         let agreementId = null;
         let securityToken = null;
         let agreementType = 'Mutual NDA';
         let completedPages = new Set();
         let currentPage = 1;
-
-
-// Existing Agreement visibility (DOM-based; Page 2 only)
-let existingAgreementDismissed = false;
-
-function updateExistingAgreementVisibility() {
-    const section = document.getElementById('existing-agreement-notice');
-    if (!section) return;
-
-    const page2 = document.querySelector('.form-page[data-page="2"]');
-    const page2Active = page2 && page2.classList.contains('active');
-
-    const hasAgreement = document.querySelector('input[name="hasExistingAgreement"]:checked');
-    const shouldShow =
-        !existingAgreementDismissed &&
-        page2Active &&
-        hasAgreement &&
-        hasAgreement.value === 'yes';
-
-    section.style.display = shouldShow ? 'block' : 'none';
-}
-
-// Dismiss permanently once user leaves Page 2
-(function() {
-    const _goToPage = goToPage;
-    goToPage = function(page) {
-        const page2 = document.querySelector('.form-page[data-page="2"]');
-        const wasOnPage2 = page2 && page2.classList.contains('active');
-
-        _goToPage(page);
-
-        const nowOnPage2 = page2 && page2.classList.contains('active');
-        if (wasOnPage2 && !nowOnPage2) {
-            existingAgreementDismissed = true;
-        }
-
-        updateExistingAgreementVisibility();
-    };
-})();
-
-document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
-    r.addEventListener('change', updateExistingAgreementVisibility);
-});
-// End Existing Agreement visibility
-
-
-
 
         document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, 0);
@@ -1185,6 +1138,7 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             });
 
             updateProgressIndicator();
+            updateExistingAgreementVisibility();
         }
 
         function completePage2() {
@@ -1234,9 +1188,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                 showMessage(1, 'Please use your work email address. Personal email providers (Gmail, Yahoo, etc.) are not accepted.', 'error');
                 return;
             }
-
-    if (sendButton) sendButton.disabled = true;
-    document.getElementById('loading').classList.add('show');
 
             if (sendButton) sendButton.disabled = true;
             document.getElementById('loading').classList.add('show');
@@ -1327,13 +1278,31 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
                 const data = await response.json();
 
                 if (data.hasExisting) {
+                    const notice = document.getElementById('existing-agreement-notice');
                     document.getElementById('existing-agreement-id').textContent = data.agreementId || 'N/A';
                     document.getElementById('existing-agreement-type').textContent = data.agreementType || agreementType;
                     document.getElementById('existing-agreement-date').textContent = data.completionDate ? new Date(data.completionDate).toLocaleDateString() : 'N/A';
-                    document.getElementById('existing-agreement-notice').classList.add('show');
+                    
+                    if (notice) {
+                        notice.dataset.found = 'true';
+                    }
                 }
             } catch (error) {
                 console.error('Error checking existing agreement:', error);
+            }
+        }
+
+        function updateExistingAgreementVisibility() {
+            const notice = document.getElementById('existing-agreement-notice');
+            if (!notice) return;
+
+            const found = notice.dataset.found === 'true';
+            const isOnPage2 = currentPage === 2;
+
+            if (found && isOnPage2) {
+                notice.classList.add('show');
+            } else {
+                notice.classList.remove('show');
             }
         }
 
@@ -1423,8 +1392,7 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             document.getElementById('success-agreement-id').textContent = agreementId;
             document.getElementById('success-email').textContent = verifiedEmail;
             
-            // Don't add 5 to completedPages - leave it incomplete
-            currentPage = 5; // Set current to step 5 to show it as active/next
+            currentPage = 5;
             updateProgressIndicator();
             
             window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
@@ -1466,69 +1434,6 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
-    
-
-            function updateExistingAgreementVisibility() {
-            const notice = document.getElementById('existing-agreement-notice');
-            if (!notice) return;
-
-            // "found" is set when the backend/API indicates an existing agreement.
-            const found = notice.dataset.found === 'true';
-
-            // Dismissed once the user proceeds past the verification page.
-            const dismissed = notice.dataset.dismissed === 'true';
-
-            const isOnVerificationPage = currentPage === 1;
-
-            if (found && !dismissed && isOnVerificationPage) {
-                notice.classList.add('show');
-            } else {
-                notice.classList.remove('show');
-            }
-        }
-
-        // Ensure we remember "found" even when we hide the notice later.
-        (function patchExistingAgreementFoundFlag() {
-            const orig = window.checkExistingAgreement;
-            if (typeof orig !== 'function') return;
-
-            window.checkExistingAgreement = async function(...args) {
-                const result = await orig.apply(this, args);
-
-                // If the original function showed the notice, mark it as found.
-                const notice = document.getElementById('existing-agreement-notice');
-                if (notice && notice.classList.contains('show')) {
-                    notice.dataset.found = 'true';
-                }
-
-                updateExistingAgreementVisibility();
-                return result;
-            };
-        })();
-
-        document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
-            r.addEventListener('change', updateExistingAgreementVisibility);
-        });
-
-        // Wrap goToPage so leaving page 1 dismisses the notice for the remainder of the flow.
-        (function wrapGoToPageForExistingAgreement() {
-            const originalGoToPage = window.goToPage;
-            if (typeof originalGoToPage !== 'function') return;
-
-            window.goToPage = function(page) {
-                // If we are leaving the verification page, dismiss the banner permanently.
-                if (currentPage === 2 && page !== 2) {
-                    const notice = document.getElementById('existing-agreement-notice');
-                    if (notice) notice.dataset.dismissed = 'true';
-                }
-
-                originalGoToPage(page);
-                updateExistingAgreementVisibility();
-            };
-        })();
-
-        // Initial state.
-        updateExistingAgreementVisibility();
-</script>
+    </script>
 </body>
 </html>
