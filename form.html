@@ -1227,7 +1227,16 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
             if (!email || !isValidEmail(email)) {
                 showMessage(1, 'Please enter a valid email address.', 'error');
                 return;
+            }       
+
+            const domain = email.split('@')[1].toLowerCase();
+            if (CONFIG.GENERIC_DOMAINS.includes(domain)) {
+                showMessage(1, 'Please use your work email address. Personal email providers (Gmail, Yahoo, etc.) are not accepted.', 'error');
+                return;
             }
+
+    if (sendButton) sendButton.disabled = true;
+    document.getElementById('loading').classList.add('show');
 
             if (sendButton) sendButton.disabled = true;
             document.getElementById('loading').classList.add('show');
