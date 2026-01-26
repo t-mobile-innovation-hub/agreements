@@ -1517,7 +1517,7 @@ document.querySelectorAll('input[name="hasExistingAgreement"]').forEach(r => {
 
             window.goToPage = function(page) {
                 // If we are leaving the verification page, dismiss the banner permanently.
-                if (currentPage === 1 && page !== 1) {
+                if (currentPage === 2 && page !== 2) {
                     const notice = document.getElementById('existing-agreement-notice');
                     if (notice) notice.dataset.dismissed = 'true';
                 }
