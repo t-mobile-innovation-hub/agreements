@@ -1203,14 +1203,19 @@ function setFieldRequired(fieldId, isRequired) {
                 if (!response.ok) {
                     throw new Error(data.error || 'Failed to send verification code');
                 }
-
                 document.getElementById('code-section').style.display = 'block';
                 if (sendButton) {
                     sendButton.textContent = 'Code Sent';
                     sendButton.disabled = true;
                 }
 
-                setTimeout(() => document.getElementById('otp')?.focus(), 100);
+                setTimeout(() => {
+                    const otpField = document.getElementById('otp');
+                    if (otpField) {
+                        otpField.focus();
+                        otpField.select(); // Ensures any pre-existing value is selected
+                    }
+                }, 100);
 
 
                 showMessage(1, 'Verification code sent. Check your email.', 'success');
