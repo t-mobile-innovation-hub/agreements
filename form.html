@@ -1210,6 +1210,9 @@ function setFieldRequired(fieldId, isRequired) {
                     sendButton.disabled = true;
                 }
 
+                setTimeout(() => document.getElementById('otp')?.focus(), 100);
+
+
                 showMessage(1, 'Verification code sent. Check your email.', 'success');
             } catch (error) {
                 console.error('Send code error:', error);
