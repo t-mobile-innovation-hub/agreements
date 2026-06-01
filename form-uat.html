@@ -623,12 +623,11 @@ label {
                 <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
                 <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
                 <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
-                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
-                   class="btn-primary" 
-                   style="text-decoration: none; display: inline-block; margin-top: 15px;" 
-                   target="_blank">
-                    Go to Intake Form
-                </a>
+                    <button onclick="goToIntakeWithExistingAgreement()" 
+                    class="btn-primary" 
+                    style="border:none;cursor:pointer;margin-top:15px;">
+                        Go to Intake Form
+                    </button>
                 <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
             </div>
 
@@ -1435,8 +1434,17 @@ function setFieldRequired(fieldId, isRequired) {
             
             currentPage = 5;
             updateProgressIndicator();
+        
+        const intakeParams = new URLSearchParams({
+            email: verifiedEmail,
+            name: document.getElementById('signatory-name').value.trim(),
+            title: document.getElementById('signatory-title').value.trim(),
+            company: document.getElementById('company-name').value.trim(),
+            agreementId: agreementId || '',
+            agreementType: agreementType || ''
+        });
+        window.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();    
             
-            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
         }
 
 
@@ -1474,6 +1482,15 @@ function setFieldRequired(fieldId, isRequired) {
 
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function goToIntakeWithExistingAgreement() {
+            const intakeParams = new URLSearchParams({
+                email: verifiedEmail,
+                agreementId: document.getElementById('existing-agreement-id').textContent,
+                agreementType: document.getElementById('existing-agreement-type').textContent
+            });
+            window.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();
         }
     </script>
 </body>
