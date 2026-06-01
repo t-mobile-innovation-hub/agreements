@@ -1303,6 +1303,9 @@ function setFieldRequired(fieldId, isRequired) {
                     
                     if (notice) {
                         notice.dataset.found = 'true';
+                        notice.dataset.name = data.signatoryName || '';
+                        notice.dataset.title = data.signatoryTitle || '';
+                        notice.dataset.company = data.companyName || '';
                     }
                 }
             } catch (error) {
@@ -1443,8 +1446,10 @@ function setFieldRequired(fieldId, isRequired) {
             agreementId: agreementId || '',
             agreementType: agreementType || ''
         });
-        window.top.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();    
-            
+            window.parent.postMessage({
+                action: 'navigate',
+                url: 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString()
+            }, '*');            
         }
 
 
@@ -1487,10 +1492,16 @@ function setFieldRequired(fieldId, isRequired) {
         function goToIntakeWithExistingAgreement() {
             const intakeParams = new URLSearchParams({
                 email: verifiedEmail,
+                name: notice.dataset.name || '',
+                title: notice.dataset.title || '',
+                company: notice.dataset.company || '',
                 agreementId: document.getElementById('existing-agreement-id').textContent,
                 agreementType: document.getElementById('existing-agreement-type').textContent
             });
-            window.top.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();
+            window.parent.postMessage({
+                action: 'navigate',
+                url: 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString()
+            }, '*');
         }
     </script>
 </body>
