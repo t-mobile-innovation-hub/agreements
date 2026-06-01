@@ -1489,20 +1489,21 @@ function setFieldRequired(fieldId, isRequired) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        function goToIntakeWithExistingAgreement() {
-            const intakeParams = new URLSearchParams({
-                email: verifiedEmail,
-                name: notice.dataset.name || '',
-                title: notice.dataset.title || '',
-                company: notice.dataset.company || '',
-                agreementId: document.getElementById('existing-agreement-id').textContent,
-                agreementType: document.getElementById('existing-agreement-type').textContent
-            });
-            window.parent.postMessage({
-                action: 'navigate',
-                url: 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString()
-            }, '*');
-        }
+function goToIntakeWithExistingAgreement() {
+    const notice = document.getElementById('existing-agreement-notice');
+    const intakeParams = new URLSearchParams({
+        email: verifiedEmail,
+        name: notice.dataset.name || '',
+        title: notice.dataset.title || '',
+        company: notice.dataset.company || '',
+        agreementId: document.getElementById('existing-agreement-id').textContent,
+        agreementType: document.getElementById('existing-agreement-type').textContent
+    });
+    window.parent.postMessage({
+        action: 'navigate',
+        url: 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString()
+    }, '*');
+}
     </script>
 </body>
 </html>
