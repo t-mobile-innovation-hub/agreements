@@ -1443,7 +1443,7 @@ function setFieldRequired(fieldId, isRequired) {
             agreementId: agreementId || '',
             agreementType: agreementType || ''
         });
-        window.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();    
+        window.top.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();    
             
         }
 
@@ -1490,7 +1490,7 @@ function setFieldRequired(fieldId, isRequired) {
                 agreementId: document.getElementById('existing-agreement-id').textContent,
                 agreementType: document.getElementById('existing-agreement-type').textContent
             });
-            window.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();
+            window.top.location.href = 'https://innovation.t-mobile.com/intake-form?' + intakeParams.toString();
         }
     </script>
 </body>
