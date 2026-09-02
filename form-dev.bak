@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovate with Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #e20074;
+        }
+
+        .header h1 {
+            color: #000000;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .agreement-id {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #e20074;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 17px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .progress-step.completed:not(:last-child)::after {
+            background: #4caf50;
+        }
+
+        .progress-dot {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #999;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step.active .progress-dot {
+            border-color: #e20074;
+            background: #e20074;
+            border-width: 4px;
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px rgba(226, 0, 116, 0.15);
+        }
+
+        .progress-step.active .progress-dot::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .progress-step.completed .progress-dot {
+            border-color: #4caf50;
+            background: #4caf50;
+            border-width: 3px;
+        }
+
+        .progress-step.completed .progress-dot::before {
+            content: '✓';
+            font-size: 18px;
+            color: white;
+        }
+
+        .progress-label {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        .progress-step.active .progress-label {
+            color: #e20074;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .progress-label {
+                font-size: 10px;
+            }
+        }
+
+        .page {
+            display: none;
+            padding: 30px;
+            border-radius: 8px;
+            background: white;
+            min-height: 400px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #000000;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #000000;
+            font-size: 16px;
+        }
+
+        .required {
+            color: #e20074;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 17px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #e20074;
+            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
+        }
+
+        .error {
+            border-color: #d32f2f !important;
+            background-color: #ffebee;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 16px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #66bb6a;
+        }
+
+        .message.info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #42a5f5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background: #e20074;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #b8005c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(226, 0, 116, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            box-shadow: none !important;
+            opacity: 0.5 !important;
+        }
+
+        .btn-back {
+            background: white;
+            color: #e20074;
+            padding: 16px 40px;
+            border: 2px solid #e20074;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex: 0 0 140px;
+        }
+
+        .btn-back:hover {
+            background: #f8f9fa;
+        }
+
+        .resend-link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .resend-link a {
+            color: #e20074;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .resend-link a:hover {
+            color: #b8005c;
+            text-decoration: none;
+        }
+
+        .otp-input {
+            width: 100%;
+            max-width: 420px;
+            height: 58px;
+            box-sizing: border-box;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 18px;
+            padding: 0 10px;
+            white-space: nowrap;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f1f8f4;
+            color: #000;
+            -webkit-text-fill-color: #000;
+            caret-color: #e20074;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .otp-input:focus {
+            border-color: #e20074;
+            box-shadow: 0 0 0 3px rgba(226, 0, 116, 0.1);
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #e20074;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        small {
+            display: block;
+            color: #666;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        .agreement-viewer {
+            background: #f8f9fa;
+            border: 2px solid #e20074;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .agreement-content {
+            background: white;
+            padding: 25px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .agreement-content h4 {
+            color: #000000;
+            margin: 25px 0 15px 0;
+            font-size: 20px;
+        }
+
+        .agreement-content p {
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .agreement-content ol,
+        .agreement-content ul {
+            margin: 15px 0;
+            padding-left: 35px;
+        }
+
+        .agreement-content li {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .checkbox-group {
+            margin: 25px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.3);
+        }
+
+        .checkbox-group label {
+            display: inline;
+            font-weight: normal;
+            font-size: 16px;
+        }
+
+        .success-container {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+
+        .success-container.show {
+            display: block;
+        }
+
+        .success-container h2 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #4caf50;
+            margin-bottom: 25px;
+        }
+
+        .existing-agreement-notice {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 0 0 25px 0;
+            display: none;
+        }
+
+        .existing-agreement-notice.show {
+            display: block;
+        }
+
+        .existing-agreement-notice h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .existing-agreement-notice p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .existing-agreement-notice strong {
+            color: #1b5e20;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .page-title {
+                font-size: 22px;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+            }
+
+            .btn-back {
+                flex: 1;
+            }
+
+            .otp-input {
+                max-width: 340px;
+                height: 54px;
+                font-size: 22px;
+                letter-spacing: 14px;
+            }
+        }
+    .req-star{font-weight:700;margin-left:4px}
+.req-star.hidden{display:none}
+.req-star{color:#e20074;font-weight:700;margin-left:4px}
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Innovate with Us</h1>
+            <div class="agreement-id" id="agreement-id-display" style="display: none;">
+                Agreement ID: <span id="agreement-id-value"></span>
+            </div>
+        </div>
+
+        <div class="progress-indicator" id="progress-indicator">
+            <div class="progress-step" id="progress-1">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Verify Email</div>
+            </div>
+            <div class="progress-step" id="progress-2">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Company Info</div>
+            </div>
+            <div class="progress-step" id="progress-3">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Review Agreement</div>
+            </div>
+            <div class="progress-step" id="progress-4">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Sign Agreement</div>
+            </div>
+            <div class="progress-step" id="progress-5">
+                <div class="progress-dot"></div>
+                <div class="progress-label">Complete Intake</div>
+            </div>
+        </div>
+
+        <div class="loading-overlay" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- Page 1: Email Verification -->
+        <div class="page active" id="page-1">
+            <h2 class="page-title">Step 1: Verify Email Address</h2>
+            
+            <div class="message" id="page1-message"></div>
+
+            <div class="form-group">
+                <label for="email">Enter Work Email<span class="req-star">*</span></label>
+                <input type="email" id="email" placeholder="your.email@company.com" required>
+                <small>We'll send a verification code to this address</small>
+            </div>
+
+            <button type="button" id="send-code-btn" class="btn-primary" onclick="sendCode()">Send Verification Code</button>
+
+            <div id="code-section" style="display: none; margin-top: 30px;">
+                <div class="form-group">
+                    <label for="otp">Verification Code <span class="req-star">*</span></label>
+                    <input
+                        id="otp"
+                        name="otp"
+                        class="otp-input"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        aria-label="6-digit verification code"
+                    />
+                    <div class="message error" id="code-message"></div>
+                    <small style="display: block; text-align: center; margin-top: 15px;">Check your email for the verification code</small>
+                    <p class="resend-link" style="text-align: center; margin-top: 10px; margin-bottom: 0;">
+                        Didn't receive code? <a href="#" onclick="event.preventDefault(); sendCode();">Click here to resend code</a>
+                    </p>
+                </div>
+                <button type="button" class="btn-primary" id="next-btn" onclick="verifyCode()" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Page 2: Company Information -->
+        <div class="page" id="page-2">
+            <h2 class="page-title">Step 2: Company Information</h2>
+            
+            <div class="message" id="page2-message"></div>
+
+            <!-- Existing Agreement Notice - NOW INSIDE PAGE 2 -->
+            <div class="existing-agreement-notice" id="existing-agreement-notice">
+                <h3>✓ Existing Agreement Found</h3>
+                <p><strong>Agreement ID:</strong> <span id="existing-agreement-id"></span></p>
+                <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
+                <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
+                <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
+                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+                   class="btn-primary" 
+                   style="text-decoration: none; display: inline-block; margin-top: 15px;" 
+                   target="_blank">
+                    Go to Intake Form
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; color: #666;">Or continue below to create a new agreement</p>
+            </div>
+
+            <div class="form-group">
+                <label for="company-name">Legal Company Name <span class="req-star">*</span></label>
+                <input type="text" id="company-name" required>
+            </div>
+
+                        <div class="form-group">
+                <label for="address-line1">Address Line 1 <span class="req-star">*</span></label>
+                <input type="text" id="address-line1" autocomplete="address-line1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address-line2">Address Line 2</label>
+                <input type="text" id="address-line2" autocomplete="address-line2">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address-city">City / Locality <span class="req-star">*</span></label>
+                    <input type="text" id="address-city" autocomplete="address-level2" required>
+                </div>
+
+                <div class="form-group" id="region-group">
+                    <label for="address-region-text" id="region-label">State / Province / Region <span class="req-star">*</span></label>
+
+                    <select id="address-region-select" aria-label="State or province" style="display:none;"></select>
+                    <input type="text" id="address-region-text" autocomplete="address-level1" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="address-postal" id="postal-label">Postal / ZIP Code <span class="req-star">*</span></label>
+                    <input type="text" id="address-postal" autocomplete="postal-code" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address-country">Country <span class="req-star">*</span></label>
+                    <select id="address-country" autocomplete="country" required></select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-back" onclick="goToPage(1)">Back</button>
+                <button type="button" class="btn-primary" id="page2-next-btn" onclick="completePage2()" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Page 3: Review Agreement -->
+        <div class="page" id="page-3">
+            <h2 class="page-title">Step 3: Review Agreement Terms</h2>
+            
+            <div class="message" id="page3-message"></div>
+
+            <div class="agreement-viewer">
+                <h3 style="margin-bottom: 15px; color: #000000;">Agreement Document</h3>
+                <div class="agreement-content" id="agreement-content">
+                    <!-- Dynamic agreement content loaded here -->
+                </div>
+            </div>
+
+            <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
+                <input type="checkbox" id="agreement-reviewed" required>
+                <label for="agreement-reviewed">
+                    I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
+                </label>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-back" onclick="goToPage(2)">Back</button>
+                <button type="button" class="btn-primary" id="page3-next-btn" onclick="completePage3()" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Page 4: Sign Agreement -->
+        <div class="page" id="page-4">
+            <h2 class="page-title">Step 4: Sign Agreement</h2>
+            
+            <div class="message" id="page4-message"></div>
+
+            <div class="form-group">
+                <label for="signatory-name">Name <span class="req-star">*</span></label>
+                <input type="text" id="signatory-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signatory-title">Title <span class="req-star">*</span></label>
+                <input type="text" id="signatory-title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="digital-signature">Digital Signature (Enter Name) <span class="req-star">*</span></label>
+                <input type="text" id="digital-signature" required>
+                <small>Entering your name serves as your digital signature</small>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-back" onclick="goToPage(3)">Back</button>
+                <button id="final-submit-btn" type="button" class="btn-primary" onclick="submitAgreement()" disabled>Next</button>
+            </div>
+        </div>
+
+        <!-- Success Page -->
+        <div class="success-container" id="success-page">
+           <!-- <div class="success-icon">✓</div> 
+            <h2>Agreement successfully submitted.</h2> -->
+            <p style="font-size: 18px; margin: 20px 0;">Thank you for signing the agreement.<br />You may now continue your intake request.</p>
+            
+            <div style="background: white; padding: 25px; border-radius: 5px; margin: 30px 0; text-align: left;">
+                <p><strong>Agreement ID:</strong> <span id="success-agreement-id"></span></p>
+                <p><strong>Your Email:</strong> <span id="success-email"></span></p>
+                <p style="margin-top: 20px; color: #666;">You will receive a confirmation email with the executed agreement within 24 hours.</p>
+            </div>
+
+            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+               class="btn-primary" 
+               style="text-decoration: none; display: inline-block;" 
+               target="_blank">
+                Continue to Intake Process
+            </a>
+        </div>
+    </div>
+
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // Configuration DEV
+        const CONFIG = {
+            API_SEND_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4341c3c423ad4186bbbcbf6ec0f54b93/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HyJy3iw_YHiHM5-ViqOwH9SICVd5nw33ICIwkEgyTTU',
+            API_VERIFY_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/199a3ec089864a5ea6d8006c1a270a2e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8iICSmnrlVsdPITEvcyK0I95YD-nKjM4U2GMGnBREQc',
+            API_CHECK_EXISTING: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/707a82c1ed9043d98cfbc0b484c5c655/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ZcsnJmv3cKqNrTYatxOiQvRQQK57cIEOH9vbw5RkGqQ',
+            API_VALIDATE_TOKEN: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a60671f8d38444a09e3ac09442b80964/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KFQkiUfu8uPtDrSspU5o7cbKfDS2kdgKp3147UBVgjk',
+            API_SUBMIT: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/f22ee6457eb84ca3a32e3f970a3150be/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sCEtdfiLOS_Ull_JD6DG12B23XJinjCk77mXDy8qUIA',
+            GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com']
+        };
+
+
+        
+
+// Required-star toggle: remove asterisk entirely when not required
+function setFieldRequired(fieldId, isRequired) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.required = !!isRequired;
+        if (!isRequired) {
+            // clear validity UI if it was previously required
+            field.setCustomValidity('');
+        }
+    }
+    // Try to find the label associated with this field
+    const label = document.querySelector(`label[for="${fieldId}"]`);
+    if (!label) return;
+
+    let star = label.querySelector('.req-star');
+    if (isRequired) {
+        if (!star) {
+            star = document.createElement('span');
+            star.className = 'req-star';
+            star.textContent = '*';
+            label.appendChild(star);
+        }
+        star.classList.remove('hidden');
+    } else {
+        if (star) star.classList.add('hidden');
+    }
+}
+
+        let verifiedEmail = '';
+        let otpVerified = false;
+        let agreementId = null;
+        let securityToken = null;
+        let agreementType = 'Mutual NDA';
+        let completedPages = new Set();
+        let currentPage = 1;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            window.scrollTo(0, 0);
+            parseURL();
+            loadAgreementContent();
+            setupOtpInput();
+            setupAddressFields();
+            setupPage2Validation();
+            setupPage3Validation();
+            setupPage4Validation();
+            updateProgressIndicator();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+            const activePage = document.querySelector('.page.active');
+            if (!activePage) return;
+            const primaryButton = activePage.querySelector('.btn-primary:not(:disabled)');
+            if (primaryButton) {
+                e.preventDefault();
+                primaryButton.click();
+            }
+        });
+
+        function updateProgressIndicator() {
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const pageNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (pageNum === currentPage) {
+                    step.classList.add('active');
+                } else if (completedPages.has(pageNum)) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+
+        function clearAllMessages() {
+            document.querySelectorAll('.message').forEach(msg => {
+                msg.classList.remove('show');
+                msg.textContent = '';
+            });
+        }
+
+        function clearPageMessage(pageNumber) {
+            const message = document.getElementById(`page${pageNumber}-message`);
+            if (message) {
+                message.classList.remove('show', 'error', 'success', 'info');
+                message.textContent = '';
+            }
+        }
+
+        function showMessage(pageNumber, text, type = 'info') {
+            clearPageMessage(pageNumber);
+            const message = document.getElementById(`page${pageNumber}-message`);
+            if (message) {
+                message.textContent = text;
+                message.className = `message ${type} show`;
+            }
+        }
+
+        function showCodeMessage(text) {
+            const msg = document.getElementById('code-message');
+            if (!msg) return;
+            msg.textContent = text;
+            msg.classList.add('show');
+        }
+
+        function clearCodeMessage() {
+            const msg = document.getElementById('code-message');
+            if (!msg) return;
+            msg.textContent = '';
+            msg.classList.remove('show');
+        }
+
+        function parseURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            agreementId = urlParams.get('id');
+            securityToken = urlParams.get('token');
+            agreementType = urlParams.get('type') || 'Mutual NDA';
+            const emailParam = urlParams.get('email');
+
+            if (agreementId) {
+                document.getElementById('agreement-id-display').style.display = 'block';
+                document.getElementById('agreement-id-value').textContent = agreementId;
+                
+                if (!securityToken) {
+                    showMessage(1, 'Error: Missing security token. Please use the link from your email.', 'error');
+                    return;
+                }
+                
+                validateSecurityToken();
+            }
+
+            if (emailParam) {
+                document.getElementById('email').value = emailParam;
+            }
+        }
+
+        async function validateSecurityToken() {
+            if (!agreementId || !securityToken) return;
+
+            try {
+                const response = await fetch(CONFIG.API_VALIDATE_TOKEN, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        agreementId: agreementId,
+                        securityToken: securityToken
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.valid) {
+                    throw new Error(data.error || 'Invalid or expired link');
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                showMessage(1, 'This link is invalid or has expired. Please request a new link.', 'error');
+                document.querySelectorAll('button, input, textarea').forEach(el => el.disabled = true);
+            }
+        }
+
+        function setupOtpInput() {
+            const otp = document.getElementById('otp');
+            const nextBtn = document.getElementById('next-btn');
+            if (!otp) return;
+
+            const sync = () => {
+                const digits = otp.value.replace(/\D/g, '').slice(0, 6);
+                otp.value = digits;
+                if (nextBtn) {
+                    nextBtn.disabled = !(digits.length === 6);
+                }
+            };
+
+            otp.addEventListener('input', sync);
+            otp.addEventListener('blur', sync);
+            sync();
+        }
+
+        function setupAddressFields() {
+            // Country list (ISO 3166-1 alpha-2) generated at build time
+            const COUNTRIES = [{"code": "AF", "name": "Afghanistan"}, {"code": "AL", "name": "Albania"}, {"code": "DZ", "name": "Algeria"}, {"code": "AS", "name": "American Samoa"}, {"code": "AD", "name": "Andorra"}, {"code": "AO", "name": "Angola"}, {"code": "AI", "name": "Anguilla"}, {"code": "AQ", "name": "Antarctica"}, {"code": "AG", "name": "Antigua and Barbuda"}, {"code": "AR", "name": "Argentina"}, {"code": "AM", "name": "Armenia"}, {"code": "AW", "name": "Aruba"}, {"code": "AU", "name": "Australia"}, {"code": "AT", "name": "Austria"}, {"code": "AZ", "name": "Azerbaijan"}, {"code": "BS", "name": "Bahamas"}, {"code": "BH", "name": "Bahrain"}, {"code": "BD", "name": "Bangladesh"}, {"code": "BB", "name": "Barbados"}, {"code": "BY", "name": "Belarus"}, {"code": "BE", "name": "Belgium"}, {"code": "BZ", "name": "Belize"}, {"code": "BJ", "name": "Benin"}, {"code": "BM", "name": "Bermuda"}, {"code": "BT", "name": "Bhutan"}, {"code": "BO", "name": "Bolivia, Plurinational State of"}, {"code": "BQ", "name": "Bonaire, Sint Eustatius and Saba"}, {"code": "BA", "name": "Bosnia and Herzegovina"}, {"code": "BW", "name": "Botswana"}, {"code": "BV", "name": "Bouvet Island"}, {"code": "BR", "name": "Brazil"}, {"code": "IO", "name": "British Indian Ocean Territory"}, {"code": "BN", "name": "Brunei Darussalam"}, {"code": "BG", "name": "Bulgaria"}, {"code": "BF", "name": "Burkina Faso"}, {"code": "BI", "name": "Burundi"}, {"code": "CV", "name": "Cabo Verde"}, {"code": "KH", "name": "Cambodia"}, {"code": "CM", "name": "Cameroon"}, {"code": "CA", "name": "Canada"}, {"code": "KY", "name": "Cayman Islands"}, {"code": "CF", "name": "Central African Republic"}, {"code": "TD", "name": "Chad"}, {"code": "CL", "name": "Chile"}, {"code": "CN", "name": "China"}, {"code": "CX", "name": "Christmas Island"}, {"code": "CC", "name": "Cocos (Keeling) Islands"}, {"code": "CO", "name": "Colombia"}, {"code": "KM", "name": "Comoros"}, {"code": "CG", "name": "Congo"}, {"code": "CD", "name": "Congo, The Democratic Republic of the"}, {"code": "CK", "name": "Cook Islands"}, {"code": "CR", "name": "Costa Rica"}, {"code": "HR", "name": "Croatia"}, {"code": "CU", "name": "Cuba"}, {"code": "CW", "name": "Curaçao"}, {"code": "CY", "name": "Cyprus"}, {"code": "CZ", "name": "Czechia"}, {"code": "CI", "name": "Côte d'Ivoire"}, {"code": "DK", "name": "Denmark"}, {"code": "DJ", "name": "Djibouti"}, {"code": "DM", "name": "Dominica"}, {"code": "DO", "name": "Dominican Republic"}, {"code": "EC", "name": "Ecuador"}, {"code": "EG", "name": "Egypt"}, {"code": "SV", "name": "El Salvador"}, {"code": "GQ", "name": "Equatorial Guinea"}, {"code": "ER", "name": "Eritrea"}, {"code": "EE", "name": "Estonia"}, {"code": "SZ", "name": "Eswatini"}, {"code": "ET", "name": "Ethiopia"}, {"code": "FK", "name": "Falkland Islands (Malvinas)"}, {"code": "FO", "name": "Faroe Islands"}, {"code": "FJ", "name": "Fiji"}, {"code": "FI", "name": "Finland"}, {"code": "FR", "name": "France"}, {"code": "GF", "name": "French Guiana"}, {"code": "PF", "name": "French Polynesia"}, {"code": "TF", "name": "French Southern Territories"}, {"code": "GA", "name": "Gabon"}, {"code": "GM", "name": "Gambia"}, {"code": "GE", "name": "Georgia"}, {"code": "DE", "name": "Germany"}, {"code": "GH", "name": "Ghana"}, {"code": "GI", "name": "Gibraltar"}, {"code": "GR", "name": "Greece"}, {"code": "GL", "name": "Greenland"}, {"code": "GD", "name": "Grenada"}, {"code": "GP", "name": "Guadeloupe"}, {"code": "GU", "name": "Guam"}, {"code": "GT", "name": "Guatemala"}, {"code": "GG", "name": "Guernsey"}, {"code": "GN", "name": "Guinea"}, {"code": "GW", "name": "Guinea-Bissau"}, {"code": "GY", "name": "Guyana"}, {"code": "HT", "name": "Haiti"}, {"code": "HM", "name": "Heard Island and McDonald Islands"}, {"code": "VA", "name": "Holy See (Vatican City State)"}, {"code": "HN", "name": "Honduras"}, {"code": "HK", "name": "Hong Kong"}, {"code": "HU", "name": "Hungary"}, {"code": "IS", "name": "Iceland"}, {"code": "IN", "name": "India"}, {"code": "ID", "name": "Indonesia"}, {"code": "IR", "name": "Iran, Islamic Republic of"}, {"code": "IQ", "name": "Iraq"}, {"code": "IE", "name": "Ireland"}, {"code": "IM", "name": "Isle of Man"}, {"code": "IL", "name": "Israel"}, {"code": "IT", "name": "Italy"}, {"code": "JM", "name": "Jamaica"}, {"code": "JP", "name": "Japan"}, {"code": "JE", "name": "Jersey"}, {"code": "JO", "name": "Jordan"}, {"code": "KZ", "name": "Kazakhstan"}, {"code": "KE", "name": "Kenya"}, {"code": "KI", "name": "Kiribati"}, {"code": "KP", "name": "Korea, Democratic People's Republic of"}, {"code": "KR", "name": "Korea, Republic of"}, {"code": "KW", "name": "Kuwait"}, {"code": "KG", "name": "Kyrgyzstan"}, {"code": "LA", "name": "Lao People's Democratic Republic"}, {"code": "LV", "name": "Latvia"}, {"code": "LB", "name": "Lebanon"}, {"code": "LS", "name": "Lesotho"}, {"code": "LR", "name": "Liberia"}, {"code": "LY", "name": "Libya"}, {"code": "LI", "name": "Liechtenstein"}, {"code": "LT", "name": "Lithuania"}, {"code": "LU", "name": "Luxembourg"}, {"code": "MO", "name": "Macao"}, {"code": "MG", "name": "Madagascar"}, {"code": "MW", "name": "Malawi"}, {"code": "MY", "name": "Malaysia"}, {"code": "MV", "name": "Maldives"}, {"code": "ML", "name": "Mali"}, {"code": "MT", "name": "Malta"}, {"code": "MH", "name": "Marshall Islands"}, {"code": "MQ", "name": "Martinique"}, {"code": "MR", "name": "Mauritania"}, {"code": "MU", "name": "Mauritius"}, {"code": "YT", "name": "Mayotte"}, {"code": "MX", "name": "Mexico"}, {"code": "FM", "name": "Micronesia, Federated States of"}, {"code": "MD", "name": "Moldova, Republic of"}, {"code": "MC", "name": "Monaco"}, {"code": "MN", "name": "Mongolia"}, {"code": "ME", "name": "Montenegro"}, {"code": "MS", "name": "Montserrat"}, {"code": "MA", "name": "Morocco"}, {"code": "MZ", "name": "Mozambique"}, {"code": "MM", "name": "Myanmar"}, {"code": "NA", "name": "Namibia"}, {"code": "NR", "name": "Nauru"}, {"code": "NP", "name": "Nepal"}, {"code": "NL", "name": "Netherlands"}, {"code": "NC", "name": "New Caledonia"}, {"code": "NZ", "name": "New Zealand"}, {"code": "NI", "name": "Nicaragua"}, {"code": "NE", "name": "Niger"}, {"code": "NG", "name": "Nigeria"}, {"code": "NU", "name": "Niue"}, {"code": "NF", "name": "Norfolk Island"}, {"code": "MK", "name": "North Macedonia"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "NO", "name": "Norway"}, {"code": "OM", "name": "Oman"}, {"code": "PK", "name": "Pakistan"}, {"code": "PW", "name": "Palau"}, {"code": "PS", "name": "Palestine, State of"}, {"code": "PA", "name": "Panama"}, {"code": "PG", "name": "Papua New Guinea"}, {"code": "PY", "name": "Paraguay"}, {"code": "PE", "name": "Peru"}, {"code": "PH", "name": "Philippines"}, {"code": "PN", "name": "Pitcairn"}, {"code": "PL", "name": "Poland"}, {"code": "PT", "name": "Portugal"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "QA", "name": "Qatar"}, {"code": "RO", "name": "Romania"}, {"code": "RU", "name": "Russian Federation"}, {"code": "RW", "name": "Rwanda"}, {"code": "RE", "name": "Réunion"}, {"code": "BL", "name": "Saint Barthélemy"}, {"code": "SH", "name": "Saint Helena, Ascension and Tristan da Cunha"}, {"code": "KN", "name": "Saint Kitts and Nevis"}, {"code": "LC", "name": "Saint Lucia"}, {"code": "MF", "name": "Saint Martin (French part)"}, {"code": "PM", "name": "Saint Pierre and Miquelon"}, {"code": "VC", "name": "Saint Vincent and the Grenadines"}, {"code": "WS", "name": "Samoa"}, {"code": "SM", "name": "San Marino"}, {"code": "ST", "name": "Sao Tome and Principe"}, {"code": "SA", "name": "Saudi Arabia"}, {"code": "SN", "name": "Senegal"}, {"code": "RS", "name": "Serbia"}, {"code": "SC", "name": "Seychelles"}, {"code": "SL", "name": "Sierra Leone"}, {"code": "SG", "name": "Singapore"}, {"code": "SX", "name": "Sint Maarten (Dutch part)"}, {"code": "SK", "name": "Slovakia"}, {"code": "SI", "name": "Slovenia"}, {"code": "SB", "name": "Solomon Islands"}, {"code": "SO", "name": "Somalia"}, {"code": "ZA", "name": "South Africa"}, {"code": "GS", "name": "South Georgia and the South Sandwich Islands"}, {"code": "SS", "name": "South Sudan"}, {"code": "ES", "name": "Spain"}, {"code": "LK", "name": "Sri Lanka"}, {"code": "SD", "name": "Sudan"}, {"code": "SR", "name": "Suriname"}, {"code": "SJ", "name": "Svalbard and Jan Mayen"}, {"code": "SE", "name": "Sweden"}, {"code": "CH", "name": "Switzerland"}, {"code": "SY", "name": "Syrian Arab Republic"}, {"code": "TW", "name": "Taiwan, Province of China"}, {"code": "TJ", "name": "Tajikistan"}, {"code": "TZ", "name": "Tanzania, United Republic of"}, {"code": "TH", "name": "Thailand"}, {"code": "TL", "name": "Timor-Leste"}, {"code": "TG", "name": "Togo"}, {"code": "TK", "name": "Tokelau"}, {"code": "TO", "name": "Tonga"}, {"code": "TT", "name": "Trinidad and Tobago"}, {"code": "TN", "name": "Tunisia"}, {"code": "TR", "name": "Turkey"}, {"code": "TM", "name": "Turkmenistan"}, {"code": "TC", "name": "Turks and Caicos Islands"}, {"code": "TV", "name": "Tuvalu"}, {"code": "UG", "name": "Uganda"}, {"code": "UA", "name": "Ukraine"}, {"code": "AE", "name": "United Arab Emirates"}, {"code": "GB", "name": "United Kingdom"}, {"code": "US", "name": "United States"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UY", "name": "Uruguay"}, {"code": "UZ", "name": "Uzbekistan"}, {"code": "VU", "name": "Vanuatu"}, {"code": "VE", "name": "Venezuela, Bolivarian Republic of"}, {"code": "VN", "name": "Viet Nam"}, {"code": "VG", "name": "Virgin Islands, British"}, {"code": "VI", "name": "Virgin Islands, U.S."}, {"code": "WF", "name": "Wallis and Futuna"}, {"code": "EH", "name": "Western Sahara"}, {"code": "YE", "name": "Yemen"}, {"code": "ZM", "name": "Zambia"}, {"code": "ZW", "name": "Zimbabwe"}, {"code": "AX", "name": "Åland Islands"}];
+
+            // Subdivisions for common address flows
+            const SUBDIVISIONS = {"US": [{"code": "AL", "name": "Alabama"}, {"code": "AK", "name": "Alaska"}, {"code": "AS", "name": "American Samoa"}, {"code": "AZ", "name": "Arizona"}, {"code": "AR", "name": "Arkansas"}, {"code": "CA", "name": "California"}, {"code": "CO", "name": "Colorado"}, {"code": "CT", "name": "Connecticut"}, {"code": "DE", "name": "Delaware"}, {"code": "DC", "name": "District of Columbia"}, {"code": "FL", "name": "Florida"}, {"code": "GA", "name": "Georgia"}, {"code": "GU", "name": "Guam"}, {"code": "HI", "name": "Hawaii"}, {"code": "ID", "name": "Idaho"}, {"code": "IL", "name": "Illinois"}, {"code": "IN", "name": "Indiana"}, {"code": "IA", "name": "Iowa"}, {"code": "KS", "name": "Kansas"}, {"code": "KY", "name": "Kentucky"}, {"code": "LA", "name": "Louisiana"}, {"code": "ME", "name": "Maine"}, {"code": "MD", "name": "Maryland"}, {"code": "MA", "name": "Massachusetts"}, {"code": "MI", "name": "Michigan"}, {"code": "MN", "name": "Minnesota"}, {"code": "MS", "name": "Mississippi"}, {"code": "MO", "name": "Missouri"}, {"code": "MT", "name": "Montana"}, {"code": "NE", "name": "Nebraska"}, {"code": "NV", "name": "Nevada"}, {"code": "NH", "name": "New Hampshire"}, {"code": "NJ", "name": "New Jersey"}, {"code": "NM", "name": "New Mexico"}, {"code": "NY", "name": "New York"}, {"code": "NC", "name": "North Carolina"}, {"code": "ND", "name": "North Dakota"}, {"code": "MP", "name": "Northern Mariana Islands"}, {"code": "OH", "name": "Ohio"}, {"code": "OK", "name": "Oklahoma"}, {"code": "OR", "name": "Oregon"}, {"code": "PA", "name": "Pennsylvania"}, {"code": "PR", "name": "Puerto Rico"}, {"code": "RI", "name": "Rhode Island"}, {"code": "SC", "name": "South Carolina"}, {"code": "SD", "name": "South Dakota"}, {"code": "TN", "name": "Tennessee"}, {"code": "TX", "name": "Texas"}, {"code": "UM", "name": "United States Minor Outlying Islands"}, {"code": "UT", "name": "Utah"}, {"code": "VT", "name": "Vermont"}, {"code": "VI", "name": "Virgin Islands"}, {"code": "VA", "name": "Virginia"}, {"code": "WA", "name": "Washington"}, {"code": "WV", "name": "West Virginia"}, {"code": "WI", "name": "Wisconsin"}, {"code": "WY", "name": "Wyoming"}], "CA": [{"code": "AB", "name": "Alberta"}, {"code": "BC", "name": "British Columbia"}, {"code": "MB", "name": "Manitoba"}, {"code": "NB", "name": "New Brunswick"}, {"code": "NL", "name": "Newfoundland and Labrador"}, {"code": "NT", "name": "Northwest Territories"}, {"code": "NS", "name": "Nova Scotia"}, {"code": "NU", "name": "Nunavut"}, {"code": "ON", "name": "Ontario"}, {"code": "PE", "name": "Prince Edward Island"}, {"code": "QC", "name": "Quebec"}, {"code": "SK", "name": "Saskatchewan"}, {"code": "YT", "name": "Yukon Territory"}]};
+
+            const countryEl = document.getElementById('address-country');
+            const regionSelect = document.getElementById('address-region-select');
+            const regionText = document.getElementById('address-region-text');
+            const regionLabel = document.getElementById('region-label');
+            const postalLabel = document.getElementById('postal-label');
+
+            if (!countryEl || !regionSelect || !regionText || !regionLabel || !postalLabel) return;
+
+            // Build country options
+            countryEl.innerHTML = '<option value="">Select a country</option>' +
+                COUNTRIES.map(c => `<option value="${c.code}">${c.name}</option>`).join('');
+
+            // Default to US if empty (common for this form); otherwise leave blank.
+            if (!countryEl.value) countryEl.value = 'US';
+
+            function setRegionMode(countryCode) {
+                const subs = SUBDIVISIONS[countryCode] || null;
+
+                // Label tweaks
+                if (countryCode === 'US') {
+                    regionLabel.textContent = 'State / Territory *';
+                    postalLabel.textContent = 'ZIP Code *';
+                } else if (countryCode === 'CA') {
+                    regionLabel.textContent = 'Province / Territory *';
+                    postalLabel.textContent = 'Postal Code *';
+                } else {
+                    regionLabel.textContent = 'State / Province / Region *';
+                    postalLabel.textContent = 'Postal / ZIP Code *';
+                }
+
+                if (subs && subs.length) {
+                    // Use select
+                    regionSelect.style.display = '';
+                    regionText.style.display = 'none';
+                    regionText.value = '';
+
+                    regionSelect.innerHTML = '<option value="">Select</option>' +
+                        subs.map(s => `<option value="${s.code}">${s.name}</option>`).join('');
+
+                    regionSelect.required = true;
+                    regionText.required = false;
+                } else {
+                    // Use text input
+                    regionSelect.style.display = 'none';
+                    regionText.style.display = '';
+                    regionSelect.value = '';
+                    regionSelect.required = false;
+                    regionText.required = true;
+                }
+            }
+
+            countryEl.addEventListener('change', () => setRegionMode(countryEl.value));
+            setRegionMode(countryEl.value);
+        }
+
+        function getAddressModel() {
+            const countryEl = document.getElementById('address-country');
+            const regionSelect = document.getElementById('address-region-select');
+            const regionText = document.getElementById('address-region-text');
+
+            const countryCode = (countryEl?.value || '').trim();
+            const countryName = countryEl?.selectedOptions?.[0]?.textContent || '';
+
+            const usingSelect = regionSelect && regionSelect.style.display !== 'none';
+            const regionCode = usingSelect ? (regionSelect.value || '').trim() : '';
+            const region = usingSelect
+                ? (regionSelect.selectedOptions?.[0]?.textContent || '').trim()
+                : (regionText?.value || '').trim();
+
+            return {
+                addressLine1: (document.getElementById('address-line1')?.value || '').trim(),
+                addressLine2: (document.getElementById('address-line2')?.value || '').trim(),
+                city: (document.getElementById('address-city')?.value || '').trim(),
+                region,
+                regionCode,
+                postalCode: (document.getElementById('address-postal')?.value || '').trim(),
+                countryCode,
+                countryName
+            };
+        }
+
+        function formatBusinessAddress(addr) {
+            const lines = [
+                addr.addressLine1,
+                addr.addressLine2,
+                [addr.city, addr.regionCode || addr.region, addr.postalCode].filter(Boolean).join(', ').replace(', ,', ',').trim(),
+                addr.countryName || addr.countryCode
+            ].filter(Boolean);
+
+            return lines.join('\n');
+        }
+
+        function setupPage2Validation() {
+            const nextBtn = document.getElementById('page2-next-btn');
+            if (!nextBtn) return;
+
+            const watchedIds = [
+                'company-name',
+                'address-line1',
+                'address-line2',
+                'address-city',
+                'address-region-select',
+                'address-region-text',
+                'address-postal',
+                'address-country'
+            ];
+
+            const watched = watchedIds
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            function validate() {
+                const companyName = (document.getElementById('company-name')?.value || '').trim();
+                const addr = getAddressModel();
+
+                const regionOk = addr.region.trim().length > 0;
+                const ok =
+                    companyName.length > 1 &&
+                    addr.addressLine1.length > 3 &&
+                    addr.city.length > 1 &&
+                    regionOk &&
+                    addr.postalCode.length > 2 &&
+                    addr.countryCode.length === 2;
+
+                nextBtn.disabled = !ok;
+            }
+
+            watched.forEach(el => el.addEventListener('input', validate));
+            watched.forEach(el => el.addEventListener('change', validate));
+            validate();
+        }
+
+
+        function setupPage3Validation() {
+            const reviewed = document.getElementById('agreement-reviewed');
+            const nextBtn = document.getElementById('page3-next-btn');
+            if (!reviewed || !nextBtn) return;
+
+            function validate() {
+                nextBtn.disabled = !reviewed.checked;
+            }
+
+            reviewed.addEventListener('change', validate);
+            validate();
+        }
+
+        function setupPage4Validation() {
+            const signatoryName = document.getElementById('signatory-name');
+            const signatoryTitle = document.getElementById('signatory-title');
+            const digitalSignature = document.getElementById('digital-signature');
+            const submitBtn = document.getElementById('final-submit-btn');
+            
+            if (!signatoryName || !signatoryTitle || !digitalSignature || !submitBtn) return;
+
+            function validate() {
+                const name = signatoryName.value.trim();
+                const title = signatoryTitle.value.trim();
+                const sig = digitalSignature.value.trim();
+                
+                const fieldsFilled = !!(name && title && sig);
+                const sigMatches = fieldsFilled && name.toLowerCase() === sig.toLowerCase();
+                
+                submitBtn.disabled = !(otpVerified && verifiedEmail && fieldsFilled && sigMatches);
+            }
+
+            signatoryName.addEventListener('input', validate);
+            signatoryTitle.addEventListener('input', validate);
+            digitalSignature.addEventListener('input', validate);
+            validate();
+        }
+
+        function goToPage(pageNumber) {
+            currentPage = pageNumber;
+            clearAllMessages();
+            window.scrollTo(0, 0);
+
+            document.querySelectorAll('.page').forEach((page, index) => {
+                page.classList.remove('active');
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                }
+            });
+
+            updateProgressIndicator();
+            updateExistingAgreementVisibility();
+        }
+
+        function completePage2() {
+            const companyName = (document.getElementById('company-name')?.value || '').trim();
+            const addr = getAddressModel();
+
+            const missing = [];
+            if (!companyName) missing.push('Legal Company Name');
+            if (!addr.addressLine1) missing.push('Address Line 1');
+            if (!addr.city) missing.push('City / Locality');
+            if (!addr.region) missing.push('State / Province / Region');
+            if (!addr.postalCode) missing.push('Postal / ZIP Code');
+            if (!addr.countryCode) missing.push('Country');
+
+            if (missing.length) {
+                showMessage(2, 'Please fill in all required fields.', 'error');
+                return;
+            }
+
+            completedPages.add(2);
+            goToPage(3);
+        }
+
+        function completePage3() {
+            const reviewed = document.getElementById('agreement-reviewed');
+            if (!reviewed.checked) {
+                showMessage(3, 'Please review and accept the agreement terms.', 'error');
+                return;
+            }
+            
+            completedPages.add(3);
+            goToPage(4);
+        }
+
+        async function sendCode() {
+            clearPageMessage(1);
+            const email = document.getElementById('email').value.trim();
+            const sendButton = document.getElementById('send-code-btn');
+
+            if (!email || !isValidEmail(email)) {
+                showMessage(1, 'Please enter a valid email address.', 'error');
+                return;
+            }       
+
+            const domain = email.split('@')[1].toLowerCase();
+            if (CONFIG.GENERIC_DOMAINS.includes(domain)) {
+                showMessage(1, 'Please use your work email address. Personal email providers (Gmail, Yahoo, etc.) are not accepted.', 'error');
+                return;
+            }
+
+            if (sendButton) sendButton.disabled = true;
+            document.getElementById('loading').classList.add('show');
+
+            try {
+                const response = await fetch(CONFIG.API_SEND_CODE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to send verification code');
+                }
+                document.getElementById('code-section').style.display = 'block';
+                if (sendButton) {
+                    sendButton.textContent = 'Code Sent';
+                    sendButton.disabled = true;
+                }
+
+                setTimeout(() => {
+                    const otpField = document.getElementById('otp');
+                    if (otpField) {
+                        otpField.focus();
+                        otpField.select(); // Ensures any pre-existing value is selected
+                    }
+                }, 100);
+
+
+                showMessage(1, 'Verification code sent. Check your email.', 'success');
+            } catch (error) {
+                console.error('Send code error:', error);
+                showMessage(1, error.message || 'Failed to send verification code.', 'error');
+                if (sendButton) sendButton.disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        async function verifyCode() {
+            clearPageMessage(1);
+            clearCodeMessage();
+
+            const email = document.getElementById('email').value.trim();
+            const code = document.getElementById('otp').value.replace(/\D/g, '');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (code.length !== 6) {
+                showCodeMessage('Please enter the complete 6-digit verification code.');
+                return;
+            }
+
+            if (nextBtn) nextBtn.disabled = true;
+            document.getElementById('loading').classList.add('show');
+
+            try {
+                const response = await fetch(CONFIG.API_VERIFY_CODE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Invalid or expired code');
+                }
+
+                // ✅ SECURITY: Store session token from OTP verification
+                if (data.sessionToken) {
+                    sessionStorage.setItem('sessionToken', data.sessionToken);
+                    sessionStorage.setItem('sessionExpires', Date.now() + (data.expiresIn * 1000));
+                    console.log('✅ Session token stored:', data.sessionToken);
+                } else {
+                    console.warn('⚠️ No session token received from API');
+                }
+
+                verifiedEmail = email;
+                otpVerified = true;
+
+                await checkExistingAgreement(email);
+
+                completedPages.add(1);
+                goToPage(2);
+
+            } catch (error) {
+                console.error('Verify code error:', error);
+                showCodeMessage(error.message || 'Invalid or expired code.');
+                if (nextBtn) nextBtn.disabled = false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        async function checkExistingAgreement(email) {
+            try {
+                const response = await fetch(CONFIG.API_CHECK_EXISTING, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        agreementType: agreementType
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.hasExisting) {
+                    const notice = document.getElementById('existing-agreement-notice');
+                    document.getElementById('existing-agreement-id').textContent = data.agreementId || 'N/A';
+                    document.getElementById('existing-agreement-type').textContent = data.agreementType || agreementType;
+                    document.getElementById('existing-agreement-date').textContent = data.completionDate ? new Date(data.completionDate).toLocaleDateString() : 'N/A';
+                    
+                    if (notice) {
+                        notice.dataset.found = 'true';
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking existing agreement:', error);
+            }
+        }
+
+        function updateExistingAgreementVisibility() {
+            const notice = document.getElementById('existing-agreement-notice');
+            if (!notice) return;
+
+            const found = notice.dataset.found === 'true';
+            const isOnPage2 = currentPage === 2;
+
+            if (found && isOnPage2) {
+                notice.classList.add('show');
+            } else {
+                notice.classList.remove('show');
+            }
+        }
+
+        async function submitAgreement() {
+            clearPageMessage(4);
+            
+            if (!otpVerified || !verifiedEmail) {
+                showMessage(4, 'Please verify your email before submitting.', 'error');
+                return;
+            }
+
+            // ✅ SECURITY: Validate session token before submission
+            const sessionToken = sessionStorage.getItem('sessionToken');
+            const sessionExpires = sessionStorage.getItem('sessionExpires');
+
+            if (!sessionToken) {
+                showMessage(4, 'Session expired. Please verify your email again.', 'error');
+                goToPage(1);
+                return;
+            }
+
+            if (Date.now() > parseInt(sessionExpires)) {
+                showMessage(4, 'Session expired (30 minutes). Please verify your email again.', 'error');
+                sessionStorage.clear();
+                goToPage(1);
+                return;
+            }
+
+            if (!validateFinalForm()) {
+                return;
+            }
+
+            document.getElementById('loading').classList.add('show');
+
+            const formData = {
+                agreementId: agreementId,
+                securityToken: securityToken,
+                sessionToken: sessionToken,  // ✅ SECURITY: Include session token
+                agreementType: agreementType,
+                email: verifiedEmail,
+                companyName: document.getElementById('company-name').value,
+                addressLine1: (document.getElementById('address-line1')?.value || ''),
+                addressLine2: (document.getElementById('address-line2')?.value || ''),
+                city: (document.getElementById('address-city')?.value || ''),
+                region: getAddressModel().region,
+                regionCode: getAddressModel().regionCode,
+                postalCode: (document.getElementById('address-postal')?.value || ''),
+                countryCode: getAddressModel().countryCode,
+                countryName: getAddressModel().countryName,
+                businessAddress: formatBusinessAddress(getAddressModel()),
+                signatoryName: document.getElementById('signatory-name').value,
+                signatoryTitle: document.getElementById('signatory-title').value,
+                digitalSignature: document.getElementById('digital-signature').value,
+                submissionTimestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(CONFIG.API_SUBMIT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Submission failed');
+                }
+
+                // ✅ SECURITY: Clear session token after successful submission
+                sessionStorage.removeItem('sessionToken');
+                sessionStorage.removeItem('sessionExpires');
+
+                if (data.agreementId) {
+                    agreementId = data.agreementId;
+                }
+
+                completedPages.add(4);
+                showSuccessPage();
+
+            } catch (error) {
+                console.error('Submit error:', error);
+                showMessage(4, error.message || 'Failed to submit agreement.', 'error');
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
+        function validateFinalForm() {
+            const signatoryName = document.getElementById('signatory-name').value.trim();
+            const signatoryTitle = document.getElementById('signatory-title').value.trim();
+            const digitalSignature = document.getElementById('digital-signature').value.trim();
+
+            if (!signatoryName || !signatoryTitle || !digitalSignature) {
+                showMessage(4, 'Please fill in all required fields.', 'error');
+                return false;
+            }
+
+            if (signatoryName.toLowerCase() !== digitalSignature.toLowerCase()) {
+                showMessage(4, 'Digital signature must match the signatory name exactly.', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showSuccessPage() {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById('success-page').classList.add('show');
+            document.getElementById('success-agreement-id').textContent = agreementId;
+            document.getElementById('success-email').textContent = verifiedEmail;
+            
+            currentPage = 5;
+            updateProgressIndicator();
+            
+            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
+        }
+
+
+        function loadAgreementContent() {
+            let content = '';
+            
+            switch(agreementType.toLowerCase()) {
+                case 'mutual nda':
+                    content = getNDAContent();
+                    break;
+                case 'company hub':
+                    content = getCompanyHubContent();
+                    break;
+                case 'employee hub':
+                    content = getEmployeeHubContent();
+                    break;
+                default:
+                    content = getNDAContent();
+            }
+
+            document.getElementById('agreement-content').innerHTML = content;
+        }
+
+        function getNDAContent() {
+            return `<p style="text-align:center;white-space:pre-wrap;" class="sqsrte-large"><strong>Mutual Non-Disclosure Agreement</strong></p><p class="" style="white-space:pre-wrap;">This Non-Disclosure Agreement (the "<strong>Agreement</strong>") is by and between T-Mobile USA, Inc. ("<strong>T-Mobile</strong>") and the person or entity identified in the digital Submission to which these Non-Disclosure Terms and Conditions are linked (such person or entity, "<strong>NDA Party</strong>").</p><p class="" style="white-space:pre-wrap;">1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Purpose.</strong> The parties desire to exchange information on a confidential basis related to an actual or potential business relationship or activities (the "<strong>Purpose</strong>").&nbsp; "Confidential Information" means all non-public information or materials, including information and materials disclosed prior to or after the date of this Agreement, that are marked as confidential, orally described as confidential, or should reasonably be understood to be confidential.&nbsp; However, Confidential Information does not include anything that (i) was previously known to the receiving party without any confidentiality obligation, (ii) is or becomes publicly known through no wrongful act of the receiving party, (iii) was rightfully received from a third party without any confidentiality obligation to that third party, or (iv) was independently developed by the receiving party without using any Confidential Information.&nbsp; </p><p class="" style="white-space:pre-wrap;">2.&nbsp;&nbsp;&nbsp; <strong>Nondisclosure and Limited Use Obligations.</strong>&nbsp; Each party will protect Confidential Information disclosed by the other party by (i) not disclosing it to third parties, (ii) preserving its confidentiality with the same level of care it applies to its own similar types of Confidential Information, and always by taking reasonable steps to preserve confidentiality, and (iii) using it only for the Purpose.&nbsp; A party will disclose the other party's Confidential Information only to its employees, affiliates and consultants who need to know such information.&nbsp; A party is responsible for any disclosure or misuse of Confidential Information by its employees, affiliates or consultants. </p><p class="" style="white-space:pre-wrap;">3.&nbsp;&nbsp;&nbsp; <strong>Legally-Required Disclosures</strong>.&nbsp; A receiving party may, without breaching this Agreement, disclose Confidential Information disclosed by the other party to the extent required to comply with a court order or applicable law or regulation.&nbsp; If a receiving party becomes subject to such a requirement, it must notify the disclosing party as soon as possible and, in any case, before it makes the required disclosure (if such notice is allowed) and it must cooperate with the disclosing party (if requested, and at the disclosing party's expense) to seek a protective order or similar protection for its Confidential Information. The receiving party will disclose only such information as is legally required and will use commercially reasonable efforts to obtain confidential treatment for any Confidential Information that is so disclosed.</p><p class="" style="white-space:pre-wrap;">4.&nbsp;&nbsp;&nbsp; <strong>Injunctive Relief.</strong>&nbsp; Each party acknowledges that money damages may not adequately protect the disclosing party against actual or threatened breach of this Agreement and that such breach would result in irreparable harm to the disclosing party.&nbsp; Because of this, a disclosing party may pursue injunctive relief to protect its Confidential Information in any court of competent jurisdiction, without having to post bond or guarantee.&nbsp; The party who has breached or threatened to breach this Agreement will not raise the defense of an adequate remedy at law.&nbsp; This provision does not alter any other remedies available to either party.</p><p class="" style="white-space:pre-wrap;">5.&nbsp;&nbsp;&nbsp; <strong>Length of Obligations.</strong>&nbsp; This Agreement takes effect when both T-Mobile and NDA Party have signed and will continue until either party elects to terminate with thirty (30) days prior written notice to the other party.&nbsp; In the event that a definitive agreement is entered into by the parties, and such definitive agreement includes provisions that conflict with provisions contained herein, then the provisions of the definitive agreement control with regard to the subject matter contained therein. This Agreement applies to any Confidential Information disclosed while it is in effect, and it will apply to all such Confidential Information for a period of five (5) years from its disclosure, regardless of any termination of this Agreement, except this Agreement will apply indefinitely to trade secret information and personal or customer information.&nbsp; </p><p class="" style="white-space:pre-wrap;">6.&nbsp;&nbsp;&nbsp; <strong>Other Terms.</strong>&nbsp; Each party will comply with all applicable laws and regulations, including but not limited to, data privacy, sanctioned persons and export, in the disclosure and use of Confidential Information.&nbsp; The disclosing party does not grant, under this Agreement, any rights under its patents, copyrights, trademarks or other proprietary rights.&nbsp; The disclosing party does not make any representation or warranty (whether express, implied or statutory) under this Agreement regarding any Confidential Information it discloses.&nbsp; The NDA Party shall not access T-Mobile's wireless or wireline network, systems that support U.S. Lawful Process or systems that store customer information This Agreement does not create any formal business association between the parties, nor any obligation to buy, sell or otherwise transact in any products or services.&nbsp; If a party transfers this Agreement, including as part of a change of control, it will not disclose Confidential Information disclosed by the other party to its transferee unless it has received the disclosing party's express written approval.&nbsp; The laws of the State of Washington, USA (without their conflict of laws principles) govern this Agreement. &nbsp;The parties agree to submit to the jurisdiction of any state court sitting in King County, Washington or any federal court seated in Seattle, Washington.&nbsp; No failure or delay in enforcing any right will be deemed a waiver.&nbsp; This Agreement may be changed only in a writing signed by both parties.&nbsp; If any term of this Agreement is deemed illegal or otherwise unenforceable, that term will be severed and the rest of this Agreement will remain in full force and effect.&nbsp; With the exception of any separate agreement that references this Agreement, this Agreement is the entire agreement between the parties on disclosure and use of Confidential Information, and it supersedes any other negotiations, communications or agreements on those topics.&nbsp; </p><p class="" style="white-space:pre-wrap;"><strong>IN WITNESS HEREOF,</strong> the Parties have entered into this Agreement as of the date that opt-in to the terms and conditions via the T-Mobile Innovation intake process.</p>`;
+        }
+
+        function getCompanyHubContent() {
+            return `<h4>INNOVATION HUB ACCESS AND PARTICIPATION AGREEMENT</h4><p>This Innovation Hub Access and Participation Agreement (this "Agreement") is entered into between <strong>T-Mobile USA, Inc.</strong>, a Delaware corporation ("T-Mobile"), having its principal place of business at 12920 SE 38th Street, Bellevue, WA, 98006, U.S.A., and the Participant company identified below.</p><p><strong>Agreement ID:</strong> ${agreementId}</p><p><strong>Effective Date:</strong> Upon execution by all parties</p><h4>1. OVERVIEW</h4><p>T-Mobile operates a technology innovation center consisting of a lab facility ("Innovation Hub"). Participant acknowledges that its use of the Innovation Hub is subject to the terms and conditions of this Agreement, and that use of the Innovation Hub is limited to the date(s) and time(s) determined by T-Mobile in its sole discretion. Before entry into the Innovation Hub, each Participant's employee and representative who will enter the Innovation Hub must sign and return to T-Mobile an Innovation Hub Access and Participation Acknowledgement and adhere to its terms and conditions while in the Innovation Hub.</p><h4>2. APPLICABILITY OF EXISTING T-MOBILE AGREEMENT TERMS</h4><p>If T-Mobile and Participant have an existing agreement for the provision of services or products, and there is a conflict between the terms of that existing agreement, or any order or statement of work under that existing agreement, and the terms of this Agreement, this Agreement will control for the subject matter contained herein, unless otherwise expressly stated. Where there is no conflict between the terms of an existing agreement with T-Mobile and this Agreement, this Agreement has no force or bearing on the terms of the existing agreement, and vice versa.</p><h4>3. TERM OF THE AGREEMENT; TERMINATION</h4><p>This Agreement will commence on the Effective Date and will continue for a term of two years ("Term"), unless terminated earlier by T-Mobile in accordance with this Section. T-Mobile may terminate this Agreement at any time, with or without cause, effective immediately upon written notice to Participant.</p><h4>4. GRANT OF RIGHT TO USE</h4><p>Participant's right to use any portion of the Innovation Hub at any time is granted in writing by T-Mobile pursuant to this Agreement. The specific Right to Use granted to Participant by T-Mobile will detail (a) which specific portions of the Innovation Hub are to be accessible by Participant; and (b) the specific length of time for which the Right to Use is granted. Participant may request an extension of the Term. T-Mobile reserves the right to decline any Participant's request to extend the period of time of the Right to Use.</p><h4>5. RESTRICTIONS ON USE; NON-EXCLUSIVE; LIMITED SPACE</h4><p>Participant understands, acknowledges, and agrees that:</p><ol type="a"><li>T-Mobile reserves the right to issue credentials, including but not limited to access cards, in order to control access to or control activities in the Innovation Hub. Under no circumstances will Participant permit its personnel to share or loan the credentials provided by T-Mobile. T-Mobile has the right at any time and for any reason to cancel or revoke credentials previously issued to Participant personnel.</li><li>T-Mobile has the sole right to, at any time and for any length of time: (i) reserve exclusive or other use of the Innovation Hub or any part thereof; (ii) limit Participants use of the Innovation Hub to specific areas and assets; (iii) deny access and use of the Innovation Hub to any person or organization at any time; or (iv) close the Innovation Hub or any part thereof.</li><li>T-Mobile reserves the right to operate a "reservation system" in order to schedule and organize access to and control activities in the Innovation Hub.</li><li>Participant will not have exclusive or private use of the Innovation Hub and there may be third parties in the Innovation Hub during Participant's scheduled time.</li><li>Participant is limited to, and shall only use, the spaces and assets in the Innovation Hub that are allocated to Participant by T-Mobile, and only at the times allocated to Participant by T-Mobile.</li><li>If Participant is collaborating with a third party and wishes to have the third party enter into the Innovation Hub, Participant must communicate to the third party that such third party must contact T-Mobile to obtain access. Participant is responsible for any unauthorized access to the Innovation Hub.</li></ol><h4>6. NO T-MOBILE WARRANTIES</h4><ol type="a"><li>Participant's access to the Innovation Hub, use of all equipment and tools, and all feedback provided by T-Mobile employees is provided <strong>"AS IS"</strong>, and T-Mobile makes no warranties, express or implied, and hereby disclaims all implied warranties, including any warranties of merchantability, non-infringement, and fitness for a particular purpose.</li><li>T-Mobile makes no representations or warranties of any kind regarding Participant's privacy while in the Innovation Hub or the confidentiality of the project Participant brings into the Innovation Hub. Participant acknowledges and agrees that Participant has no expectation of privacy or confidentiality regarding Participant's project or activities during use of the Innovation Hub.</li></ol><p style="margin-top: 30px;"><strong>By completing and submitting this form, the authorized representative of Participant agrees to be bound by all terms and conditions set forth in this Agreement.</strong></p><p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 01.06.26 | Agreement ID: ${agreementId}</p>`;
+        }
+
+        function getEmployeeHubContent() {
+            return `<h4>INNOVATION HUB ACCESS AND PARTICIPATION ACKNOWLEDGEMENT</h4><p><strong>Agreement ID:</strong> ${agreementId}</p><p><strong>Effective Date:</strong> Upon acceptance</p><p>By signing this acknowledgement and by requesting access to this Innovation Hub, I acknowledge and agree that:</p><ol><li><strong>Access Times:</strong> I will only enter the Innovation Hub on the date and at the time specified by T-Mobile.</li><li><strong>No Unauthorized Guests:</strong> I will not bring anyone with me to the Innovation Hub who does not have express written approval to enter the Innovation Hub, and I will not use my badge to allow anyone who does not have T-Mobile's express written approval to enter the Innovation Hub.</li><li><strong>Badge Required:</strong> I will not enter the Innovation Hub without using my badge.</li></ol><p style="margin-top: 30px;"><strong>By completing and submitting this form, I acknowledge understanding and acceptance of all terms and conditions set forth in this Acknowledgement.</strong></p><p style="font-size: 12px; color: #666; margin-top: 20px;">Version: 01.06.26 | Agreement ID: ${agreementId}</p>`;
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    </script>
+</body>
+</html>
