@@ -727,27 +727,27 @@ label {
             
             <div class="message" id="page3-message"></div>
 
-            <!-- Existing NDA toggle -->
-            <div class="existing-nda-toggle">
-                <input type="checkbox" id="has-existing-nda">
-                <label for="has-existing-nda">I already have a signed NDA on file</label>
-            </div>
-
             <!-- Standard review/accept path -->
-            <div id="standard-review-section">
+            <div id="agreement-viewer-section">
                 <div class="agreement-viewer">
                     <h3 style="margin-bottom: 15px; color: #000000;">Agreement Document</h3>
                     <div class="agreement-content" id="agreement-content">
                         <!-- Dynamic agreement content loaded here -->
                     </div>
                 </div>
+            </div>
 
-                <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
-                    <input type="checkbox" id="agreement-reviewed" required>
-                    <label for="agreement-reviewed">
-                        I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
-                    </label>
-                </div>
+            <!-- Existing NDA toggle -- placed right next to the accept checkbox, where attention already is -->
+            <div class="existing-nda-toggle">
+                <input type="checkbox" id="has-existing-nda">
+                <label for="has-existing-nda">I already have a signed NDA on file</label>
+            </div>
+
+            <div id="standard-checkbox-section" class="checkbox-group" style="margin-top: 0; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
+                <input type="checkbox" id="agreement-reviewed" required>
+                <label for="agreement-reviewed">
+                    I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
+                </label>
             </div>
 
             <!-- Existing NDA upload path -->
@@ -1182,9 +1182,11 @@ function setFieldRequired(fieldId, isRequired) {
                 existingToggle.addEventListener('change', function() {
                     hasExistingNda = existingToggle.checked;
 
-                    const standardSection = document.getElementById('standard-review-section');
+                    const agreementSection = document.getElementById('agreement-viewer-section');
+                    const checkboxSection = document.getElementById('standard-checkbox-section');
                     const uploadSection = document.getElementById('existing-nda-upload-section');
-                    if (standardSection) standardSection.style.display = hasExistingNda ? 'none' : 'block';
+                    if (agreementSection) agreementSection.style.display = hasExistingNda ? 'none' : 'block';
+                    if (checkboxSection) checkboxSection.style.display = hasExistingNda ? 'none' : 'block';
                     if (uploadSection) uploadSection.style.display = hasExistingNda ? 'block' : 'none';
 
                     clearPageMessage(3);
@@ -1589,11 +1591,7 @@ function setFieldRequired(fieldId, isRequired) {
 
                 const data = await response.json();
                 if (!response.ok || !data.success) {
-                    const rawError = data && data.error;
-                    const errorMessage = typeof rawError === 'string'
-                        ? rawError
-                        : (rawError && rawError.message) || 'Submission failed';
-                    throw new Error(errorMessage);
+                    throw new Error(data.error || 'Submission failed');
                 }
 
                 // ✅ SECURITY: Clear session token after successful submission
