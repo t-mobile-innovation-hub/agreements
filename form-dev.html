@@ -1306,6 +1306,7 @@ function setFieldRequired(fieldId, isRequired) {
                     body: JSON.stringify({
                         sessionToken: sessionToken,
                         email: verifiedEmail,
+                        companyName: (document.getElementById('company-name')?.value || '').trim(),
                         fileName: file.name,
                         fileContentBase64: base64Content
                     })
