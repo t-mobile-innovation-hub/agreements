@@ -1588,7 +1588,11 @@ function setFieldRequired(fieldId, isRequired) {
 
                 const data = await response.json();
                 if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Submission failed');
+                    const rawError = data && data.error;
+                    const errorMessage = typeof rawError === 'string'
+                        ? rawError
+                        : (rawError && rawError.message) || 'Submission failed';
+                    throw new Error(errorMessage);
                 }
 
                 // ✅ SECURITY: Clear session token after successful submission
