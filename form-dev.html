@@ -218,6 +218,17 @@ label {
             font-family: inherit;
         }
 
+        input[type="file"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px dashed #e20074;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #fff8fb;
+            cursor: pointer;
+        }
+
         input:focus,
         textarea:focus,
         select:focus {
@@ -450,6 +461,37 @@ label {
             font-size: 16px;
         }
 
+        .existing-nda-toggle {
+            margin: 0 0 25px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #e20074;
+        }
+
+        .existing-nda-toggle input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.3);
+        }
+
+        .existing-nda-toggle label {
+            display: inline;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .existing-nda-confirmation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 16px;
+            background: #e8f5e9;
+            border: 2px solid #66bb6a;
+            border-radius: 5px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
         .success-container {
             display: none;
             text-align: center;
@@ -623,7 +665,7 @@ label {
                 <p><strong>Type:</strong> <span id="existing-agreement-type"></span></p>
                 <p><strong>Signed:</strong> <span id="existing-agreement-date"></span></p>
                 <p style="margin-top: 20px;">You already have an active agreement. You may proceed directly to the intake form.</p>
-                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+                <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=intake-new" 
                    class="btn-primary" 
                    style="text-decoration: none; display: inline-block; margin-top: 15px;" 
                    target="_blank">
@@ -685,18 +727,40 @@ label {
             
             <div class="message" id="page3-message"></div>
 
-            <div class="agreement-viewer">
-                <h3 style="margin-bottom: 15px; color: #000000;">Agreement Document</h3>
-                <div class="agreement-content" id="agreement-content">
-                    <!-- Dynamic agreement content loaded here -->
+            <!-- Existing NDA toggle -->
+            <div class="existing-nda-toggle">
+                <input type="checkbox" id="has-existing-nda">
+                <label for="has-existing-nda">I already have a signed NDA on file</label>
+            </div>
+
+            <!-- Standard review/accept path -->
+            <div id="standard-review-section">
+                <div class="agreement-viewer">
+                    <h3 style="margin-bottom: 15px; color: #000000;">Agreement Document</h3>
+                    <div class="agreement-content" id="agreement-content">
+                        <!-- Dynamic agreement content loaded here -->
+                    </div>
+                </div>
+
+                <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
+                    <input type="checkbox" id="agreement-reviewed" required>
+                    <label for="agreement-reviewed">
+                        I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
+                    </label>
                 </div>
             </div>
 
-            <div class="checkbox-group" style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 5px solid #e20074;">
-                <input type="checkbox" id="agreement-reviewed" required>
-                <label for="agreement-reviewed">
-                    I have reviewed and hereby accept the agreement terms. <span class="req-star">*</span>
-                </label>
+            <!-- Existing NDA upload path -->
+            <div id="existing-nda-upload-section" style="display: none;">
+                <div class="form-group">
+                    <label for="existing-nda-file">Upload Signed NDA <span class="req-star">*</span></label>
+                    <input type="file" id="existing-nda-file" accept=".pdf,.docx">
+                    <small>PDF or Word document, up to 10MB. Your file uploads immediately and is saved even if you reload this page.</small>
+                    <div class="message error" id="existing-nda-message"></div>
+                    <div class="existing-nda-confirmation" id="existing-nda-confirmation">
+                        ✓ <span id="existing-nda-filename"></span> uploaded
+                    </div>
+                </div>
             </div>
 
             <div class="button-group">
@@ -745,7 +809,7 @@ label {
                 <p style="margin-top: 20px; color: #666;">You will receive a confirmation email with the executed agreement within 24 hours.</p>
             </div>
 
-            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests" 
+            <a href="https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=intake-new" 
                class="btn-primary" 
                style="text-decoration: none; display: inline-block;" 
                target="_blank">
@@ -759,16 +823,27 @@ label {
             history.scrollRestoration = 'manual';
         }
 
-        // Configuration DEV
+        // Configuration UAT
+        // const CONFIG = {
+        //     API_SEND_CODE: 'https://b521d47f96dfe2b2ba9c4aff98857d.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/723dc77f342f47f4bb863e9b6b987eeb/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=dJDx2J5LCfxH_uNdSU1GdASvmWZUxTOR5UpM0mLJzmg',
+        //     API_VERIFY_CODE: 'https://b521d47f96dfe2b2ba9c4aff98857d.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4de912b605bd4cc6b7b1bced384035a2/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=q8UFQ0XbEcFENNbNpuIf1Ow21NJ-bbrQQp9-xotgtOU',
+        //     API_CHECK_EXISTING: 'https://b521d47f96dfe2b2ba9c4aff98857d.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2203d38cc0cc4760adea10c93c53726c/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sxydlXQbZJwHNvJYKlYlf3cQ5ozcOIL_QmJ5pqGM0RQ',
+        //     API_VALIDATE_TOKEN: 'https://b521d47f96dfe2b2ba9c4aff98857d.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/40a178d859d44b9f9d7d82b66fee7525/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RZFxEdhU3MuHMuwlarufJlHmTtTl0HMVEpFiaR-oQkk',
+        //     API_SUBMIT: 'https://b521d47f96dfe2b2ba9c4aff98857d.0e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/e35a7d8e312741b4ad2cc5dadd10778f/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YBgIqwSTkIe-AmYaXL-8FE_RRgup4hyXczlNhb66LT8',
+        //     API_UPLOAD_EXISTING_NDA: 'REPLACE_WITH_EXISTING_AGREEMENT_UPLOAD_FLOW_TRIGGER_URL',
+        //     GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com']
+        // };
+
+                // Configuration DEV
         const CONFIG = {
             API_SEND_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4341c3c423ad4186bbbcbf6ec0f54b93/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=HyJy3iw_YHiHM5-ViqOwH9SICVd5nw33ICIwkEgyTTU',
             API_VERIFY_CODE: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/199a3ec089864a5ea6d8006c1a270a2e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8iICSmnrlVsdPITEvcyK0I95YD-nKjM4U2GMGnBREQc',
             API_CHECK_EXISTING: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/707a82c1ed9043d98cfbc0b484c5c655/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ZcsnJmv3cKqNrTYatxOiQvRQQK57cIEOH9vbw5RkGqQ',
             API_VALIDATE_TOKEN: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a60671f8d38444a09e3ac09442b80964/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KFQkiUfu8uPtDrSspU5o7cbKfDS2kdgKp3147UBVgjk',
             API_SUBMIT: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/f22ee6457eb84ca3a32e3f970a3150be/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sCEtdfiLOS_Ull_JD6DG12B23XJinjCk77mXDy8qUIA',
+            API_UPLOAD_EXISTING_NDA: 'https://7eb27a1e3f99e66a8ae45a9d8ca269.15.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/31/workflows/2e503b413e544a50ace1999c8900f767/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pZtmUM5t75AMC007WcwkUH0_VeWQtTFkiqg4rbDdhtU',
             GENERIC_DOMAINS: ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com']
         };
-
 
         
 
@@ -807,6 +882,10 @@ function setFieldRequired(fieldId, isRequired) {
         let agreementType = 'Mutual NDA';
         let completedPages = new Set();
         let currentPage = 1;
+
+        // Existing-NDA-upload branch state
+        let hasExistingNda = false;
+        let existingNdaFilePath = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, 0);
@@ -1090,15 +1169,171 @@ function setFieldRequired(fieldId, isRequired) {
 
         function setupPage3Validation() {
             const reviewed = document.getElementById('agreement-reviewed');
+            const existingToggle = document.getElementById('has-existing-nda');
+            const fileInput = document.getElementById('existing-nda-file');
             const nextBtn = document.getElementById('page3-next-btn');
-            if (!reviewed || !nextBtn) return;
+            if (!nextBtn) return;
 
-            function validate() {
-                nextBtn.disabled = !reviewed.checked;
+            if (reviewed) {
+                reviewed.addEventListener('change', updatePage3NextButton);
             }
 
-            reviewed.addEventListener('change', validate);
-            validate();
+            if (existingToggle) {
+                existingToggle.addEventListener('change', function() {
+                    hasExistingNda = existingToggle.checked;
+
+                    const standardSection = document.getElementById('standard-review-section');
+                    const uploadSection = document.getElementById('existing-nda-upload-section');
+                    if (standardSection) standardSection.style.display = hasExistingNda ? 'none' : 'block';
+                    if (uploadSection) uploadSection.style.display = hasExistingNda ? 'block' : 'none';
+
+                    clearPageMessage(3);
+                    updatePage3NextButton();
+                });
+            }
+
+            if (fileInput) {
+                fileInput.addEventListener('change', handleExistingNdaFileSelect);
+            }
+
+            updatePage3NextButton();
+        }
+
+        function updatePage3NextButton() {
+            const nextBtn = document.getElementById('page3-next-btn');
+            if (!nextBtn) return;
+
+            if (hasExistingNda) {
+                nextBtn.disabled = !existingNdaFilePath;
+            } else {
+                const reviewed = document.getElementById('agreement-reviewed');
+                nextBtn.disabled = !(reviewed && reviewed.checked);
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // reader.result is "data:<mime>;base64,<data>" -- strip the prefix
+                    const result = reader.result || '';
+                    const base64 = result.includes(',') ? result.split(',')[1] : result;
+                    resolve(base64);
+                };
+                reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function clearExistingNdaMessage() {
+            const msgEl = document.getElementById('existing-nda-message');
+            if (msgEl) {
+                msgEl.classList.remove('show');
+                msgEl.textContent = '';
+            }
+        }
+
+        function handleExistingNdaFileSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            const msgEl = document.getElementById('existing-nda-message');
+            const confirmEl = document.getElementById('existing-nda-confirmation');
+
+            // Self-healing: clear any prior error or confirmation the moment a new file is chosen
+            clearExistingNdaMessage();
+            if (confirmEl) confirmEl.style.display = 'none';
+            existingNdaFilePath = null;
+            updatePage3NextButton();
+
+            if (!file) return;
+
+            const allowedTypes = [
+                'application/pdf',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+
+            if (!allowedTypes.includes(file.type)) {
+                if (msgEl) {
+                    msgEl.textContent = 'Please upload a PDF or Word document.';
+                    msgEl.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+
+            const maxSizeBytes = 10 * 1024 * 1024;
+            if (file.size > maxSizeBytes) {
+                if (msgEl) {
+                    msgEl.textContent = 'File is too large. Maximum size is 10MB.';
+                    msgEl.classList.add('show');
+                }
+                event.target.value = '';
+                return;
+            }
+
+            uploadExistingNdaFile(file);
+        }
+
+        async function uploadExistingNdaFile(file) {
+            const msgEl = document.getElementById('existing-nda-message');
+            const confirmEl = document.getElementById('existing-nda-confirmation');
+            const filenameEl = document.getElementById('existing-nda-filename');
+            const fileInput = document.getElementById('existing-nda-file');
+
+            const sessionToken = sessionStorage.getItem('sessionToken');
+            const sessionExpires = sessionStorage.getItem('sessionExpires');
+
+            if (!sessionToken) {
+                showMessage(3, 'Session expired. Please verify your email again.', 'error');
+                goToPage(1);
+                return;
+            }
+
+            if (sessionExpires && Date.now() > parseInt(sessionExpires)) {
+                showMessage(3, 'Session expired (30 minutes). Please verify your email again.', 'error');
+                sessionStorage.clear();
+                goToPage(1);
+                return;
+            }
+
+            document.getElementById('loading').classList.add('show');
+
+            try {
+                const base64Content = await fileToBase64(file);
+
+                const response = await fetch(CONFIG.API_UPLOAD_EXISTING_NDA, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionToken: sessionToken,
+                        email: verifiedEmail,
+                        fileName: file.name,
+                        fileContentBase64: base64Content
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Failed to upload file');
+                }
+
+                existingNdaFilePath = data.filePath;
+
+                if (filenameEl) filenameEl.textContent = file.name;
+                if (confirmEl) confirmEl.style.display = 'block';
+
+            } catch (error) {
+                console.error('Existing NDA upload error:', error);
+                if (msgEl) {
+                    msgEl.textContent = error.message || 'Failed to upload file. Please try again.';
+                    msgEl.classList.add('show');
+                }
+                if (fileInput) fileInput.value = '';
+                existingNdaFilePath = null;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+                updatePage3NextButton();
+            }
         }
 
         function setupPage4Validation() {
@@ -1164,6 +1399,17 @@ function setFieldRequired(fieldId, isRequired) {
         }
 
         function completePage3() {
+            if (hasExistingNda) {
+                if (!existingNdaFilePath) {
+                    showMessage(3, 'Please upload your existing NDA before continuing.', 'error');
+                    return;
+                }
+
+                completedPages.add(3);
+                submitExistingNdaAgreement();
+                return;
+            }
+
             const reviewed = document.getElementById('agreement-reviewed');
             if (!reviewed.checked) {
                 showMessage(3, 'Please review and accept the agreement terms.', 'error');
@@ -1326,6 +1572,45 @@ function setFieldRequired(fieldId, isRequired) {
             }
         }
 
+        // Shared submission call used by both the signature path (Page 4) and
+        // the existing-NDA-upload path (Page 3). Handles the actual POST to
+        // Endpoint 2, session cleanup on success, and error display on the
+        // page the caller is currently on.
+        async function submitFinalAgreement(formData, errorPageNumber) {
+            document.getElementById('loading').classList.add('show');
+
+            try {
+                const response = await fetch(CONFIG.API_SUBMIT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Submission failed');
+                }
+
+                // ✅ SECURITY: Clear session token after successful submission
+                sessionStorage.removeItem('sessionToken');
+                sessionStorage.removeItem('sessionExpires');
+
+                if (data.agreementId) {
+                    agreementId = data.agreementId;
+                }
+
+                showSuccessPage();
+                return true;
+
+            } catch (error) {
+                console.error('Submit error:', error);
+                showMessage(errorPageNumber, error.message || 'Failed to submit agreement.', 'error');
+                return false;
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        }
+
         async function submitAgreement() {
             clearPageMessage(4);
             
@@ -1355,7 +1640,7 @@ function setFieldRequired(fieldId, isRequired) {
                 return;
             }
 
-            document.getElementById('loading').classList.add('show');
+            const addr = getAddressModel();
 
             const formData = {
                 agreementId: agreementId,
@@ -1367,47 +1652,82 @@ function setFieldRequired(fieldId, isRequired) {
                 addressLine1: (document.getElementById('address-line1')?.value || ''),
                 addressLine2: (document.getElementById('address-line2')?.value || ''),
                 city: (document.getElementById('address-city')?.value || ''),
-                region: getAddressModel().region,
-                regionCode: getAddressModel().regionCode,
+                region: addr.region,
+                regionCode: addr.regionCode,
                 postalCode: (document.getElementById('address-postal')?.value || ''),
-                countryCode: getAddressModel().countryCode,
-                countryName: getAddressModel().countryName,
-                businessAddress: formatBusinessAddress(getAddressModel()),
+                countryCode: addr.countryCode,
+                countryName: addr.countryName,
+                businessAddress: formatBusinessAddress(addr),
                 signatoryName: document.getElementById('signatory-name').value,
                 signatoryTitle: document.getElementById('signatory-title').value,
                 digitalSignature: document.getElementById('digital-signature').value,
+                hasExistingNda: false,
+                existingNdaFilePath: null,
                 submissionTimestamp: new Date().toISOString()
             };
 
-            try {
-                const response = await fetch(CONFIG.API_SUBMIT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
+            await submitFinalAgreement(formData, 4);
+        }
 
-                const data = await response.json();
-                if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Submission failed');
-                }
+        // Existing-NDA-upload path submission, fired from Page 3's Next button
+        // once a file has already been uploaded via uploadExistingNdaFile().
+        // Skips Page 4 entirely -- there is no signature to collect.
+        async function submitExistingNdaAgreement() {
+            clearPageMessage(3);
 
-                // ✅ SECURITY: Clear session token after successful submission
-                sessionStorage.removeItem('sessionToken');
-                sessionStorage.removeItem('sessionExpires');
-
-                if (data.agreementId) {
-                    agreementId = data.agreementId;
-                }
-
-                completedPages.add(4);
-                showSuccessPage();
-
-            } catch (error) {
-                console.error('Submit error:', error);
-                showMessage(4, error.message || 'Failed to submit agreement.', 'error');
-            } finally {
-                document.getElementById('loading').classList.remove('show');
+            if (!otpVerified || !verifiedEmail) {
+                showMessage(3, 'Please verify your email before submitting.', 'error');
+                return;
             }
+
+            if (!existingNdaFilePath) {
+                showMessage(3, 'Please upload your existing NDA before continuing.', 'error');
+                return;
+            }
+
+            const sessionToken = sessionStorage.getItem('sessionToken');
+            const sessionExpires = sessionStorage.getItem('sessionExpires');
+
+            if (!sessionToken) {
+                showMessage(3, 'Session expired. Please verify your email again.', 'error');
+                goToPage(1);
+                return;
+            }
+
+            if (Date.now() > parseInt(sessionExpires)) {
+                showMessage(3, 'Session expired (30 minutes). Please verify your email again.', 'error');
+                sessionStorage.clear();
+                goToPage(1);
+                return;
+            }
+
+            const addr = getAddressModel();
+
+            const formData = {
+                agreementId: agreementId,
+                securityToken: securityToken,
+                sessionToken: sessionToken,
+                agreementType: agreementType,
+                email: verifiedEmail,
+                companyName: document.getElementById('company-name').value,
+                addressLine1: (document.getElementById('address-line1')?.value || ''),
+                addressLine2: (document.getElementById('address-line2')?.value || ''),
+                city: (document.getElementById('address-city')?.value || ''),
+                region: addr.region,
+                regionCode: addr.regionCode,
+                postalCode: (document.getElementById('address-postal')?.value || ''),
+                countryCode: addr.countryCode,
+                countryName: addr.countryName,
+                businessAddress: formatBusinessAddress(addr),
+                signatoryName: '',
+                signatoryTitle: '',
+                digitalSignature: '',
+                hasExistingNda: true,
+                existingNdaFilePath: existingNdaFilePath,
+                submissionTimestamp: new Date().toISOString()
+            };
+
+            await submitFinalAgreement(formData, 3);
         }
 
         function validateFinalForm() {
@@ -1437,7 +1757,7 @@ function setFieldRequired(fieldId, isRequired) {
             currentPage = 5;
             updateProgressIndicator();
             
-            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=ext-intake-requests', '_blank');
+            window.open('https://t-innovate.braineet.com/en/g/external/form?braineeTypeUrl=intake-new', '_blank');
         }
 
 
